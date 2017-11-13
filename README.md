@@ -11,7 +11,7 @@ This will backup and restore Application as well as System Preferences.
 
 ## Getting started
 
-- clone or download this repo
+- Clone or download this repository
 - Open Terminal.app
 - `cd` to the dir with this code in it
 
@@ -27,12 +27,15 @@ After you've configured `BACKUP_DIR`, you can run `python backup_preferences.py`
 
 ## Restoring
 
-You can restore your preferences by running `python restore_preferencs.py`.
+You can restore your preferences by running `python restore_preferences.py`.
+
+You might have to log out and then log back in for the setting to take effect.
 
 ## What it does
 
-All the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain is System Preferences)
+It backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system properties)
 
 ## Notes
 
 - These scripts depend on `defaults domains` and is not compatible with the way [Mackup](https://github.com/lra/mackup) uses symlinks. On the bright side though, if you use this as well as Mackup to backup and restore, everything should just work. Just remember that anything Mackup backs up won't be backed up by these scripts.
+- Case Conflicts - It's possible that software companies (Apple included) change the case of the bundle id for an Application. This can also happen when you run `defaults write` and use the wrong (or old) case for the domain. (e.g. com.apple.addressbook instead of com.apple.AddressBook) .This can cause multiple plist files to appear in `~/Library/Preferences/`. To resolve this you can open the file with XCode to determine which is the correct one with the correct case and delete the other one.
