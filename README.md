@@ -2,7 +2,7 @@
 
 A couple of python scripts to backup and restore Mac preferences using `defaults export` and `defaults import`.
 
-This will backup Application as well as System Preferences.
+This will backup and restore Application as well as System Preferences.
 
 ## Requirements
 
