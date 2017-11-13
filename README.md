@@ -45,3 +45,11 @@ It backs up all the preferences for the domains listed by running `defaults doma
 
 - These scripts depend on `defaults domains` and is not compatible with the way [Mackup](https://github.com/lra/mackup) uses symlinks. On the bright side though, if you use this as well as Mackup to backup and restore, everything should just work. Just remember that anything Mackup backs up won't be backed up by these scripts.
 - Case Conflicts - It's possible that software companies (Apple included) change the case of the bundle id for an Application. This can also happen when you run `defaults write` and use the wrong (or old) case for the domain. (e.g. com.apple.addressbook instead of com.apple.AddressBook) .This can cause multiple plist files to appear in `~/Library/Preferences/`. To resolve this you can open the file with XCode to determine which is the correct one with the correct case and delete the other one.
+
+## Todo
+
+- Add system preferences (e.g. PowerManagement)
+
+## Problems 
+
+- File a bug and/or send a pull request and I'll be happy to look at it and/or merge it.
