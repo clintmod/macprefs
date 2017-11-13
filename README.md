@@ -19,8 +19,6 @@ This will backup and restore Application as well as System Preferences.
 
 You can change `BACKUP_DIR` in config.py to a directory where you want to backup your Mac preferences too. The default is `~/Dropbox/MacPrefsBackup`
 
-By default the script does not create the folder you want to back up too. It must already exist.
-
 ## Backing up
 
 After you've configured `BACKUP_DIR`, you can run `python backup_preferences.py`.
