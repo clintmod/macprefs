@@ -31,6 +31,14 @@ You can restore your preferences by running `python restore_preferences.py`.
 
 You might have to log out and then log back in for the setting to take effect.
 
+## Testing the Restore (You should)
+
+- Create a new user on your Mac
+- Log in as that user
+- Do the [Getting Started](#getting-started)
+- Update the [Config](#config)
+- Run the [Restore](#restoring)
+
 ## What it does
 
 It backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system properties)
