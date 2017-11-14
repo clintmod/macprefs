@@ -6,9 +6,15 @@ This will backup and restore Application as well as System Preferences.
 
 ## Motiviation (.macos problems)
 
-I was trying to adapt the ~~`.osx`~~ `.macos` file from [Mathias Bynens](https://github.com/mathiasbynens/dotfiles/blob/master/.macos) and noticed that some of the cases for the domains were wrong and weren't actually changing the preferences they were intended to change. This also caused problems while trying to diff the changes as I was seeing because of [Case Conflicts](#case-conflicts).
+I wanted a solution to back up my settings for my Mac and one didn't really exist.
 
-So I decided to write some scripts that use the standard api for importing and exporting `defaults`.
+Time Machine is a bit overkill for this. At first I was trying to create a bash script to set everything up.
+
+I was trying to adapt the ~~`.osx`~~ `.macos` file from [Mathias Bynens](https://github.com/mathiasbynens/dotfiles/blob/master/.macos) and noticed that some of the cases for the domains were wrong and weren't actually changing the preferences they were intended to change.
+
+Running `defaults write` caused problems while trying create these scripts because of [Case Conflicts](#case-conflicts).
+
+So I decided to write some scripts that use the standard api `defaults export` and `defaults import` to backup my preferences.
 
 ## Requirements
 
@@ -73,9 +79,9 @@ It backs up all the preferences for the domains listed by running `defaults doma
 
 ## Todo
 
-- Backup and restore `/Library/Preferences` (e.g. PowerManagement)
+- Backup and restore `/Library/Preferences` (e.g. PowerManagement). Requires sudo.
 - Backup and restore shared lists `~Library/Application Support/com.apple.sharedfilelist`
-- Write a util to generate a bash script of `defaults write` commands that diffs a new user account against your own account
+- Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account.
 
 ## Problems
 
