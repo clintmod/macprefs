@@ -1,5 +1,4 @@
 import os
-import backup_system_preferences
 from config import BACKUP_DIR
 from utils import executeShell
 
@@ -18,5 +17,4 @@ def backup():
 
 
 if __name__ == '__main__':
-  backup_system_preferences.backup()
   backup()

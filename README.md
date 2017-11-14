@@ -12,7 +12,7 @@ Time Machine is a bit overkill for this. At first I was trying to create a bash 
 
 I was trying to adapt the ~~`.osx`~~ `.macos` file from [Mathias Bynens](https://github.com/mathiasbynens/dotfiles/blob/master/.macos) and noticed that some of the cases for the domains were wrong and weren't actually changing the preferences they were intended to change.
 
-Running `defaults write` caused problems while trying create these scripts because of [Case Conflicts](#case-conflicts).
+Running `defaults write` with the wrong case also caused problems while trying create these python scripts because of [Case Conflicts](#case-conflicts).
 
 So I decided to write some scripts that use the standard api `defaults export` and `defaults import` to backup my preferences.
 
@@ -29,25 +29,31 @@ So I decided to write some scripts that use the standard api `defaults export` a
 
 ## Config
 
-You can change `BACKUP_DIR` in config.py to a directory where you want to backup your Mac preferences too. The default is `~/Dropbox/MacPrefsBackup`
+You can set the MACPREFS_BACKUP_DIR environment variable to specify where you'd like to backup the prefs too.
+
+The default backup directory is `~/Dropbox/MacPrefsBackup`.
+
+```bash
+export MACPREFS_BACKUP_DIR="$HOME/SomeOtherDir"
+```
 
 ## Backing Up
 
-After you've configured `BACKUP_DIR`, you can run:
+You can backup your preferences by running:
 
 ``` bash
-python backup_preferences.py
+./macprefs backup
 ```
 
 ## Restoring
 
-You can restore your preferences by running 
+You can restore your preferences by running:
 
 ``` bash
-python restore_preferences.py
+./macprefs restore
 ```
 
-- **You might have to log out and then log back in for the setting to take effect.**
+- **You might have to log out and then log back in for the settings to take effect.**
 
 ## Testing the Restore
 
@@ -62,7 +68,8 @@ python restore_preferences.py
 
 ## What it Does
 
-It backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system preferences)
+- Backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system preferences)
+- Backs up PowerManagement preferences
 
 ## Notes
 
@@ -73,13 +80,14 @@ It backs up all the preferences for the domains listed by running `defaults doma
   - It's possible that software companies (Apple included) change the case of the bundle id for an Application. This can cause multiple plist files to appear in `~/Library/Preferences/`. This can cause a problem with the scripts. As `defaults domains` will report the domains with a (Case Conflict). To resolve this you can open the problem file located in ~/Library/Preferences/ with XCode to determine which is the correct one with the correct case and delete the other one.
 
 - ### Using `defaults write`
-  - When you run `defaults write` and use the wrong (or old) case for the domain you can also get [Case Conflicts](#case-conflicts). (e.g. com.apple.addressbook instead of com.apple.AddressBook).
+  - When you run `defaults write` and use the wrong/old case for the domain you can also get [Case Conflicts](#case-conflicts). (e.g. com.apple.addressbook instead of com.apple.AddressBook).
   - The `defaults` app has a tendency to fail silently for some things. You might be trying to use old `defaults write` commands where key is the wrong name.
   - Because of the above 2 reasons maintaining a bunch of `defaults write` commands in bash script can be difficult
 
 ## Todo
 
 - [x] Backup and restore `/Library/Preferences` (e.g. PowerManagement)
+- [ ] Installable via homebrew
 - [ ] Backup and restore shared lists `~Library/Application Support/com.apple.sharedfilelist`
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 

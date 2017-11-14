@@ -1,5 +1,4 @@
 import os
-import restore_system_preferences
 from config import BACKUP_DIR
 from utils import executeShell
 
@@ -11,5 +10,4 @@ def restore():
     executeShell(["defaults", "import", domain, os.path.join(BACKUP_DIR, filename)])
 
 if __name__ == '__main__':
-  restore_system_preferences.restore()
   restore()
