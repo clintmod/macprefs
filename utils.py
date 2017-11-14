@@ -1,13 +1,13 @@
 from subprocess import CalledProcessError, check_output, STDOUT
 
-def executeShell(command, cwd = ".", suppress_errors=False, verbose = False):
+def executeShell(command, isShell = False, cwd = ".", suppress_errors=False, verbose = False):
 	output = ""
 	if(verbose):
 		print "\n--- executing shell command ----\n"
 		print "setting working dir to: " + cwd
 		print "command: " + command
 	try:
-		output = check_output(command, shell=(verbose), cwd=cwd, stderr=STDOUT).strip()
+		output = check_output(command, shell=isShell, cwd=cwd, stderr=STDOUT).strip()
 		if(verbose):
 			print "output = " + output
 	except CalledProcessError as e:

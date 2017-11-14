@@ -79,9 +79,9 @@ It backs up all the preferences for the domains listed by running `defaults doma
 
 ## Todo
 
-- Backup and restore `/Library/Preferences` (e.g. PowerManagement). Requires sudo.
-- Backup and restore shared lists `~Library/Application Support/com.apple.sharedfilelist`
-- Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account.
+- [x] Backup and restore `/Library/Preferences` (e.g. PowerManagement)
+- [ ] Backup and restore shared lists `~Library/Application Support/com.apple.sharedfilelist`
+- [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 
 ## Problems
 
