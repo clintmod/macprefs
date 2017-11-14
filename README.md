@@ -42,7 +42,7 @@ export MACPREFS_BACKUP_DIR="$HOME/SomeOtherDir"
 You can backup your preferences by running:
 
 ``` bash
-./macprefs backup
+./bin/macprefs backup
 ```
 
 ## Restoring
@@ -50,7 +50,7 @@ You can backup your preferences by running:
 You can restore your preferences by running:
 
 ``` bash
-./macprefs restore
+./bin/macprefs restore
 ```
 
 - **You might have to log out and then log back in for the settings to take effect.**
