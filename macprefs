@@ -1,30 +1,37 @@
 #!/usr/bin/env python
+import argparse
 import sys
+import config
+
 import backup_preferences
 import backup_system_preferences
 import restore_preferences
 import restore_system_preferences
-import config
-import argparse
 
-def backup(args):
-  backup_system_preferences.backup()
-  backup_preferences.backup()
 
-def restore(args):
-  restore_system_preferences.restore()
-  restore_preferences.restore()
+def backup():
+    backup_system_preferences.backup()
+    backup_preferences.backup()
+
+
+def restore():
+    restore_system_preferences.restore()
+    restore_preferences.restore()
+
 
 if __name__ == '__main__':
-  parser = argparse.ArgumentParser(prog="macprefs", description='Backup and restore mac system preferences.')
-  subparsers = parser.add_subparsers(title="commands", metavar='')
-  backup_parser = subparsers.add_parser('backup', help="Backup mac preferences to " + config.BACKUP_DIR)
-  backup_parser.set_defaults(func=backup)
-  restore_parser = subparsers.add_parser('restore', help="Restore mac preferences from " + config.BACKUP_DIR)
-  restore_parser.set_defaults(func=restore)
-  if len(sys.argv)==1:
-    parser.print_help()
-    sys.exit(1)
-  args=parser.parse_args()
-  if args.func is not None:
-    args.func(args)
+    PARSER = argparse.ArgumentParser(
+        prog="macprefs", description='Backup and restore mac system preferences.')
+    SUBPARSERS = PARSER.add_subparsers(title="commands", metavar='')
+    BACKUP_PARSER = SUBPARSERS.add_parser(
+        'backup', help="Backup mac preferences to " + config.BACKUP_DIR)
+    BACKUP_PARSER.set_defaults(func=backup)
+    RESTORE_PARSER = SUBPARSERS.add_parser(
+        'restore', help="Restore mac preferences from " + config.BACKUP_DIR)
+    RESTORE_PARSER.set_defaults(func=restore)
+    if len(sys.argv) == 1:
+        PARSER.print_help()
+        sys.exit(1)
+    ARGS = PARSER.parse_args()
+    if ARGS.func is not None:
+        ARGS.func()
