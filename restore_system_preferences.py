@@ -1,7 +1,7 @@
 import os
 import sys
 from config import BACKUP_DIR
-from utils import executeShell
+from utils import execute_shell
 
 
 def restore():
@@ -12,8 +12,8 @@ def restore():
         BACKUP_DIR, "System", "com.apple.PowerManagement.plist")
     power_management_domain = "/Library/Preferences/com.apple.PowerManagement"
     print "Restoring: " + power_management_domain + " from " + power_management_restore_path
-    executeShell(["defaults", "import", power_management_domain,
-                  power_management_restore_path], False)
+    execute_shell(["defaults", "import", power_management_domain,
+                   power_management_restore_path], False)
 
 
 if __name__ == '__main__':

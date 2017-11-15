@@ -1,5 +1,5 @@
 import os
-from utils import executeShell
+from utils import execute_shell
 from config import BACKUP_DIR
 
 
@@ -12,7 +12,7 @@ def backup():
         power_management_domain = "/Library/Preferences/SystemConfiguration/com.apple.PowerManagement"
     print "Backing up: " + power_management_domain + " to " + power_management_backup_path
     # sudo is not required to back up but it is to restore
-    executeShell(["defaults", "export", power_management_domain,
+    execute_shell(["defaults", "export", power_management_domain,
                   power_management_backup_path], False)
 
 
