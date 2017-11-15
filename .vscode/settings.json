@@ -1,0 +1,9 @@
+{
+  "cSpell.words": [
+    "symlinks"
+  ],
+  "python.unitTest.pyTestArgs": [
+    "."
+  ],
+  "python.unitTest.pyTestEnabled": true
+}
