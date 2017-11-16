@@ -6,7 +6,7 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
     if verbose:
         print "\n--- executing shell command ----\n"
         print "setting working dir to: " + cwd
-        print "command: " + command
+        print "command: " + str(command)
     try:
         output = check_output(command, shell=is_shell,
                               cwd=cwd, stderr=STDOUT).strip()

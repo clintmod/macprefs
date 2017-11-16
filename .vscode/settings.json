@@ -1,9 +1,12 @@
 {
-  "cSpell.words": [
+"cSpell.words": [
+    "macprefs",
+    "plist",
+    "pytest",
     "symlinks"
-  ],
+],
   "python.unitTest.pyTestArgs": [
     "."
   ],
-  "python.unitTest.pyTestEnabled": true
+  "python.unitTest.pyTestEnabled": false
 }

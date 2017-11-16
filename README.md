@@ -105,3 +105,20 @@ sudo macprefs restore
 ## Problems
 
 - If you find a problem or a have a question feel free to file a bug here and/or send a pull request and I'll be happy to look at it and/or merge it.
+
+## Contributing
+
+### Getting started
+
+- Fork and clone then cd to this git repo
+- Run `pip install -r requirements.txt`
+
+### Running the tests
+
+- Run `make test lint` (make sure you've done the [Getting Started](#getting-started))
+
+### Getting your changes merged
+
+- Make your changes and push them to github
+- Make sure your changes have tests and pass linting
+- Open a pull request

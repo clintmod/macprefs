@@ -1,1 +1,6 @@
 *.pyc
+.cache
+.tmontmp
+.testmondata
+macprefsc
+.coverage

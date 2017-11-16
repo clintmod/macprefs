@@ -1,5 +1,4 @@
-import os
-from config import BACKUP_DIR
+import config
 from utils import execute_shell
 
 
@@ -8,11 +7,8 @@ def backup():
     domains = domains.split("\n")[0].split(", ")
     domains = ["NSGlobalDomain"] + domains
 
-    if not os.path.exists(BACKUP_DIR):
-        os.makedirs(BACKUP_DIR)
-
     for domain in domains:
-        filepath = BACKUP_DIR + domain + ".plist"
+        filepath = config.get_backup_file_path(domain)
         print "Backing up: " + domain + " to " + filepath
         execute_shell(["defaults", "export", domain, filepath])
 
