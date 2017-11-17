@@ -11,7 +11,7 @@ lint:
 	pylint *.py
 
 publish:
-	
+	python publish.py 
 
 help:
 	@echo "COMMANDS:"
