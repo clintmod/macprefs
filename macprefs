@@ -3,19 +3,22 @@ import argparse
 import sys
 import config
 
-import backup_preferences
-import backup_system_preferences
-import restore_preferences
-import restore_system_preferences
+import preferences
+import shared_file_lists
+import system_preferences
+
 
 def backup():
-    backup_system_preferences.backup()
-    backup_preferences.backup()
+    system_preferences.backup()
+    preferences.backup()
+    shared_file_lists.backup()
 
 
 def restore():
-    restore_system_preferences.restore()
-    restore_preferences.restore()
+    system_preferences.restore()
+    preferences.restore()
+    shared_file_lists.restore()
+
 
 if __name__ == '__main__':
     backup_dir = config.get_backup_dir()

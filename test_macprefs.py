@@ -2,7 +2,7 @@ from StringIO import StringIO
 import imp
 import sys
 from mock import patch
-import pytest
+#import pytest
 
 
 # load as module should work
@@ -36,25 +36,27 @@ def assert_correct_std_out(e, mock_stdout):
     assert 'Restore mac preferences' in mock_stdout.getvalue()
     assert 'show this help message and exit' in mock_stdout.getvalue()
 
-
-@patch('backup_system_preferences.backup')
-@patch('backup_preferences.backup')
-def test_backup(backup_system_preferences_mock, backup_preferences_mock):
+@patch('shared_file_lists.backup')
+@patch('system_preferences.backup')
+@patch('preferences.backup')
+def test_backup(system_preferences_mock, preferences_mock, shared_files_mock):
     macprefs.backup()
-    backup_system_preferences_mock.assert_called_once()
-    backup_preferences_mock.assert_called_once()
+    system_preferences_mock.assert_called_once()
+    preferences_mock.assert_called_once()
+    shared_files_mock.assert_called_once()
 
-
-@patch('restore_system_preferences.restore')
-@patch('restore_preferences.restore')
-def test_restore(restore_system_preferences_mock, restore_preferences_mock):
+@patch('shared_file_lists.restore')
+@patch('system_preferences.restore')
+@patch('preferences.restore')
+def test_restore(system_preferences_mock, preferences_mock, shared_files_mock):
     macprefs.restore()
-    restore_system_preferences_mock.assert_called_once()
-    restore_preferences_mock.assert_called_once()
+    system_preferences_mock.assert_called_once()
+    preferences_mock.assert_called_once()
+    shared_files_mock.assert_called_once()
 
 
-@pytest.mark.integration
-def test_backup_intergration():
+''' @pytest.mark.integration
+def test_intergration():
     try:
         sys.argv = ['macprefs', 'backup']
         # invoke as script
@@ -70,4 +72,4 @@ def test_restore_intergration():
         # invoke as script
         imp.load_source('__main__', 'macprefs')
     except SystemExit as e:
-        assert e.code == 0
+        assert e.code == 0 '''

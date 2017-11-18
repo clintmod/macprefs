@@ -1,5 +1,10 @@
 clean:
 	find . -name '*.pyc' -delete
+	rm -rf '__pycache__'
+	rm -rf .cache
+	rm -rf .tmontmp
+	rm -rf .coverage
+	rm -rf .testmondata
 
 setup:
 	pip install -r requirements.txt

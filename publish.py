@@ -3,7 +3,7 @@ import os
 import json
 import urllib2
 import urllib
-import utils
+from utils import execute_shell
 
 
 def prompt_for_version():
@@ -13,12 +13,10 @@ def prompt_for_version():
 def create_version_tag_and_push(tag):
     print ""
     print 'Tagging git repo with version ' + tag
-    result = utils.execute_shell(['git', 'tag', tag])
-    print 'Git tag result: ' + result
+    execute_shell(['git', 'tag', tag])
     print ''
     print 'Pushing the new tag to github...'
-    result = utils.execute_shell(['git', 'push', '--tags'])
-    print 'Git push result: ' + result
+    execute_shell(['git', 'push', '--tags'])
 
 
 def download_tar(filename):
@@ -31,7 +29,7 @@ def download_tar(filename):
 def calc_sha256(filename):
     print ""
     print 'Calculating the sha256 of the tarball...'
-    result = utils.execute_shell(['shasum', '-a', '256', filename])
+    result = execute_shell(['shasum', '-a', '256', filename])
     print result
     sha256 = result.split('  ')[0]
     print sha256
@@ -48,7 +46,6 @@ def create_brew_formula_file_content(version, sha256):
     filedata = filedata.replace('###sha256###', sha256)
     filedata = filedata.replace('###version###', version)
     filedata = filedata.encode('base64').replace('\n', '')
-    print filedata
     return filedata
 
 
@@ -66,7 +63,7 @@ def upload_new_brew_formula(content, version, sha):
     print 'Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas'
     token = os.environ['MACPREFS_TOKEN']
     auth_header = 'Authorization: token ' + token
-    content_header = 'Content-Type: application/json'
+    json_header = 'Content-Type: application/json'
     data = "{\"path\": \"Formula/macprefs.rb\", \"message\": \"Updating to version "
     data += version + \
         "\", \"committer\": {\"name\": \"Clint M\", \"email\": \"cmodien@gmail.com\"}, "
@@ -82,22 +79,13 @@ def upload_new_brew_formula(content, version, sha):
         '-H',
         auth_header,
         '-H',
-        content_header,
+        json_header,
         '-d',
         '@github_request.json',
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'
     ]
-    print " ".join(commands)
-    result = utils.execute_shell(commands)
+    result = execute_shell(commands)
     print result
-
-
-def upload_new_brew_formula_debug(version):
-    filename = version + '.tar.gz'
-    sha256 = calc_sha256(filename)
-    content = create_brew_formula_file_content(version, sha256)
-    sha = get_sha_of_old_macprefs_formula()
-    upload_new_brew_formula(content, version, sha)
 
 
 def cleanup():
@@ -120,6 +108,7 @@ def main():
     cleanup()
     print ''
     print 'Success'
+    return True
 
 
 if __name__ == '__main__':
