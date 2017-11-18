@@ -98,7 +98,7 @@ sudo macprefs restore
 
 - [x] Backup and restore `/Library/Preferences` (e.g. PowerManagement)
 - [x] Installable via homebrew
-- [ ] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
+- [x] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - [ ] Backup and restore dotfiles (e.g. .bash_profile)
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 
