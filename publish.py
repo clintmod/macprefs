@@ -5,8 +5,10 @@ import urllib2
 import urllib
 import utils
 
+
 def prompt_for_version():
     return raw_input('Enter the version (e.g. v1.0.0): ')
+
 
 def create_version_tag_and_push(tag):
     print ""
@@ -18,10 +20,13 @@ def create_version_tag_and_push(tag):
     result = utils.execute_shell(['git', 'push', '--tags'])
     print 'Git push result: ' + result
 
+
 def download_tar(filename):
     print ""
     print 'Downloading the new version...'
-    urllib.urlretrieve('https://github.com/clintmod/macprefs/archive/' + filename, filename)
+    urllib.urlretrieve(
+        'https://github.com/clintmod/macprefs/archive/' + filename, filename)
+
 
 def calc_sha256(filename):
     print ""
@@ -31,6 +36,7 @@ def calc_sha256(filename):
     sha256 = result.split('  ')[0]
     print sha256
     return sha256
+
 
 def create_brew_formula_file_content(version, sha256):
     print ""
@@ -45,12 +51,15 @@ def create_brew_formula_file_content(version, sha256):
     print filedata
     return filedata
 
+
 def get_sha_of_old_macprefs_formula():
     print ""
     print 'Getting sha of old macprefs formula from github...'
-    result = json.load(urllib2.urlopen('https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
+    result = json.load(urllib2.urlopen(
+        'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
     print 'sha = ' + result['sha']
     return result['sha']
+
 
 def upload_new_brew_formula(content, version, sha):
     print ""
@@ -59,8 +68,10 @@ def upload_new_brew_formula(content, version, sha):
     auth_header = 'Authorization: token ' + token
     content_header = 'Content-Type: application/json'
     data = "{\"path\": \"Formula/macprefs.rb\", \"message\": \"Updating to version "
-    data += version + "\", \"committer\": {\"name\": \"Clint M\", \"email\": \"cmodien@gmail.com\"}, "
-    data += "\"content\": \"" + content + "\", \"branch\": \"master\", \"sha\":\"" + sha + "\"}"
+    data += version + \
+        "\", \"committer\": {\"name\": \"Clint M\", \"email\": \"cmodien@gmail.com\"}, "
+    data += "\"content\": \"" + content + \
+        "\", \"branch\": \"master\", \"sha\":\"" + sha + "\"}"
     with open('github_request.json', 'w') as f:
         f.write(data)
     commands = [
@@ -80,6 +91,7 @@ def upload_new_brew_formula(content, version, sha):
     result = utils.execute_shell(commands)
     print result
 
+
 def upload_new_brew_formula_debug(version):
     filename = version + '.tar.gz'
     sha256 = calc_sha256(filename)
@@ -87,12 +99,14 @@ def upload_new_brew_formula_debug(version):
     sha = get_sha_of_old_macprefs_formula()
     upload_new_brew_formula(content, version, sha)
 
+
 def cleanup():
     print ''
     print 'Cleaning up...'
     for f in glob.glob("*.tar.gz"):
         os.remove(f)
     os.remove('github_request.json')
+
 
 def main():
     version = prompt_for_version()
@@ -106,6 +120,7 @@ def main():
     cleanup()
     print ''
     print 'Success'
+
 
 if __name__ == '__main__':
     main()
