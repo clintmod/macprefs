@@ -1,7 +1,7 @@
 from os import path
 from mock import patch
 import preferences
-from config import get_backup_dir
+from config import get_preferences_backup_dir
 
 
 @patch("preferences.execute_shell")
@@ -34,8 +34,8 @@ def exports_func(command):
     assert command[0] == "defaults"
     assert command[1] == "export"
     assert "NSGlobalDomain" in command[2] or "asdf.com" in command[2]
-    backup_dir = get_backup_dir()
-    global_file = path.join(backup_dir, "/NSGlobalDomain.plist")
+    backup_dir = get_preferences_backup_dir()
+    global_file = path.join(backup_dir, "NSGlobalDomain.plist")
     asdf_file = path.join(backup_dir, "asdf.com.plist")
     assert global_file in command[3] or asdf_file in command[3]
 
@@ -51,7 +51,7 @@ def get_domains():
 
 def imports_func(*args):
     command = args[0]
-    backup_dir = get_backup_dir()
+    backup_dir = get_preferences_backup_dir()
     assert isinstance(command, list)
     assert len(command) == 4
     assert command[0] == "defaults"

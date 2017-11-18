@@ -6,9 +6,10 @@ import config
 def backup():
     print 'Backing up shared file lists...'
     source = path.expanduser(
-        '~/Library/Application Support/com.apple.sharedfilelist')
-    dest = path.join(config.get_backup_dir(), 'SharedFileLists')
-    result = execute_shell(['cp', '-r', source, dest])
+        '~/Library/Application Support/com.apple.sharedfilelist/')
+    dest = config.get_shared_file_lists_backup_dir() + "/"
+    command = ['cp', '-r', source, dest]
+    result = execute_shell(command)
     if result is not None:
         print result
 
@@ -16,8 +17,9 @@ def backup():
 def restore():
     print 'Restoring up shared file lists...'
     dest = path.expanduser(
-        '~/Library/Application Support/com.apple.sharedfilelist')
-    source = path.join(config.get_backup_dir(), 'SharedFileLists')
-    result = execute_shell(['cp', '-r', source, dest])
+        '~/Library/Application Support/com.apple.sharedfilelist/')
+    source = config.get_shared_file_lists_backup_dir() + "/"
+    command = ['cp', '-r', source, dest]
+    result = execute_shell(command)
     if result is not None:
         print result

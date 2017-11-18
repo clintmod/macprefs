@@ -2,13 +2,12 @@ import os
 from os import path
 import sys
 from utils import execute_shell
-from config import get_backup_dir
+from config import get_sys_preferences_backup_dir
 
 
 def backup():
     power_management_domain = get_domain()
-    power_management_path = path.join(
-        get_backup_dir(), "System", "com.apple.PowerManagement.plist")
+    power_management_path = path.join(get_sys_preferences_backup_dir(), "com.apple.PowerManagement.plist")
     # On older versions of Mac OS X PowerManagement lived under SystemConfiguration
     print "Backing up: " + power_management_domain + " to " + power_management_path
     # sudo is not required to back up but it is to restore

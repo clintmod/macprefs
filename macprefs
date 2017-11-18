@@ -21,7 +21,7 @@ def restore():
 
 
 if __name__ == '__main__':
-    backup_dir = config.get_backup_dir()
+    backup_dir = config.get_macprefs_dir()
     parser = argparse.ArgumentParser(
         prog="macprefs", description='Backup and restore mac system preferences.')
     subparsers = parser.add_subparsers(title="commands", metavar='')
