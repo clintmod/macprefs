@@ -5,10 +5,7 @@ import json
 import urllib2
 import urllib
 from utils import execute_shell
-
-def prompt_for_version():
-    return raw_input('Enter the version (e.g. v1.0.0): ')
-
+from version import __version__
 
 def create_version_tag_and_push(tag):
     print ""
@@ -100,7 +97,7 @@ def main():
     print 'sys.argv', sys.argv
     if len(sys.argv) > 1 and sys.argv[1] == "-test":
         return
-    version = prompt_for_version()
+    version = __version__
     create_version_tag_and_push(version)
     filename = version + '.tar.gz'
     download_tar(filename)

@@ -10,11 +10,6 @@ def test_invoke_help():
     imp.load_source('__main__', 'publish.py')
     sys.argv = old_argv
 
-@patch("publish.raw_input")
-def test_prompt_for_version(raw_input_mock):
-    publish.prompt_for_version()
-    raw_input_mock.assert_called_once()
-
 
 @patch("publish.execute_shell")
 def test_create_version_tag_and_push(execute_shell_mock):
@@ -85,10 +80,9 @@ def test_cleanup(remove_mock):
 @patch("publish.calc_sha256")
 @patch("publish.download_tar")
 @patch("publish.create_version_tag_and_push")
-@patch("publish.prompt_for_version")
 # pylint: disable=unused-argument
 # pylint: disable=R0913
-def test_main(prompt_mock, create_version_mock, download_tar,
+def test_main(create_version_mock, download_tar,
               calc_sha256_mock, create_brew_mock, get_sha_mock, upload_mock,
               cleanup_mock):
     assert publish.main()
