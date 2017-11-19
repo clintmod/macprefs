@@ -22,7 +22,10 @@ def backup():
 def restore():
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
-    command = ['cp', '-a', '-v', source + "/*", dest]
+    files = []
+    for f in listdir(source):
+        files.append(path.join(source, f))
+    command = ['cp', '-a', '-v'] + files + [dest]
     print 'Restoring dotfiles to $HOME...'
     output = execute_shell(command)
     if output is not None:
