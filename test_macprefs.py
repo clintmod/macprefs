@@ -1,11 +1,10 @@
 from StringIO import StringIO
 import imp
 import sys
-from mock import patch
-#import pytest
+from mock import patch, MagicMock
 
 
-# load as module should work
+# load as module
 macprefs = imp.load_source('macprefs', 'macprefs')
 
 
@@ -19,6 +18,30 @@ def test_invoke_help(mock_stdout):
         assert_correct_std_out(e, mock_stdout)
 
 
+@patch('macprefs.invoke_func')
+def test_main_invokes_backup(invoke_func_mock):
+    sys.argv = ['macprefs', 'backup']
+    macprefs.main()
+    # pylint: disable=unused-variable
+    args, kwargs = invoke_func_mock.call_args
+    assert args[0].func == macprefs.backup
+
+
+@patch('macprefs.invoke_func')
+def test_main_invokes_restore(invoke_func_mock):
+    sys.argv = ['macprefs', 'restore']
+    macprefs.main()
+    # pylint: disable=unused-variable
+    args, kwargs = invoke_func_mock.call_args
+    assert args[0].func == macprefs.restore
+
+
+def test_invoke_func():
+    mock = MagicMock()
+    macprefs.invoke_func(mock)
+    mock.func.assert_called_once()
+
+
 @patch('sys.stdout', new_callable=StringIO)
 def test_invoke_no_args(mock_stdout):
     try:
@@ -28,22 +51,17 @@ def test_invoke_no_args(mock_stdout):
     except SystemExit as e:
         assert_correct_std_out(e, mock_stdout)
 
-
-def assert_correct_std_out(e, mock_stdout):
-    assert e.code == 0
-    assert 'usage: macprefs' in mock_stdout.getvalue()
-    assert 'Backup mac preferences' in mock_stdout.getvalue()
-    assert 'Restore mac preferences' in mock_stdout.getvalue()
-    assert 'show this help message and exit' in mock_stdout.getvalue()
-
+@patch('dotfiles.backup')
 @patch('shared_file_lists.backup')
 @patch('system_preferences.backup')
 @patch('preferences.backup')
-def test_backup(system_preferences_mock, preferences_mock, shared_files_mock):
+def test_backup(system_preferences_mock, preferences_mock, shared_files_mock, dotfiles_mock):
     macprefs.backup()
     system_preferences_mock.assert_called_once()
     preferences_mock.assert_called_once()
     shared_files_mock.assert_called_once()
+    dotfiles_mock.assert_called_once()
+
 
 @patch('shared_file_lists.restore')
 @patch('system_preferences.restore')
@@ -55,6 +73,15 @@ def test_restore(system_preferences_mock, preferences_mock, shared_files_mock):
     shared_files_mock.assert_called_once()
 
 
+def assert_correct_std_out(e, mock_stdout):
+    assert e.code == 0
+    assert 'usage: macprefs' in mock_stdout.getvalue()
+    assert 'Backup mac preferences' in mock_stdout.getvalue()
+    assert 'Restore mac preferences' in mock_stdout.getvalue()
+    assert 'show this help message and exit' in mock_stdout.getvalue()
+
+
+# pylint: disable=pointless-string-statement
 ''' @pytest.mark.integration
 def test_intergration():
     try:

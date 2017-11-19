@@ -1,5 +1,6 @@
 *.pyc
 .cache
+cov.xml
 .tmontmp
 .testmondata
 macprefsc

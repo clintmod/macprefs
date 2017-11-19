@@ -10,12 +10,12 @@ setup:
 	pip install -r requirements.txt
 
 test:
-	pytest --cov=.
+	pytest --cov=. --cov-report xml:cov.xml  --cov-report term-missing
 
 lint:
 	pylint *.py
 
-publish:
+publish: test
 	python publish.py 
 
 help:

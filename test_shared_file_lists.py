@@ -15,9 +15,9 @@ def test_restore_works(execute_shell_mock):
 
 def execute_shell_func(*args):
     command = args[0]
-    assert command[0] == "cp"
-    assert command[1] == "-r"
+    assert "cp" in command
+    assert "-a" in command
     # ensure trailing slashes in src and dest
-    assert command[2][-1] == "/"
-    assert command[3][-1] == "/"
+    assert command[-1][-1] == "/"
+    assert command[-2][-1] == "/"
     return ""

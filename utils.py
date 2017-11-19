@@ -7,6 +7,8 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
         print "\n--- executing shell command ----\n"
         print "setting working dir to: " + cwd
         print "command: " + str(command)
+    if 'cp' in command and not '-a' in command:
+        raise ValueError('cp requires -a')
     try:
         output = check_output(command, shell=is_shell,
                               cwd=cwd, stderr=STDOUT).strip()

@@ -3,12 +3,14 @@ import argparse
 import sys
 import config
 
+import dotfiles
 import preferences
 import shared_file_lists
 import system_preferences
 
 
 def backup():
+    dotfiles.backup()
     system_preferences.backup()
     preferences.backup()
     shared_file_lists.backup()
@@ -20,20 +22,28 @@ def restore():
     shared_file_lists.restore()
 
 
-if __name__ == '__main__':
+def invoke_func(args):
+    if args.func is not None:
+        args.func()
+
+
+def main():
     backup_dir = config.get_macprefs_dir()
     parser = argparse.ArgumentParser(
         prog="macprefs", description='Backup and restore mac system preferences.')
     subparsers = parser.add_subparsers(title="commands", metavar='')
     backup_parser = subparsers.add_parser(
         'backup', help="Backup mac preferences to " + backup_dir)
-    backup_parser.set_defaults(func=backup)
+    backup_parser.set_defaults(name='backup', func=backup)
     restore_parser = subparsers.add_parser(
         'restore', help="Restore mac preferences from " + backup_dir)
-    restore_parser.set_defaults(func=restore)
+    restore_parser.set_defaults(name='restore', func=restore)
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
     args = parser.parse_args()
-    if args.func is not None:
-        args.func()
+    invoke_func(args)
+
+
+if __name__ == '__main__':
+    main()

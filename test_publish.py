@@ -1,6 +1,14 @@
+import sys
+import imp
 from mock import patch, call
 import publish
 
+def test_invoke_help():
+    old_argv = sys.argv
+    sys.argv = ['publish', '-test']
+    # invoke as script
+    imp.load_source('__main__', 'publish.py')
+    sys.argv = old_argv
 
 @patch("publish.raw_input")
 def test_prompt_for_version(raw_input_mock):

@@ -1,10 +1,10 @@
+import sys
 import glob
 import os
 import json
 import urllib2
 import urllib
 from utils import execute_shell
-
 
 def prompt_for_version():
     return raw_input('Enter the version (e.g. v1.0.0): ')
@@ -54,7 +54,7 @@ def get_sha_of_old_macprefs_formula():
     print 'Getting sha of old macprefs formula from github...'
     result = json.load(urllib2.urlopen(
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
-    print 'sha = ' + result['sha']
+    # print 'sha = ' + result['sha']
     return result['sha']
 
 
@@ -84,8 +84,8 @@ def upload_new_brew_formula(content, version, sha):
         '@github_request.json',
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'
     ]
-    result = execute_shell(commands)
-    print result
+    execute_shell(commands)
+    # print result
 
 
 def cleanup():
@@ -97,6 +97,9 @@ def cleanup():
 
 
 def main():
+    print 'sys.argv', sys.argv
+    if len(sys.argv) > 1 and sys.argv[1] == "-test":
+        return
     version = prompt_for_version()
     create_version_tag_and_push(version)
     filename = version + '.tar.gz'
