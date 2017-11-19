@@ -20,6 +20,7 @@ def restore():
     system_preferences.restore()
     preferences.restore()
     shared_file_lists.restore()
+    dotfiles.restore()
 
 
 def invoke_func(args):
