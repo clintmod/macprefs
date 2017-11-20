@@ -69,7 +69,7 @@ sudo macprefs restore
 
 - Create a new user on your Mac
 - Log in as that user
-- Do the [Getting Started](#getting-started)
+- Do the [Getting Started](#getting-started) steps
 - Update the [Config](#config)
 - You might have to grant the new user access to your backup files
   - `sudo chmod 660 -R [BACKUP_DIR] && sudo chmod -R ug+X ~/Dropbox/MacPrefsBackup`
@@ -80,6 +80,8 @@ sudo macprefs restore
 
 - Backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system preferences)
 - Backs up PowerManagement preferences
+- Backs up shared file lists
+- Backups up dotfiles ($HOME/.* (e.g. .bash_profile))
 
 ## Notes
 
@@ -100,6 +102,8 @@ sudo macprefs restore
 - [x] Installable via homebrew
 - [x] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - [x] Backup and restore dotfiles (e.g. $HOME/.bash_profile)
+- [ ] $HOME/.ssh dir
+- [ ] Startup Item
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 
 ## Problems

@@ -2,6 +2,7 @@ import sys
 import imp
 from mock import patch, call
 import publish
+from version import __version__
 
 def test_invoke_help():
     old_argv = sys.argv
@@ -86,3 +87,31 @@ def test_main(create_version_mock, download_tar,
               calc_sha256_mock, create_brew_mock, get_sha_mock, upload_mock,
               cleanup_mock):
     assert publish.main()
+
+@patch("publish.execute_shell")
+def test_download_macprefs(execute_shell_mock):
+    publish.download_macprefs()
+    execute_shell_mock.assert_called_with(['brew', 'upgrade', 'macprefs'], False, '.', True)
+
+@patch("publish.execute_shell")
+def test_verify_macprefs(execute_shell_mock):
+    execute_shell_mock.return_value = __version__
+    publish.verify_macprefs()
+    execute_shell_mock.assert_called_with(['macprefs', '--version'])
+
+@patch("publish.execute_shell")
+def test_verify_macprefs_throws_assertion_error(execute_shell_mock):
+    execute_shell_mock.return_value = 'asdf'
+    try:
+        publish.verify_macprefs()
+    except AssertionError as e:
+        execute_shell_mock.assert_called_with(['macprefs', '--version'])
+        assert __version__ in e.message
+
+
+@patch("publish.glob.glob")
+@patch("publish.os.remove")
+def test_cleanup_removes_tar_gz_files(remove_mock, glob_mock):
+    glob_mock.return_value = "a"
+    publish.cleanup()
+    assert call('a') in remove_mock.mock_calls

@@ -9,7 +9,7 @@ from version import __version__
 
 def create_version_tag_and_push(tag):
     print ""
-    print 'Tagging git repo with version ' + tag
+    print 'Tagging git repository with version ' + tag
     execute_shell(['git', 'tag', tag])
     print ''
     print 'Pushing the new tag to github...'
@@ -92,6 +92,18 @@ def cleanup():
         os.remove(f)
     os.remove('github_request.json')
 
+def download_macprefs():
+    print ''
+    print 'Updating and verifying macprefs new macprefs to verify it...'
+    result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
+    if result is not None:
+        print result
+
+def verify_macprefs():
+    result = execute_shell(['macprefs', '--version'])
+    message = '\nworkspace:\t' + __version__ + '\ninstalled:\t' + result
+    assert __version__ in result, message
+    print 'version check verified' + message
 
 def main():
     print 'sys.argv', sys.argv

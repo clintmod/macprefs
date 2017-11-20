@@ -33,7 +33,7 @@ def main():
     backup_dir = config.get_macprefs_dir()
     parser = argparse.ArgumentParser(
         prog="macprefs", description='Backup and restore mac system preferences.')
-    parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
+    parser.add_argument('--version', action='version', version=__version__)
     subparsers = parser.add_subparsers(title="commands", metavar='')
     backup_parser = subparsers.add_parser(
         'backup', help="Backup mac preferences to " + backup_dir)

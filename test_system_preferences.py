@@ -60,3 +60,9 @@ def get_uid_func():
 def assert_correct_std_out(e, mock_stdout):
     assert e.code == 1
     assert 'sudo is required' in mock_stdout.getvalue()
+
+@patch("system_preferences.path.exists")
+def test_get_pm_path(exists_mock):
+    exists_mock.return_value = False
+    result = system_preferences.get_pm_file_path()
+    assert "SystemConfiguration" in result

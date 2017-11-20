@@ -34,3 +34,9 @@ def check_output_error_func(command, shell, cwd, stderr):
 @patch('utils.check_output')
 def test_execute_shell_handles_verbose(check_output_mock):
     utils.execute_shell(['asdf'], False, ".", False, True)
+
+def test_execute_shell_raises_error_if_cp_is_called_with_dash_a():
+    try:
+        utils.execute_shell(['cp'])
+    except ValueError as e:
+        assert 'cp requires -a' in e.message

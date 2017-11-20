@@ -1,4 +1,3 @@
-from os import path
 import dotfiles
 from mock import patch
 from config import get_dotfiles_backup_dir, get_home_dir
