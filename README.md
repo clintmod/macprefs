@@ -25,16 +25,8 @@ Install [Homebrew](https://brew.sh/)
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Tap into my [homebrew formulas](https://github.com/clintmod/homebrew-formulas):
-
 ``` bash
-brew tap clintmod/formulas
-```
-
-Install via homebrew
-
-``` bash
-brew install macprefs
+brew install clintmod/formulas/macprefs
 ```
 
 ## Config
@@ -68,11 +60,13 @@ sudo macprefs restore
 ## Testing the Restore
 
 - Create a new user on your Mac
+- Make sure he's in the admin group
 - Log in as that user
 - Do the [Getting Started](#getting-started) steps
 - Update the [Config](#config)
-- You might have to grant the new user access to your backup files
-  - `sudo chmod 660 -R [BACKUP_DIR] && sudo chmod -R ug+X ~/Dropbox/MacPrefsBackup`
+- You might have to grant admin read access to your backup files
+    - `chmod +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/`
+    - `chmod -R +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/MacPrefsBackup`
 - Run the [Restore](#restoring)
 - Log out and log back in
 
