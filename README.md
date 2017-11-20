@@ -82,6 +82,7 @@ sudo macprefs restore
 - Backs up PowerManagement preferences
 - Backs up shared file lists
 - Backups up dotfiles ($HOME/.* (e.g. .bash_profile))
+- Backups up the $HOME/.ssh dir
 
 ## Notes
 
@@ -102,7 +103,7 @@ sudo macprefs restore
 - [x] Installable via homebrew
 - [x] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - [x] Backup and restore dotfiles (e.g. $HOME/.bash_profile)
-- [ ] $HOME/.ssh dir
+- [x] $HOME/.ssh dir
 - [ ] Startup Item
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 
