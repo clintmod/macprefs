@@ -94,7 +94,7 @@ def cleanup():
 
 def download_macprefs():
     print ''
-    print 'Updating and verifying macprefs new macprefs to verify it...'
+    print 'Running brew update macprefs to verify version...'
     result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
     if result is not None:
         print result
