@@ -3,6 +3,8 @@ from config import get_dotfiles_backup_dir, get_dotfile_excludes, get_home_dir
 from utils import execute_shell
 
 def backup():
+    print ''
+    print 'Backuping up dotfiles...'
     #build file list
     home_dir = get_home_dir()
     files = []
@@ -14,19 +16,19 @@ def backup():
     files.sort()
     dest = get_dotfiles_backup_dir()
     command = ['cp', '-a', '-v'] + files + [dest]
-    print 'Backuping up dotfiles (e.g. ~/.bash_profile)...'
     output = execute_shell(command)
     if output is not None:
         print output
 
 def restore():
+    print ''
+    print 'Restoring dotfiles...'
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
     files = []
     for f in listdir(source):
         files.append(path.join(source, f))
     command = ['cp', '-a', '-v'] + files + [dest]
-    print 'Restoring dotfiles to $HOME...'
     output = execute_shell(command)
     if output is not None:
         print output

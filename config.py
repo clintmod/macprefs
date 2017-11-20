@@ -54,3 +54,14 @@ def get_home_dir():
 def ensure_exists(input_dir):
     if not path.exists(input_dir):
         makedirs(input_dir)
+
+
+def get_ssh_backup_dir():
+    return_val = path.join(get_macprefs_dir(), 'ssh/')
+    ensure_exists(return_val)
+    return return_val
+
+
+def get_ssh_user_dir():
+    return_val = path.join(get_home_dir(), '.ssh/')
+    return return_val

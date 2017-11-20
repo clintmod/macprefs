@@ -4,6 +4,8 @@ from utils import execute_shell
 
 
 def backup():
+    print ''
+    print 'Backuping preferences (.plist)...'
     domains = execute_shell(["defaults", "domains"])
     domains = domains.split("\n")[0].split(", ")
     domains = ["NSGlobalDomain"] + domains
@@ -14,6 +16,8 @@ def backup():
 
 
 def restore():
+    print ''
+    print 'Restoring preferences (.plist)...'
     backup_dir = get_preferences_backup_dir()
     domains = get_domains()
     for domain in domains:

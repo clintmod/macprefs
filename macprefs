@@ -8,6 +8,7 @@ import dotfiles
 import preferences
 import shared_file_lists
 import system_preferences
+import ssh_files
 
 
 def backup():
@@ -15,6 +16,7 @@ def backup():
     system_preferences.backup()
     preferences.backup()
     shared_file_lists.backup()
+    ssh_files.backup()
 
 
 def restore():
@@ -22,6 +24,7 @@ def restore():
     preferences.restore()
     shared_file_lists.restore()
     dotfiles.restore()
+    ssh_files.restore()
 
 
 def invoke_func(args):

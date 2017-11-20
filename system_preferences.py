@@ -6,6 +6,8 @@ from config import get_sys_preferences_backup_dir
 
 
 def backup():
+    print ''
+    print 'Backing up system preferences...'
     power_management_domain = get_domain()
     power_management_path = path.join(get_sys_preferences_backup_dir(), "com.apple.PowerManagement.plist")
     # On older versions of Mac OS X PowerManagement lived under SystemConfiguration
@@ -30,6 +32,8 @@ def get_pm_file_path():
 
 
 def restore():
+    print ''
+    print 'Restoring system preferences...'
     power_management_domain = get_domain()
     power_management_restore_path = get_pm_file_path()
     if os.getuid() != 0:
