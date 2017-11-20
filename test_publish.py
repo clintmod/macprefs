@@ -51,9 +51,13 @@ def test_create_brew_formula_file_content():
     assert 'sha256 "asdf1234"' in filedata
 
 
-def test_get_sha_of_old_macprefs_formula():
+@patch("publish.urllib2.urlopen")
+@patch("publish.json.load")
+def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
+    json_load_mock.return_value = {"sha":"asdf"}
     sha = publish.get_sha_of_old_macprefs_formula()
-    assert sha is not None
+    urlopen_mock.assert_called_with('https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb')
+    assert sha == "asdf"
 
 
 @patch("publish.open")
