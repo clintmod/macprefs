@@ -73,7 +73,8 @@ def test_cleanup(remove_mock):
     publish.cleanup()
     assert remove_mock.call_count > 0
 
-
+@patch("publish.verify_macprefs")
+@patch("publish.download_macprefs")
 @patch("publish.cleanup")
 @patch("publish.upload_new_brew_formula")
 @patch("publish.get_sha_of_old_macprefs_formula")
@@ -85,7 +86,7 @@ def test_cleanup(remove_mock):
 # pylint: disable=R0913
 def test_main(create_version_mock, download_tar,
               calc_sha256_mock, create_brew_mock, get_sha_mock, upload_mock,
-              cleanup_mock):
+              cleanup_mock, download_mock, verify_mock):
     assert publish.main()
 
 @patch("publish.execute_shell")

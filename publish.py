@@ -118,6 +118,8 @@ def main():
     sha = get_sha_of_old_macprefs_formula()
     upload_new_brew_formula(content, version, sha)
     cleanup()
+    download_macprefs()
+    verify_macprefs()
     print ''
     print 'Success'
     return True
