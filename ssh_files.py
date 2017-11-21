@@ -1,5 +1,5 @@
 from config import get_ssh_backup_dir, get_ssh_user_dir
-from utils import execute_shell
+from utils import copy_files
 
 
 def backup():
@@ -7,10 +7,7 @@ def backup():
     print 'Backuping up .ssh dir...'
     source = get_ssh_user_dir()
     dest = get_ssh_backup_dir()
-    command = ['cp', '-a', '-v', source, dest]
-    result = execute_shell(command)
-    if result is not None:
-        print result
+    copy_files(source, dest)
 
 
 def restore():
@@ -18,7 +15,4 @@ def restore():
     print 'Restoring .ssh dir...'
     source = get_ssh_backup_dir()
     dest = get_ssh_user_dir()
-    command = ['cp', '-a', '-v', source, dest]
-    result = execute_shell(command)
-    if result is not None:
-        print result
+    copy_files(source, dest)

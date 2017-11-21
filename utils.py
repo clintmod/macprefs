@@ -22,3 +22,12 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
         if verbose:
             print "---- shell execution finished ---\n"
     return output
+
+
+def copy_files(src, dest, extra_args=None):
+    if extra_args is None:
+        extra_args = []
+    command = ['cp', '-a', '-v'] + extra_args + [src, dest]
+    result = execute_shell(command)
+    if result is not None:
+        print result

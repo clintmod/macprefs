@@ -1,23 +1,20 @@
 from mock import patch
 import shared_file_lists
+import config
 
 
-@patch("shared_file_lists.execute_shell")
-def test_backup_works(execute_shell_mock):
-    execute_shell_mock.side_effect = execute_shell_func
+@patch("shared_file_lists.copy_files")
+def test_backup_works(copy_files_mock):
     shared_file_lists.backup()
+    copy_files_mock.assert_called_with(
+        config.get_shared_file_lists_dir(),
+        config.get_shared_file_lists_backup_dir()
+    )
 
-@patch("shared_file_lists.execute_shell")
-def test_restore_works(execute_shell_mock):
-    execute_shell_mock.side_effect = execute_shell_func
+@patch("shared_file_lists.copy_files")
+def test_restore_works(copy_files_mock):
     shared_file_lists.restore()
-
-
-def execute_shell_func(*args):
-    command = args[0]
-    assert "cp" in command
-    assert "-a" in command
-    # ensure trailing slashes in src and dest
-    assert command[-1][-1] == "/"
-    assert command[-2][-1] == "/"
-    return ""
+    copy_files_mock.assert_called_with(
+        config.get_shared_file_lists_backup_dir(),
+        config.get_shared_file_lists_dir()
+    )
