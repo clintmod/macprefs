@@ -14,6 +14,7 @@ def test_invoke_help(mock_stdout):
         sys.argv = ['macprefs', '-h']
         # invoke as script
         imp.load_source('__main__', 'macprefs')
+        assert False, 'expected SystemExit'
     except SystemExit as e:
         assert_correct_std_out(e, mock_stdout)
 
@@ -48,6 +49,7 @@ def test_invoke_no_args(mock_stdout):
         sys.argv = ['macprefs']
         # invoke as script
         imp.load_source('__main__', 'macprefs')
+        assert False, 'expected SystemExit'
     except SystemExit as e:
         assert_correct_std_out(e, mock_stdout)
 
@@ -97,6 +99,7 @@ def test_intergration():
         sys.argv = ['macprefs', 'backup']
         # invoke as script
         imp.load_source('__main__', 'macprefs')
+        assert False, 'expected SystemExit'
     except SystemExit as e:
         assert e.code == 0
 
@@ -107,5 +110,6 @@ def test_restore_intergration():
         sys.argv = ['macprefs', 'restore']
         # invoke as script
         imp.load_source('__main__', 'macprefs')
+        assert False, 'expected SystemExit'
     except SystemExit as e:
         assert e.code == 0 '''

@@ -109,6 +109,7 @@ def test_verify_macprefs_throws_assertion_error(execute_shell_mock):
     execute_shell_mock.return_value = 'asdf'
     try:
         publish.verify_macprefs()
+        assert False, 'expected AssertionError'
     except AssertionError as e:
         execute_shell_mock.assert_called_with(['macprefs', '--version'])
         assert __version__ in e.message
