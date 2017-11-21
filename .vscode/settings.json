@@ -1,7 +1,10 @@
 {
 "cSpell.words": [
+    "clintmod",
+    "getuid",
     "macprefs",
     "plist",
+    "prefs",
     "pylint",
     "pytest",
     "symlinks"
