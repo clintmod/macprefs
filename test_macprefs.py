@@ -54,34 +54,38 @@ def test_invoke_no_args(mock_stdout):
         assert_correct_std_out(e, mock_stdout)
 
 
+@patch('startup_items.backup')
 @patch('ssh_files.backup')
 @patch('dotfiles.backup')
 @patch('shared_file_lists.backup')
 @patch('system_preferences.backup')
 @patch('preferences.backup')
 def test_backup(system_preferences_mock, preferences_mock,
-                shared_files_mock, dotfiles_mock, ssh_mock):
+                shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
     macprefs.backup()
     system_preferences_mock.assert_called_once()
     preferences_mock.assert_called_once()
     shared_files_mock.assert_called_once()
     dotfiles_mock.assert_called_once()
     ssh_mock.assert_called_once()
+    startup_mock.assert_called_once()
 
 
+@patch('startup_items.restore')
 @patch('ssh_files.restore')
 @patch('dotfiles.restore')
 @patch('shared_file_lists.restore')
 @patch('system_preferences.restore')
 @patch('preferences.restore')
 def test_restore(system_preferences_mock, preferences_mock,
-                 shared_files_mock, dotfiles_mock, ssh_mock):
+                 shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
     macprefs.restore()
     system_preferences_mock.assert_called_once()
     preferences_mock.assert_called_once()
     shared_files_mock.assert_called_once()
     dotfiles_mock.assert_called_once()
     ssh_mock.assert_called_once()
+    startup_mock.assert_called_once()
 
 
 def assert_correct_std_out(e, mock_stdout):

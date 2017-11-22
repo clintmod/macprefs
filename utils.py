@@ -41,8 +41,8 @@ def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_
         print result
 
 
-def ensure_owned_by_user(path, user):
-    change_mode(path, '600')
+def ensure_owned_by_user(path, user, mode='600'):
+    change_mode(path, mode)
     change_owner(path, user)
     ensure_subdirs_listable(path)
 

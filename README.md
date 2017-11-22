@@ -77,6 +77,7 @@ macprefs restore
 - Backs up shared file lists (Finder Favorites in Sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - Backups up dotfiles ($HOME/.* (e.g. .bash_profile))
 - Backups up the $HOME/.ssh dir
+- Backups launch items `/Library/LaunchAgents`, `/Library/LaunchDaemons`, `~/Library/LaunchAgents`
 
 ## Notes
 
@@ -98,7 +99,7 @@ macprefs restore
 - [x] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - [x] Backup and restore dotfiles (e.g. $HOME/.bash_profile)
 - [x] $HOME/.ssh dir
-- [ ] Startup Items
+- [x] Startup Items `/Library/LaunchAgents`, `/Library/LaunchDaemons`, `~/Library/LaunchAgents`
 - [ ] Verify backup and restore
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 

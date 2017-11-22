@@ -1,5 +1,5 @@
 from os import environ, makedirs, path, getenv
-from getpass import getuser
+import getpass
 
 
 def get_macprefs_dir():
@@ -67,5 +67,39 @@ def get_ssh_user_dir():
     return_val = path.join(get_home_dir(), '.ssh/')
     return return_val
 
+
 def get_user():
-    return getuser()
+    return getpass.getuser()
+
+
+def get_user_launch_agents_dir():
+    return path.join(get_home_dir(), 'Library/LaunchAgents/')
+
+
+def get_user_launch_agents_backup_dir():
+    return_val = path.join(
+        get_macprefs_dir(), 'StartupItems/LaunchAgents/User/')
+    ensure_exists(return_val)
+    return return_val
+
+
+def get_system_launch_agents_dir():
+    return '/Library/LaunchAgents/'
+
+
+def get_system_launch_agents_backup_dir():
+    return_val = path.join(
+        get_macprefs_dir(), 'StartupItems/LaunchAgents/AllUsers/')
+    ensure_exists(return_val)
+    return return_val
+
+
+def get_system_launch_daemons_dir():
+    return '/Library/LaunchDaemons/'
+
+
+def get_system_launch_daemons_backup_dir():
+    return_val = path.join(
+        get_macprefs_dir(), 'StartupItems/LaunchDaemons/AllUsers/')
+    ensure_exists(return_val)
+    return return_val
