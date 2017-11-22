@@ -1,4 +1,5 @@
-from os import environ, makedirs, path
+from os import environ, makedirs, path, getenv
+from getpass import getuser
 
 
 def get_macprefs_dir():
@@ -34,7 +35,7 @@ def get_shared_file_lists_backup_dir():
 
 
 def get_shared_file_lists_dir():
-    return path.expanduser('~/Library/Application Support/com.apple.sharedfilelist/')
+    return path.join(get_home_dir(), '/Library/Application Support/com.apple.sharedfilelist/')
 
 
 def get_dotfiles_backup_dir():
@@ -48,7 +49,7 @@ def get_dotfile_excludes():
 
 
 def get_home_dir():
-    return path.expanduser('~') + '/'
+    return getenv("HOME") + '/'
 
 
 def ensure_exists(input_dir):
@@ -65,3 +66,6 @@ def get_ssh_backup_dir():
 def get_ssh_user_dir():
     return_val = path.join(get_home_dir(), '.ssh/')
     return return_val
+
+def get_user():
+    return getuser()

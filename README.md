@@ -49,10 +49,10 @@ macprefs backup
 
 ## Restoring
 
-You can restore your preferences by running (restoring requires sudo to restore PowerManagment settings):
+You can restore your preferences by running:
 
 ``` bash
-sudo macprefs restore
+macprefs restore
 ```
 
 - **You might have to log out and then log back in for the settings to take effect.**

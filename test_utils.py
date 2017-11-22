@@ -1,6 +1,7 @@
 from subprocess import CalledProcessError
 import utils
 from mock import patch
+import config
 
 
 @patch('utils.check_output')
@@ -36,17 +37,9 @@ def test_execute_shell_handles_verbose(check_output_mock):
     utils.execute_shell(['asdf'], False, ".", False, True)
 
 
-def test_execute_shell_raises_error_if_cp_is_called_with_dash_a():
-    try:
-        utils.execute_shell(['cp'])
-        assert False, 'expected ValueError'
-    except ValueError as e:
-        assert 'cp requires -a' in e.message
-
-
 @patch('utils.execute_shell')
 def test_copy_files_works_with_extra_args(execute_shell_mock):
-    utils.copy_files('src', 'dest', ['wtf'])
+    utils.copy_files('src', 'dest', as_archive=True, extra_args=['wtf'])
     execute_shell_mock.assert_called_with(
         ['cp', '-a', '-v', 'wtf', 'src', 'dest']
     )
@@ -54,7 +47,52 @@ def test_copy_files_works_with_extra_args(execute_shell_mock):
 
 @patch('utils.execute_shell')
 def test_copy_files(execute_shell_mock):
-    utils.copy_files('src', 'dest')
+    utils.copy_files('src', 'dest', as_archive=True, as_dir=True)
     execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v', 'src', 'dest']
+        ['cp', '-a', '-v', '-r', 'src', 'dest']
     )
+
+
+@patch('utils.execute_shell')
+def test_copy_files_works_with_sudo(execute_shell_mock):
+    utils.copy_files('src', 'dest', as_archive=True, with_sudo=True)
+    execute_shell_mock.assert_called_with(
+        ['sudo', 'cp', '-a', '-v', 'src', 'dest']
+    )
+
+@patch('utils.execute_shell')
+def test_change_owner(execute_shell_mock):
+    ssh_dir = config.get_ssh_user_dir()
+    utils.change_owner(ssh_dir, 'clint', True)
+    execute_shell_mock.assert_called_with(
+        ['sudo', 'chown', '-R', 'clint', ssh_dir]
+    )
+
+
+@patch('utils.execute_shell')
+def test_change_mode(execute_shell_mock):
+    ssh_dir = config.get_ssh_user_dir()
+    utils.change_mode(ssh_dir, 600, True)
+    execute_shell_mock.assert_called_with(
+        ['sudo', 'chmod', '-R', '600', ssh_dir]
+    )
+
+
+@patch('utils.execute_shell')
+def test_ensure_subdirs_listable(execute_shell_mock):
+    ssh_dir = config.get_ssh_user_dir()
+    utils.ensure_subdirs_listable(config.get_ssh_user_dir())
+    execute_shell_mock.assert_called_with(
+        ['sudo', 'chmod', '-R', 'a+X', ssh_dir]
+    )
+
+
+@patch("utils.ensure_subdirs_listable")
+@patch("utils.change_owner")
+@patch("utils.change_mode")
+def test_ensure_owned_by_user(chmod_mock, chown_mock, listable_mock):
+    dest = config.get_ssh_user_dir
+    utils.ensure_owned_by_user(dest, 'clint')
+    chmod_mock.assert_called_with(dest, '600')
+    chown_mock.assert_called_with(dest, 'clint')
+    listable_mock.assert_called_with(dest)

@@ -1,3 +1,4 @@
+from StringIO import StringIO
 from os import path
 from mock import patch
 import preferences
@@ -39,6 +40,7 @@ def exports_func(command):
     asdf_file = path.join(backup_dir, "asdf.com.plist")
     assert global_file in command[3] or asdf_file in command[3]
 
+
 @patch("preferences.get_domains")
 @patch("preferences.execute_shell")
 def test_restore(execute_shell_mock, get_domains_mock):
@@ -46,8 +48,10 @@ def test_restore(execute_shell_mock, get_domains_mock):
     get_domains_mock.side_effect = get_domains
     preferences.restore()
 
+
 def get_domains():
     return ['asdf.com']
+
 
 def imports_func(*args):
     command = args[0]
@@ -59,12 +63,27 @@ def imports_func(*args):
     assert command[2] == "asdf.com"
     assert command[3] == path.join(backup_dir, "asdf.com.plist")
 
+
 @patch("os.listdir")
 def test_get_domains(listdir_mock):
     listdir_mock.side_effect = listdir_func
     result = preferences.get_domains()
     assert result[0] == "asdf.com"
 
-#pylint: disable=unused-argument
+# pylint: disable=unused-argument
+
+
 def listdir_func(directory):
     return ['asdf.com.plist']
+
+
+@patch("os.getuid")
+@patch('sys.stdout', new_callable=StringIO)
+def test_restore_exits_if_not_sudo(mock_stdout, getuid_mock):
+    try:
+        getuid_mock.return_value = 0
+        preferences.restore()
+        assert False, 'expected SystemExit'
+    except SystemExit as e:
+        assert e.code == 1
+        assert 'sudo is forbidden'

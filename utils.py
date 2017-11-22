@@ -7,8 +7,6 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
         print "\n--- executing shell command ----\n"
         print "setting working dir to: " + cwd
         print "command: " + str(command)
-    if 'cp' in command and not '-a' in command:
-        raise ValueError('cp requires -a')
     try:
         output = check_output(command, shell=is_shell,
                               cwd=cwd, stderr=STDOUT).strip()
@@ -24,10 +22,53 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
     return output
 
 
-def copy_files(src, dest, extra_args=None):
+# pylint: disable-msg=too-many-arguments
+def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None, as_dir=False):
+    main_args = []
     if extra_args is None:
         extra_args = []
-    command = ['cp', '-a', '-v'] + extra_args + [src, dest]
+    if as_archive:
+        main_args += ['-a']
+    if verbose:
+        main_args += ['-v']
+    if as_dir:
+        main_args += ['-r']
+    command = ['cp'] + main_args + extra_args + [src, dest]
+    if with_sudo:
+        command = ['sudo'] + command
+    result = execute_shell(command)
+    if result is not None:
+        print result
+
+
+def ensure_owned_by_user(path, user):
+    change_mode(path, '600')
+    change_owner(path, user)
+    ensure_subdirs_listable(path)
+
+
+def change_owner(path, owner, should_recurse=True):
+    command = ['sudo', 'chown']
+    if should_recurse:
+        command += ['-R']
+    command += [owner, path]
+    result = execute_shell(command)
+    if result is not None:
+        print result
+
+
+def change_mode(path, mode, should_recurse=True):
+    command = ['sudo', 'chmod']
+    if should_recurse:
+        command += ['-R']
+    command += [str(mode), path]
+    result = execute_shell(command)
+    if result is not None:
+        print result
+
+
+def ensure_subdirs_listable(path):
+    command = ['sudo', 'chmod', '-R', 'a+X', path]
     result = execute_shell(command)
     if result is not None:
         print result

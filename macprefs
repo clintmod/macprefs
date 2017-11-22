@@ -12,19 +12,21 @@ import ssh_files
 
 
 def backup():
-    dotfiles.backup()
     system_preferences.backup()
-    preferences.backup()
+    dotfiles.backup()
     shared_file_lists.backup()
     ssh_files.backup()
+    preferences.backup()
+    print '\nBackup Complete.'
 
 
 def restore():
     system_preferences.restore()
-    preferences.restore()
-    shared_file_lists.restore()
     dotfiles.restore()
+    shared_file_lists.restore()
     ssh_files.restore()
+    preferences.restore()
+    print '\nRestore Complete.'
 
 
 def invoke_func(args):

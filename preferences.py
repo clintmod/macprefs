@@ -1,4 +1,5 @@
 import os
+import sys
 from config import get_preferences_path, get_preferences_backup_dir
 from utils import execute_shell
 
@@ -18,6 +19,9 @@ def backup():
 def restore():
     print ''
     print 'Restoring preferences (.plist)...'
+    if os.getuid() == 0:
+        print "Error: don't run this tool with sudo directly: (e.g. sudo macprefs restore)"
+        sys.exit(1)
     backup_dir = get_preferences_backup_dir()
     domains = get_domains()
     for domain in domains:

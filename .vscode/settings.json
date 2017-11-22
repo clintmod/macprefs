@@ -1,12 +1,16 @@
 {
 "cSpell.words": [
+    "chmod",
+    "chown",
     "clintmod",
+    "getenv",
     "getuid",
     "macprefs",
     "plist",
     "prefs",
     "pylint",
     "pytest",
+    "recurse",
     "symlinks"
 ],
   "python.unitTest.pyTestArgs": [
