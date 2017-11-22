@@ -9,6 +9,16 @@ def test_backup(copy_files_mock):
     copy_files_mock.assert_called_with(
         get_ssh_user_dir(), get_ssh_backup_dir()
     )
+
+
+@patch("ssh_files.exists")
+@patch("ssh_files.copy_files")
+def test_backup_works_when_no_ssh_exists(copy_files_mock, exists_mock):
+    exists_mock.return_value = False
+    ssh_files.backup()
+    copy_files_mock.assert_not_called()
+
+
 @patch("ssh_files.ensure_owned_by_user")
 @patch("ssh_files.copy_files")
 def test_restore(copy_files_mock, ensure_mock):
@@ -19,3 +29,11 @@ def test_restore(copy_files_mock, ensure_mock):
         as_archive=False, as_dir=True, with_sudo=True
     )
     ensure_mock.assert_called_with(dest, get_user())
+
+
+@patch("ssh_files.exists")
+@patch("ssh_files.copy_files")
+def test_restore_works_when_no_ssh_exists(copy_files_mock, exists_mock):
+    exists_mock.return_value = False
+    ssh_files.restore()
+    copy_files_mock.assert_not_called()
