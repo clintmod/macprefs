@@ -7,6 +7,13 @@ import urllib
 from utils import execute_shell
 from version import __version__
 
+def check_for_uncommitted_files():
+    print ""
+    print "Checking for uncommitted files..."
+    result = execute_shell(['git', 'status'])
+    if not 'nothing to commit' in result:
+        raise ValueError('There are uncommitted files in the workspace. Commit or stash them before trying to publish.')
+
 def create_version_tag_and_push(tag):
     print ""
     print 'Tagging git repository with version ' + tag
@@ -108,8 +115,9 @@ def verify_macprefs():
 def main():
     print 'sys.argv', sys.argv
     if len(sys.argv) > 1 and sys.argv[1] == "-test":
-        return
+        return False
     version = __version__
+    check_for_uncommitted_files()
     create_version_tag_and_push(version)
     filename = version + '.tar.gz'
     download_tar(filename)

@@ -11,6 +11,19 @@ def test_invoke_help():
     imp.load_source('__main__', 'publish.py')
     sys.argv = old_argv
 
+@patch("publish.execute_shell")
+def test_check_for_uncommitted_files(execute_shell_mock):
+    execute_shell_mock.return_value = 'nothing to commit'
+    publish.check_for_uncommitted_files()
+
+@patch("publish.execute_shell")
+def test_check_for_uncommitted_files_raises_error(execute_shell_mock):
+    execute_shell_mock.return_value = 'asdf'
+    try:
+        publish.check_for_uncommitted_files()
+        assert False, 'expecting ValueError'
+    except ValueError as e:
+        pass
 
 @patch("publish.execute_shell")
 def test_create_version_tag_and_push(execute_shell_mock):
@@ -77,6 +90,7 @@ def test_cleanup(remove_mock):
     publish.cleanup()
     assert remove_mock.call_count > 0
 
+
 @patch("publish.verify_macprefs")
 @patch("publish.download_macprefs")
 @patch("publish.cleanup")
@@ -86,12 +100,25 @@ def test_cleanup(remove_mock):
 @patch("publish.calc_sha256")
 @patch("publish.download_tar")
 @patch("publish.create_version_tag_and_push")
-# pylint: disable=unused-argument
+@patch("publish.check_for_uncommitted_files")
 # pylint: disable=R0913
-def test_main(create_version_mock, download_tar,
-              calc_sha256_mock, create_brew_mock, get_sha_mock, upload_mock,
-              cleanup_mock, download_mock, verify_mock):
+def test_main(check_commits_mock, create_version_mock,
+              download_tar, calc_sha256_mock,
+              create_brew_mock, get_sha_mock,
+              upload_mock, cleanup_mock, 
+              download_mock, verify_mock):
     assert publish.main()
+    check_commits_mock.assert_called_once()
+    create_version_mock.assert_called_once()
+    download_tar.assert_called_once()
+    calc_sha256_mock.assert_called_once()
+    create_brew_mock.assert_called_once()
+    get_sha_mock.assert_called_once()
+    upload_mock.assert_called_once()
+    cleanup_mock.assert_called_once()
+    download_mock.assert_called_once()
+    verify_mock.assert_called_once()
+
 
 @patch("publish.execute_shell")
 def test_download_macprefs(execute_shell_mock):
