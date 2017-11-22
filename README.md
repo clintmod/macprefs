@@ -65,8 +65,8 @@ macprefs restore
 - Do the [Getting Started](#getting-started) steps
 - Update the [Config](#config)
 - You might have to grant admin read access to your backup files
-    - `chmod +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/`
-    - `chmod -R +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/MacPrefsBackup`
+  - `chmod +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/`
+  - `chmod -R +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/MacPrefsBackup`
 - Run the [Restore](#restoring)
 - Log out and log back in
 
@@ -74,7 +74,7 @@ macprefs restore
 
 - Backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system preferences)
 - Backs up PowerManagement preferences
-- Backs up shared file lists
+- Backs up shared file lists (Finder Favorites in Sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - Backups up dotfiles ($HOME/.* (e.g. .bash_profile))
 - Backups up the $HOME/.ssh dir
 
@@ -98,7 +98,8 @@ macprefs restore
 - [x] Backup and restore shared file lists (Finder sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - [x] Backup and restore dotfiles (e.g. $HOME/.bash_profile)
 - [x] $HOME/.ssh dir
-- [ ] Startup Item
+- [ ] Startup Items
+- [ ] Verify backup and restore
 - [ ] Write a util to generate a `bash` script of `defaults write` commands by diffing a new user account against the owned account
 
 ## Problems
@@ -109,7 +110,7 @@ macprefs restore
 
 ### Getting started
 
-- Fork and clone then cd to this git repo
+- Fork and clone then cd to this git repository
 - Run `pip install -r requirements.txt`
 
 ### Running the tests

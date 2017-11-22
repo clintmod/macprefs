@@ -24,7 +24,7 @@ def restore():
         power_management_restore_path
     result = execute_shell(
         ["sudo", "bash", "-c", "defaults import " +
-         power_management_domain + " " + get_pm_backup_path()]
+         power_management_domain + " " + power_management_restore_path]
     )
     if result is not None:
         print result

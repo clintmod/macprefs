@@ -1,16 +1,27 @@
 {
 "cSpell.words": [
+    "addressbook",
+    "bynens",
     "chmod",
     "chown",
     "clintmod",
+    "dotfiles",
     "getenv",
     "getuid",
+    "installable",
+    "mackup",
+    "macos",
     "macprefs",
     "plist",
     "prefs",
     "pylint",
     "pytest",
+    "readattr",
+    "readextattr",
+    "readsecurity",
     "recurse",
+    "sharedfilelist",
+    "subdirs",
     "symlinks"
 ],
   "python.unitTest.pyTestArgs": [
