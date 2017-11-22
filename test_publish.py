@@ -30,7 +30,7 @@ def test_create_version_tag_and_push(execute_shell_mock):
     publish.create_version_tag_and_push('asdf')
     calls = [
         call(['git', 'tag', 'asdf']),
-        call(['git', 'push', '--tags'])
+        call(['git', 'push', 'origin', 'HEAD', '--tags'])
     ]
     execute_shell_mock.assert_has_calls(calls)
 

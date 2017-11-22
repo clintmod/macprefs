@@ -20,7 +20,7 @@ def create_version_tag_and_push(tag):
     execute_shell(['git', 'tag', tag])
     print ''
     print 'Pushing the new tag to github...'
-    execute_shell(['git', 'push', '--tags'])
+    execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
 
 
 def download_tar(filename):
