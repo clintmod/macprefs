@@ -65,10 +65,21 @@ macprefs restore
 - Do the [Getting Started](#getting-started) steps
 - Update the [Config](#config)
 - You might have to grant admin read access to your backup files
-  - `chmod +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/`
-  - `chmod -R +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/MacPrefsBackup`
+
+```bash
+# grant admin group read on ~/Dropbox
+chmod +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/`
+# grant admin group read on ~/Dropbox/MacPrefsBackup recursively (-R)
+chmod -R +a "group:admin allow list,search,readattr,readextattr,readsecurity" ~/Dropbox/MacPrefsBackup`
+# grant dir list (execute) permission on all subfolders of ~/Dropbox recursively (-R)
+chmod -R +X ~/Dropbox`
+# remove execute permission for other on all files and folders because
+# +X adds other permissions
+chmod -R o=-x ~/Dropbox`
+```
+
 - Run the [Restore](#restoring)
-- Log out and log back in
+- Log out and log back in to confirm the restore succeeded
 
 ## What it Does
 
