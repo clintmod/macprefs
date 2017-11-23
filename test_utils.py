@@ -90,9 +90,37 @@ def test_ensure_subdirs_listable(execute_shell_mock):
 @patch("utils.ensure_subdirs_listable")
 @patch("utils.change_owner")
 @patch("utils.change_mode")
-def test_ensure_owned_by_user(chmod_mock, chown_mock, listable_mock):
+def test_ensure_dir_owned_by_user(chmod_mock, chown_mock, listable_mock):
     dest = config.get_ssh_user_dir
-    utils.ensure_owned_by_user(dest, 'clint')
+    utils.ensure_dir_owned_by_user(dest, 'clint')
     chmod_mock.assert_called_with(dest, '600')
     chown_mock.assert_called_with(dest, 'clint')
     listable_mock.assert_called_with(dest)
+
+@patch("utils.change_owner_for_files")
+@patch("utils.change_mode_for_files")
+def test_ensure_files_owned_by_user(mode_mock, owner_mock):
+    files = ['.no_file']
+    mode = '622'
+    user = config.get_user()
+    utils.ensure_files_owned_by_user(user, files, mode)
+    mode_mock.assert_called_with(files, mode)
+    owner_mock.assert_called_with(files, user)
+
+@patch("utils.execute_shell")
+def test_change_owner_for_files(shell_mock):
+    files = ['.no_file']
+    user = config.get_user()
+    utils.change_owner_for_files(files, user)
+    shell_mock.assert_called_with(
+        ['sudo', 'chown', user] + files
+    )
+
+@patch("utils.execute_shell")
+def test_change_mode_for_files(shell_mock):
+    files = ['.no_file']
+    mode = '622'
+    utils.change_mode_for_files(files, mode)
+    shell_mock.assert_called_with(
+        ['sudo', 'chmod', mode] + files
+    )

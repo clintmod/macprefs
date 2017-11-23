@@ -41,10 +41,29 @@ def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_
         print result
 
 
-def ensure_owned_by_user(path, user, mode='600'):
+def ensure_dir_owned_by_user(path, user, mode='600'):
     change_mode(path, mode)
     change_owner(path, user)
     ensure_subdirs_listable(path)
+
+
+def ensure_files_owned_by_user(user, files, mode='600'):
+    change_mode_for_files(files, mode)
+    change_owner_for_files(files, user)
+
+
+def change_owner_for_files(files, user):
+    command = ['sudo', 'chown', user] + files
+    result = execute_shell(command)
+    if result is not None:
+        print result
+
+
+def change_mode_for_files(files, mode):
+    command = ['sudo', 'chmod', str(mode)] + files
+    result = execute_shell(command)
+    if result is not None:
+        print 'change_mode_for_files: ' + result
 
 
 def change_owner(path, owner, should_recurse=True):
