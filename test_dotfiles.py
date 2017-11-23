@@ -33,9 +33,9 @@ def test_restore(execute_shell_mock, dotfiles_mock, ensure_mock):
 @patch("dotfiles.path.isfile")
 @patch("dotfiles.listdir")
 def test_get_dot_files(listdir_mock, isfile_mock):
-    files = ['.testfile', '.no_file', '.good_file']
+    files = ['testfile', '.no_file', '.good_file']
     listdir_mock.return_value = files
     isfile_mock.return_value = True
     home_dir = get_home_dir()
-    result = dotfiles.get_dot_files(home_dir, ['.no_file'])
-    assert result[0] == path.join(home_dir, files[0])
+    result = dotfiles.get_dot_files(home_dir)
+    assert result[0] == path.join(home_dir, files[1])
