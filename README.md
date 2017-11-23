@@ -64,7 +64,7 @@ macprefs restore
 - Log in as that user
 - Do the [Getting Started](#getting-started) steps
 - Update the [Config](#config)
-- You might have to grant admin read access to your backup files
+- Grant the admin group read access to your backup files (substitue ~/Dropbox with your backup dir if different)
 
 ```bash
 # grant admin group read on ~/Dropbox
