@@ -12,7 +12,7 @@ def test_backup_works(copy_files_mock):
     )
 
 
-@patch("shared_file_lists.ensure_owned_by_user")
+@patch("shared_file_lists.ensure_dir_owned_by_user")
 @patch("shared_file_lists.copy_files")
 def test_restore_works(copy_files_mock, owned_mock):
     shared_file_lists.restore()

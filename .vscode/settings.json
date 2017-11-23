@@ -9,6 +9,7 @@
     "getenv",
     "getuid",
     "installable",
+    "isfile",
     "mackup",
     "macos",
     "macprefs",
