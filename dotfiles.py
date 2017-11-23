@@ -5,7 +5,8 @@ from utils import execute_shell, ensure_files_owned_by_user
 
 def backup():
     print ''
-    print 'Backuping up dotfiles...'
+    print 'Backing up dotfiles...'
+    print ''
     # build file list
     home_dir = get_home_dir()
     excludes = get_dotfile_excludes()
@@ -20,6 +21,7 @@ def backup():
 def restore():
     print ''
     print 'Restoring dotfiles...'
+    print ''
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
     files = get_dot_files(source)
@@ -27,6 +29,7 @@ def restore():
     output = execute_shell(command)
     if output is not None:
         print output
+    files = get_dot_files(dest)
     ensure_files_owned_by_user(get_user(), files)
 
 

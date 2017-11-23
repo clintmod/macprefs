@@ -25,8 +25,7 @@ def test_restore(copy_files_mock, ensure_mock):
     dest = get_ssh_user_dir()
     ssh_files.restore()
     copy_files_mock.assert_called_with(
-        get_ssh_backup_dir(), dest,
-        as_archive=False, as_dir=True, with_sudo=True
+        get_ssh_backup_dir(), dest, with_sudo=True
     )
     ensure_mock.assert_called_with(dest, get_user())
 

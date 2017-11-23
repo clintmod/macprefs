@@ -23,7 +23,7 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False, verbo
 
 
 # pylint: disable-msg=too-many-arguments
-def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None, as_dir=False):
+def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None):
     main_args = []
     if extra_args is None:
         extra_args = []
@@ -31,8 +31,6 @@ def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_
         main_args += ['-a']
     if verbose:
         main_args += ['-v']
-    if as_dir:
-        main_args += ['-r']
     command = ['cp'] + main_args + extra_args + [src, dest]
     if with_sudo:
         command = ['sudo'] + command

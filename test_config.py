@@ -26,9 +26,9 @@ def test_get_macprefs_dir_creates_if_not_exists(exists_mock, makedirs_mock):
     makedirs_mock.assert_called_once()
 
 
-def test_get_preferences_path():
-    assert config.get_preferences_path("asdf.com") == path.join(
-        config.get_preferences_backup_dir(), "asdf.com.plist")
+def test_get_preferences_dir():
+    assert config.get_preferences_dir() == path.join(
+        config.get_home_dir(), "Library/Preferences/")
 
 
 def test_get_ssh_backup_dir():

@@ -1,89 +1,26 @@
-from StringIO import StringIO
-from os import path
+from config import get_preferences_dir, get_preferences_backup_dir, get_user
 from mock import patch
 import preferences
-from config import get_preferences_backup_dir
 
 
-@patch("preferences.execute_shell")
-def test_backup(execute_shell_mock):
-    execute_shell_mock.side_effect = execute_shell_func
+@patch("preferences.copy_files")
+def test_backup(copy_files_mock):
+    source = get_preferences_dir()
+    dest = get_preferences_backup_dir()
     preferences.backup()
+    copy_files_mock.assert_called_with(
+        source, dest
+    )
 
-
-def execute_shell_func(*args):
-    command = args[0]
-    if command[1] == "domains":
-        return domains_func(command)
-    if command[1] == "export":
-        return exports_func(command)
-    if command[1] == "import":
-        return imports_func(command)
-
-
-def domains_func(command):
-    assert isinstance(command, list)
-    assert len(command) == 2
-    assert command[0] == "defaults"
-    assert command[1] == "domains"
-    return ", ".join(["asdf.com"])
-
-
-def exports_func(command):
-    assert isinstance(command, list)
-    assert len(command) == 4
-    assert command[0] == "defaults"
-    assert command[1] == "export"
-    assert "NSGlobalDomain" in command[2] or "asdf.com" in command[2]
-    backup_dir = get_preferences_backup_dir()
-    global_file = path.join(backup_dir, "NSGlobalDomain.plist")
-    asdf_file = path.join(backup_dir, "asdf.com.plist")
-    assert global_file in command[3] or asdf_file in command[3]
-
-
-@patch("preferences.get_domains")
-@patch("preferences.execute_shell")
-def test_restore(execute_shell_mock, get_domains_mock):
-    execute_shell_mock.side_effect = execute_shell_func
-    get_domains_mock.side_effect = get_domains
+@patch("preferences.ensure_dir_owned_by_user")
+@patch("preferences.copy_files")
+def test_restore(copy_files_mock, ensure_mock):
+    source = get_preferences_backup_dir()
+    dest = get_preferences_dir()
     preferences.restore()
-
-
-def get_domains():
-    return ['asdf.com']
-
-
-def imports_func(*args):
-    command = args[0]
-    backup_dir = get_preferences_backup_dir()
-    assert isinstance(command, list)
-    assert len(command) == 4
-    assert command[0] == "defaults"
-    assert command[1] == "import"
-    assert command[2] == "asdf.com"
-    assert command[3] == path.join(backup_dir, "asdf.com.plist")
-
-
-@patch("os.listdir")
-def test_get_domains(listdir_mock):
-    listdir_mock.side_effect = listdir_func
-    result = preferences.get_domains()
-    assert result[0] == "asdf.com"
-
-# pylint: disable=unused-argument
-
-
-def listdir_func(directory):
-    return ['asdf.com.plist']
-
-
-@patch("os.getuid")
-@patch('sys.stdout', new_callable=StringIO)
-def test_restore_exits_if_not_sudo(mock_stdout, getuid_mock):
-    try:
-        getuid_mock.return_value = 0
-        preferences.restore()
-        assert False, 'expected SystemExit'
-    except SystemExit as e:
-        assert e.code == 1
-        assert 'sudo is forbidden'
+    copy_files_mock.assert_called_with(
+        source, dest, with_sudo=True
+    )
+    ensure_mock.assert_called_with(
+        dest, get_user()
+    )

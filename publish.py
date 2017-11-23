@@ -20,6 +20,7 @@ def create_version_tag_and_push(tag):
     execute_shell(['git', 'tag', tag])
     print ''
     print 'Pushing the new tag to github...'
+    print ''
     execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
 
 
@@ -95,6 +96,7 @@ def upload_new_brew_formula(content, version, sha):
 def cleanup():
     print ''
     print 'Cleaning up...'
+    print ''
     for f in glob.glob("*.tar.gz"):
         os.remove(f)
     os.remove('github_request.json')
@@ -102,6 +104,7 @@ def cleanup():
 def download_macprefs():
     print ''
     print 'Running brew update macprefs to verify version...'
+    print ''
     result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
     if result is not None:
         print result
@@ -113,7 +116,6 @@ def verify_macprefs():
     print 'version check verified' + message
 
 def main():
-    print 'sys.argv', sys.argv
     if len(sys.argv) > 1 and sys.argv[1] == "-test":
         return False
     version = __version__
@@ -130,6 +132,7 @@ def main():
     verify_macprefs()
     print ''
     print 'Success'
+    print ''
     return True
 
 

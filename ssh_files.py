@@ -9,7 +9,8 @@ def backup():
     if not exists(source):
         print 'No .ssh dir found... skipping.'
         return
-    print 'Backuping up .ssh dir...'
+    print 'Backing up .ssh dir...'
+    print ''
     dest = get_ssh_backup_dir()
     ensure_exists(dest)
     copy_files(source, dest)
@@ -22,9 +23,9 @@ def restore():
         print 'No .ssh dir found... skipping.'
         return
     print 'Restoring .ssh dir...'
+    print ''
     dest = get_ssh_user_dir()
     copy_files(
-        source, dest, as_archive=False,
-        as_dir=True, with_sudo=True
+        source, dest, with_sudo=True
     )
     ensure_dir_owned_by_user(dest, get_user())

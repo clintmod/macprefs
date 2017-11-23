@@ -47,9 +47,9 @@ def test_copy_files_works_with_extra_args(execute_shell_mock):
 
 @patch('utils.execute_shell')
 def test_copy_files(execute_shell_mock):
-    utils.copy_files('src', 'dest', as_archive=True, as_dir=True)
+    utils.copy_files('src', 'dest')
     execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v', '-r', 'src', 'dest']
+        ['cp', '-a', '-v', 'src', 'dest']
     )
 
 

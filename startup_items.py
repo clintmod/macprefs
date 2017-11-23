@@ -5,6 +5,7 @@ import config
 def backup():
     print ''
     print 'Backing up start up items...'
+    print ''
     backup_user_launch_agents()
     backup_system_launch_agents()
     backup_system_daemons_agents()
@@ -13,6 +14,7 @@ def backup():
 def restore():
     print ''
     print 'Restoring start up items...'
+    print ''
     restore_user_launch_agents()
     restore_system_launch_agents()
     restore_system_daemons_agents()

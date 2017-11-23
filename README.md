@@ -10,7 +10,7 @@ I wanted a solution to back up my settings for my Mac and one didn't really exis
 
 At first I was trying to create a bash script to restore all my settings. I was trying to adapt the ~~`.osx`~~ `.macos` file from [Mathias Bynens](https://github.com/mathiasbynens/dotfiles/blob/master/.macos). I noticed that some of the cases for the domains were wrong/outdated and weren't actually changing the preferences they were intended to change.
 
-Running `defaults write` with the wrong case also caused problems while trying create this tool because of [Case Conflicts](#case-conflicts).
+Running `defaults write` with the wrong case for the keys or domains also causes problems as the defaults command may fail silently.
 
 ## Requirements
 
@@ -83,7 +83,7 @@ chmod -R o=-x ~/Dropbox`
 
 ## What it Does
 
-- Backs up all the preferences for the domains listed by running `defaults domains` + `NSGlobalDomain` (NSGlobalDomain contains some system preferences)
+- Backs up all the preferences in `~/Library/Preferences` and `/Library/Preferences`
 - Backs up PowerManagement preferences
 - Backs up shared file lists (Finder Favorites in Sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - Backups up dotfiles ($HOME/.* (e.g. .bash_profile))
@@ -93,15 +93,12 @@ chmod -R o=-x ~/Dropbox`
 ## Notes
 
 - ### Mackup
-  - These scripts depend on `defaults domains` and is not compatible with the way [Mackup](https://github.com/lra/mackup) uses symlinks. On the bright side though, if you use this as well as Mackup to backup and restore, everything should just work. Just remember that any preferences Mackup backs up won't be backed up by this tool.
-
-- ### Case Conflicts
-  - It's possible that software companies (Apple included) change the case of the bundle id for an Application. This can cause multiple plist files to appear in `~/Library/Preferences/`. This causes a problem with the this tool. As `defaults domains` will report the domains with a (Case Conflict). To resolve this you can open the problem file located in ~/Library/Preferences/ with XCode to determine which is the correct one with the correct case and delete the other one. The incorrect one will most likely have one or two values in it as compared to many values in the other.
+  - These scripts makes copies of plist files in `~/Library/Preferences` and is not compatible with the way [Mackup](https://github.com/lra/mackup) creates symlinks for some of these files. On the bright side though, if you use this as well as Mackup to backup and restore, everything should just work. Just remember that any preferences Mackup backs up won't be backed up by this tool.
 
 - ### Using `defaults write`
-  - When you run `defaults write` and use the wrong/old case for the domain you can also get [Case Conflicts](#case-conflicts). (e.g. com.apple.addressbook instead of com.apple.AddressBook).
-  - The `defaults` app has a tendency to fail silently for some things. You might be trying to use old `defaults write` commands where key is the wrong name.
-  - Because of the above 2 reasons maintaining a bunch of `defaults write` commands in bash script can be difficult
+  - When you run `defaults write` and use the wrong/old case for the domain you can create a new plist file with the wrong case (e.g. com.apple.addressbook instead of com.apple.AddressBook).
+  - The `defaults` app has a tendency to fail silently for some things. You might be trying to use old `defaults write` commands where the key is the wrong name.
+  - Because of the above 2 reasons maintaining a bunch of `defaults write` commands in bash script can be error prone and the defaults command will fail silently.
 
 ## Todo
 

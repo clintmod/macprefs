@@ -18,7 +18,6 @@ def test_restore_works(copy_files_mock, owned_mock):
     shared_file_lists.restore()
     copy_files_mock.assert_called_with(
         config.get_shared_file_lists_backup_dir(),
-        config.get_shared_file_lists_dir(),
-        as_archive=False, as_dir=True, with_sudo=True
+        config.get_shared_file_lists_dir(), with_sudo=True
     )
     owned_mock.assert_called_with(config.get_shared_file_lists_dir(), config.get_user())

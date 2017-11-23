@@ -12,14 +12,15 @@ def get_macprefs_dir():
     return backup_dir
 
 
+def get_preferences_dir():
+    return_val = path.join(get_home_dir(), 'Library/Preferences/')
+    return return_val
+
+
 def get_preferences_backup_dir():
     return_val = path.join(get_macprefs_dir(), "preferences/")
     ensure_exists(return_val)
     return return_val
-
-
-def get_preferences_path(domain):
-    return path.join(get_preferences_backup_dir(), domain + ".plist")
 
 
 def get_sys_preferences_backup_dir():
