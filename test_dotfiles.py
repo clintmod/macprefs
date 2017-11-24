@@ -15,7 +15,7 @@ def test_backup(execute_shell_mock, dotfiles_mock):
     )
 
 
-@patch("dotfiles.ensure_files_owned_by_user")
+@patch('dotfiles.ensure_files_owned_by_user')
 @patch('dotfiles.get_dot_files')
 @patch('dotfiles.execute_shell')
 def test_restore(execute_shell_mock, dotfiles_mock, ensure_mock):
@@ -30,8 +30,8 @@ def test_restore(execute_shell_mock, dotfiles_mock, ensure_mock):
         ['sudo', 'cp', '-a', '-v'] + files + [dest]
     )
 
-@patch("dotfiles.path.isfile")
-@patch("dotfiles.listdir")
+@patch('dotfiles.path.isfile')
+@patch('dotfiles.listdir')
 def test_get_dot_files(listdir_mock, isfile_mock):
     files = ['testfile', '.no_file', '.good_file']
     listdir_mock.return_value = files

@@ -3,11 +3,11 @@ import getpass
 
 
 def get_macprefs_dir():
-    backup_dir = ""
+    backup_dir = ''
     if 'MACPREFS_BACKUP_DIR' in environ:
         backup_dir = environ['MACPREFS_BACKUP_DIR']
     else:
-        backup_dir = path.join(get_home_dir(), "Dropbox", "MacPrefsBackup")
+        backup_dir = path.join(get_home_dir(), 'Dropbox', 'MacPrefsBackup')
     ensure_exists(backup_dir)
     return backup_dir
 
@@ -18,19 +18,19 @@ def get_preferences_dir():
 
 
 def get_preferences_backup_dir():
-    return_val = path.join(get_macprefs_dir(), "preferences/")
+    return_val = path.join(get_macprefs_dir(), 'preferences/')
     ensure_exists(return_val)
     return return_val
 
 
 def get_sys_preferences_backup_dir():
-    return_val = path.join(get_macprefs_dir(), "system_preferences/")
+    return_val = path.join(get_macprefs_dir(), 'system_preferences/')
     ensure_exists(return_val)
     return return_val
 
 
 def get_shared_file_lists_backup_dir():
-    return_val = path.join(get_macprefs_dir(), "shared_file_lists/")
+    return_val = path.join(get_macprefs_dir(), 'shared_file_lists/')
     ensure_exists(return_val)
     return return_val
 
@@ -40,7 +40,7 @@ def get_shared_file_lists_dir():
 
 
 def get_dotfiles_backup_dir():
-    return_val = path.join(get_macprefs_dir(), "dotfiles/")
+    return_val = path.join(get_macprefs_dir(), 'dotfiles/')
     ensure_exists(return_val)
     return return_val
 
@@ -50,7 +50,7 @@ def get_dotfile_excludes():
 
 
 def get_home_dir():
-    return getenv("HOME") + '/'
+    return getenv('HOME') + '/'
 
 
 def ensure_exists(input_dir):

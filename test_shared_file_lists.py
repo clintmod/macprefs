@@ -3,7 +3,7 @@ import shared_file_lists
 import config
 
 
-@patch("shared_file_lists.copy_files")
+@patch('shared_file_lists.copy_files')
 def test_backup_works(copy_files_mock):
     shared_file_lists.backup()
     copy_files_mock.assert_called_with(
@@ -12,8 +12,8 @@ def test_backup_works(copy_files_mock):
     )
 
 
-@patch("shared_file_lists.ensure_dir_owned_by_user")
-@patch("shared_file_lists.copy_files")
+@patch('shared_file_lists.ensure_dir_owned_by_user')
+@patch('shared_file_lists.copy_files')
 def test_restore_works(copy_files_mock, owned_mock):
     shared_file_lists.restore()
     copy_files_mock.assert_called_with(

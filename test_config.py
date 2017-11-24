@@ -9,17 +9,17 @@ def test_get_macprefs_dir():
     assert backup_dir is not None
 
 
-@patch("config.makedirs")
+@patch('config.makedirs')
 # pylint: disable=unused-argument
 def test_get_macprefs_dir_works_with_environ(makedirs_mock):
-    os.environ['MACPREFS_BACKUP_DIR'] = "asdf"
+    os.environ['MACPREFS_BACKUP_DIR'] = 'asdf'
     backup_dir = config.get_macprefs_dir()
     del os.environ['MACPREFS_BACKUP_DIR']
-    assert "asdf" in backup_dir
+    assert 'asdf' in backup_dir
 
 
-@patch("config.path.exists")
-@patch("config.makedirs")
+@patch('config.path.exists')
+@patch('config.makedirs')
 def test_get_macprefs_dir_creates_if_not_exists(exists_mock, makedirs_mock):
     exists_mock.return_value = False
     config.get_macprefs_dir()
@@ -28,12 +28,12 @@ def test_get_macprefs_dir_creates_if_not_exists(exists_mock, makedirs_mock):
 
 def test_get_preferences_dir():
     assert config.get_preferences_dir() == path.join(
-        config.get_home_dir(), "Library/Preferences/")
+        config.get_home_dir(), 'Library/Preferences/')
 
 
 def test_get_ssh_backup_dir():
     assert config.get_ssh_backup_dir() == path.join(
-        config.get_macprefs_dir(), "ssh/")
+        config.get_macprefs_dir(), 'ssh/')
 
 
 def test_get_ssh_user_dir():

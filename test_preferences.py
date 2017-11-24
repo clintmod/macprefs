@@ -3,7 +3,7 @@ from mock import patch
 import preferences
 
 
-@patch("preferences.copy_files")
+@patch('preferences.copy_files')
 def test_backup(copy_files_mock):
     source = get_preferences_dir()
     dest = get_preferences_backup_dir()
@@ -12,8 +12,8 @@ def test_backup(copy_files_mock):
         source, dest
     )
 
-@patch("preferences.ensure_dir_owned_by_user")
-@patch("preferences.copy_files")
+@patch('preferences.ensure_dir_owned_by_user')
+@patch('preferences.copy_files')
 def test_restore(copy_files_mock, ensure_mock):
     source = get_preferences_backup_dir()
     dest = get_preferences_dir()

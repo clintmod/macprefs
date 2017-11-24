@@ -15,7 +15,7 @@ def check_output_func(command, shell, cwd, stderr):
     length = len(command)
     assert length > 0
     assert command[0] == 'asdf'
-    return ""
+    return ''
 
 
 @patch('utils.check_output')
@@ -34,7 +34,7 @@ def check_output_error_func(command, shell, cwd, stderr):
 
 @patch('utils.check_output')
 def test_execute_shell_handles_verbose(check_output_mock):
-    utils.execute_shell(['asdf'], False, ".", False, True)
+    utils.execute_shell(['asdf'], False, '.', False, True)
 
 
 @patch('utils.execute_shell')
@@ -87,9 +87,9 @@ def test_ensure_subdirs_listable(execute_shell_mock):
     )
 
 
-@patch("utils.ensure_subdirs_listable")
-@patch("utils.change_owner")
-@patch("utils.change_mode")
+@patch('utils.ensure_subdirs_listable')
+@patch('utils.change_owner')
+@patch('utils.change_mode')
 def test_ensure_dir_owned_by_user(chmod_mock, chown_mock, listable_mock):
     dest = config.get_ssh_user_dir
     utils.ensure_dir_owned_by_user(dest, 'clint')
@@ -97,8 +97,8 @@ def test_ensure_dir_owned_by_user(chmod_mock, chown_mock, listable_mock):
     chown_mock.assert_called_with(dest, 'clint')
     listable_mock.assert_called_with(dest)
 
-@patch("utils.change_owner_for_files")
-@patch("utils.change_mode_for_files")
+@patch('utils.change_owner_for_files')
+@patch('utils.change_mode_for_files')
 def test_ensure_files_owned_by_user(mode_mock, owner_mock):
     files = ['.no_file']
     mode = '622'
@@ -107,7 +107,7 @@ def test_ensure_files_owned_by_user(mode_mock, owner_mock):
     mode_mock.assert_called_with(files, mode)
     owner_mock.assert_called_with(files, user)
 
-@patch("utils.execute_shell")
+@patch('utils.execute_shell')
 def test_change_owner_for_files(shell_mock):
     files = ['.no_file']
     user = config.get_user()
@@ -116,7 +116,7 @@ def test_change_owner_for_files(shell_mock):
         ['sudo', 'chown', user] + files
     )
 
-@patch("utils.execute_shell")
+@patch('utils.execute_shell')
 def test_change_mode_for_files(shell_mock):
     files = ['.no_file']
     mode = '622'

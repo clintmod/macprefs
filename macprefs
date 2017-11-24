@@ -39,14 +39,14 @@ def invoke_func(args):
 def main():
     backup_dir = config.get_macprefs_dir()
     parser = argparse.ArgumentParser(
-        prog="macprefs", description='Backup and restore mac system preferences.')
+        prog='macprefs', description='Backup and restore mac system preferences.')
     parser.add_argument('--version', action='version', version=__version__)
-    subparsers = parser.add_subparsers(title="commands", metavar='')
+    subparsers = parser.add_subparsers(title='commands', metavar='')
     backup_parser = subparsers.add_parser(
-        'backup', help="Backup mac preferences to " + backup_dir)
+        'backup', help='Backup mac preferences to ' + backup_dir)
     backup_parser.set_defaults(name='backup', func=backup)
     restore_parser = subparsers.add_parser(
-        'restore', help="Restore mac preferences from " + backup_dir)
+        'restore', help='Restore mac preferences from ' + backup_dir)
     restore_parser.set_defaults(name='restore', func=restore)
     if len(sys.argv) == 1:
         parser.print_help()

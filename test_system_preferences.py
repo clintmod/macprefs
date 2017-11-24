@@ -4,7 +4,7 @@ from config import get_sys_preferences_backup_dir
 from mock import patch
 
 
-@patch("system_preferences.copy_files")
+@patch('system_preferences.copy_files')
 def test_backup(copy_files_mock):
     source = system_preferences.get_pm_path()
     dest = system_preferences.get_pm_backup_path()
@@ -13,8 +13,8 @@ def test_backup(copy_files_mock):
         source, dest
     )
 
-@patch("system_preferences.ensure_files_owned_by_user")
-@patch("system_preferences.copy_files")
+@patch('system_preferences.ensure_files_owned_by_user')
+@patch('system_preferences.copy_files')
 def test_restore(copy_files_mock, ensure_mock):
     source = system_preferences.get_pm_backup_path()
     dest = system_preferences.get_pm_path()
@@ -30,8 +30,8 @@ def test_get_pm_backup_path():
     result = system_preferences.get_pm_backup_path()
     assert result == path.join(get_sys_preferences_backup_dir(), system_preferences.pm_file_name)
 
-@patch("system_preferences.path.exists")
+@patch('system_preferences.path.exists')
 def test_get_pm_path(exists_mock):
     exists_mock.return_value = False
     result = system_preferences.get_pm_path()
-    assert "SystemConfiguration" in result
+    assert 'SystemConfiguration' in result
