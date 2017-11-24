@@ -4,9 +4,7 @@ from utils import copy_files, ensure_files_owned_by_user
 
 
 def backup():
-    print ''
     print 'Backing up dotfiles...'
-    print ''
     # build file list
     home_dir = get_home_dir()
     excludes = get_dotfile_excludes()
@@ -16,9 +14,7 @@ def backup():
 
 
 def restore():
-    print ''
     print 'Restoring dotfiles...'
-    print ''
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
     files = get_dot_files(source)

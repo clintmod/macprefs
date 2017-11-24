@@ -4,35 +4,35 @@ import os
 import json
 import urllib2
 import urllib
-from utils import execute_shell
+from utils import execute_shell, is_none_or_empty_string
 from version import __version__
 
 def check_for_uncommitted_files():
-    print ''
+    
     print 'Checking for uncommitted files...'
     result = execute_shell(['git', 'status'])
     if not 'nothing to commit' in result:
         raise ValueError('There are uncommitted files in the workspace. Commit or stash them before trying to publish.')
 
 def create_version_tag_and_push(tag):
-    print ''
+    
     print 'Tagging git repository with version ' + tag
     execute_shell(['git', 'tag', tag])
-    print ''
+    
     print 'Pushing the new tag to github...'
-    print ''
+    
     execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
 
 
 def download_tar(filename):
-    print ''
+    
     print 'Downloading the new version...'
     urllib.urlretrieve(
         'https://github.com/clintmod/macprefs/archive/' + filename, filename)
 
 
 def calc_sha256(filename):
-    print ''
+    
     print 'Calculating the sha256 of the tarball...'
     result = execute_shell(['shasum', '-a', '256', filename])
     print result
@@ -42,7 +42,7 @@ def calc_sha256(filename):
 
 
 def create_brew_formula_file_content(version, sha256):
-    print ''
+    
     print 'Generating base64 encoded brew formula...'
     # Read in the file
     with open('macprefs.template.rb', 'r') as f:
@@ -55,7 +55,7 @@ def create_brew_formula_file_content(version, sha256):
 
 
 def get_sha_of_old_macprefs_formula():
-    print ''
+    
     print 'Getting sha of old macprefs formula from github...'
     result = json.load(urllib2.urlopen(
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
@@ -64,7 +64,7 @@ def get_sha_of_old_macprefs_formula():
 
 
 def upload_new_brew_formula(content, version, sha):
-    print ''
+    
     print 'Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas'
     token = os.environ['MACPREFS_TOKEN']
     auth_header = 'Authorization: token ' + token
@@ -94,19 +94,19 @@ def upload_new_brew_formula(content, version, sha):
 
 
 def cleanup():
-    print ''
+    
     print 'Cleaning up...'
-    print ''
+    
     for f in glob.glob('*.tar.gz'):
         os.remove(f)
     os.remove('github_request.json')
 
 def download_macprefs():
-    print ''
+    
     print 'Running brew update macprefs to verify version...'
-    print ''
+    
     result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
 
 def verify_macprefs():
@@ -130,9 +130,9 @@ def main():
     cleanup()
     download_macprefs()
     verify_macprefs()
-    print ''
+    
     print 'Success'
-    print ''
+    
     return True
 
 

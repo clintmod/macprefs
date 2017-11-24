@@ -4,9 +4,7 @@ from config import get_sys_preferences_backup_dir
 
 
 def backup():
-    print ''
     print 'Backing up: system preferences... '
-    print ''
     source = get_pm_path()
     dest = get_pm_backup_path()
     copy_dir(source, dest)
@@ -15,9 +13,7 @@ def backup():
 def restore():
     source = get_pm_backup_path()
     dest = get_pm_path()
-    print ''
     print 'Restoring system preferences...'
-    print ''
     copy_dir(source, dest, with_sudo=True)
     ensure_files_owned_by_user('root:wheel', [dest], '644')
     

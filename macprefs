@@ -18,7 +18,7 @@ def backup():
     shared_file_lists.backup()
     ssh_files.backup()
     preferences.backup()
-    print '\nBackup Complete.'
+    print 'Backup Complete.'
 
 
 def restore():
@@ -28,7 +28,7 @@ def restore():
     shared_file_lists.restore()
     ssh_files.restore()
     preferences.restore()
-    print '\nRestore Complete.'
+    print 'Restore Complete.'
 
 
 def invoke_func(args):

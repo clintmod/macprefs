@@ -4,26 +4,22 @@ from utils import copy_dir, ensure_dir_owned_by_user
 
 
 def backup():
-    print ''
     source = get_ssh_user_dir()
     if not exists(source):
         print 'No .ssh dir found... skipping.'
         return
     print 'Backing up .ssh dir...'
-    print ''
     dest = get_ssh_backup_dir()
     ensure_exists(dest)
     copy_dir(source, dest)
 
 
 def restore():
-    print ''
     source = get_ssh_backup_dir()
     if not exists(source):
         print 'No .ssh dir found... skipping.'
         return
     print 'Restoring .ssh dir...'
-    print ''
     dest = get_ssh_user_dir()
     copy_dir(
         source, dest, with_sudo=True

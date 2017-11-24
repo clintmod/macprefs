@@ -21,6 +21,7 @@
     "readextattr",
     "readsecurity",
     "recurse",
+    "rsync",
     "sharedfilelist",
     "subdirs",
     "symlinks"

@@ -39,9 +39,9 @@ def test_execute_shell_handles_verbose(check_output_mock):
 
 @patch('utils.execute_shell')
 def test_copy_dir_works_with_extra_args(execute_shell_mock):
-    utils.copy_dir('src', 'dest', as_archive=True, extra_args=['wtf'])
+    utils.copy_dir('src', 'dest')
     execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v', 'wtf', 'src', 'dest']
+        ['rsync', '-a', 'src', 'dest']
     )
 
 
@@ -49,15 +49,15 @@ def test_copy_dir_works_with_extra_args(execute_shell_mock):
 def test_copy_dir(execute_shell_mock):
     utils.copy_dir('src', 'dest')
     execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v', 'src', 'dest']
+        ['rsync', '-a', 'src', 'dest']
     )
 
 
 @patch('utils.execute_shell')
 def test_copy_dir_works_with_sudo(execute_shell_mock):
-    utils.copy_dir('src', 'dest', as_archive=True, with_sudo=True)
+    utils.copy_dir('src', 'dest', with_sudo=True)
     execute_shell_mock.assert_called_with(
-        ['sudo', 'cp', '-a', '-v', 'src', 'dest']
+        ['sudo', 'rsync', '-a', 'src', 'dest']
     )
 
 @patch('utils.execute_shell')
@@ -66,7 +66,7 @@ def test_copy_files(execute_shell_mock):
     dest = "asdf2"
     utils.copy_files(files, dest)
     execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v'] + files + [dest]
+        ['rsync', '-a'] + files + [dest]
     )
 
 
@@ -138,3 +138,8 @@ def test_change_mode_for_files(shell_mock):
     shell_mock.assert_called_with(
         ['sudo', 'chmod', mode] + files
     )
+
+def test_is_none_or_empty_string():
+    assert utils.is_none_or_empty_string('')
+    assert utils.is_none_or_empty_string(None)
+    assert not utils.is_none_or_empty_string('asdf')

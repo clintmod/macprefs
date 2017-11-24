@@ -23,27 +23,20 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False, verbo
 
 
 # pylint: disable-msg=too-many-arguments
-def copy_dir(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None):
-    main_args = []
-    if extra_args is None:
-        extra_args = []
-    if as_archive:
-        main_args += ['-a']
-    if verbose:
-        main_args += ['-v']
-    command = ['cp'] + main_args + extra_args + [src, dest]
+def copy_dir(src, dest, with_sudo=False):
+    command = ['rsync', '-a'] + [src, dest]
     if with_sudo:
         command = ['sudo'] + command
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
 
 
 def copy_files(files, dest):
-    command = ['cp', '-a', '-v'] + files + [dest]
-    output = execute_shell(command)
-    if output is not None:
-        print output
+    command = ['rsync', '-a'] + files + [dest]
+    result = execute_shell(command)
+    if not is_none_or_empty_string(result):
+        print result
 
 
 def ensure_dir_owned_by_user(path, user, mode='600'):
@@ -60,14 +53,14 @@ def ensure_files_owned_by_user(user, files, mode='600'):
 def change_owner_for_files(files, user):
     command = ['sudo', 'chown', user] + files
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
 
 
 def change_mode_for_files(files, mode):
     command = ['sudo', 'chmod', str(mode)] + files
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print 'change_mode_for_files: ' + result
 
 
@@ -77,7 +70,7 @@ def change_owner(path, owner, should_recurse=True):
         command += ['-R']
     command += [owner, path]
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
 
 
@@ -87,12 +80,19 @@ def change_mode(path, mode, should_recurse=True):
         command += ['-R']
     command += [str(mode), path]
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
 
 
 def ensure_subdirs_listable(path):
     command = ['sudo', 'chmod', '-R', 'a+X', path]
     result = execute_shell(command)
-    if result is not None:
+    if not is_none_or_empty_string(result):
         print result
+
+
+def is_none_or_empty_string(val):
+    if val is None or val == '':
+        return True
+    else:
+        return False
