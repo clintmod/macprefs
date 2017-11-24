@@ -83,11 +83,12 @@ def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
 @patch('publish.execute_shell')
 # pylint: disable=unused-argument
 def test_upload_new_brew_formula(execute_shell_mock, open_mock):
+    execute_shell_mock.return_value = 'Status: 200 OK'
     data = publish.upload_new_brew_formula('asdf', 'ver1', 'sha1')
     try:
         json.loads(data)
     except ValueError as e:
-        print 'Failed to parse json', e.message, data 
+        print 'Failed to parse json', e.message, data
         raise e
     open_mock.assert_called_once()
     # pylint: disable=unused-variable

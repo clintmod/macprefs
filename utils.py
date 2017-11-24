@@ -22,7 +22,6 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False, verbo
     return output
 
 
-# pylint: disable-msg=too-many-arguments
 def copy_dir(src, dest, with_sudo=False):
     command = ['rsync', '-a'] + [src, dest]
     if with_sudo:
@@ -94,5 +93,4 @@ def ensure_subdirs_listable(path):
 def is_none_or_empty_string(val):
     if val is None or val == '':
         return True
-    else:
-        return False
+    return False

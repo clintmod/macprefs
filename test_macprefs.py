@@ -60,6 +60,7 @@ def test_invoke_no_args(mock_stdout):
 @patch('shared_file_lists.backup')
 @patch('system_preferences.backup')
 @patch('preferences.backup')
+# pylint: disable-msg=too-many-arguments
 def test_backup(system_preferences_mock, preferences_mock,
                 shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
     macprefs.backup()
@@ -77,6 +78,7 @@ def test_backup(system_preferences_mock, preferences_mock,
 @patch('shared_file_lists.restore')
 @patch('system_preferences.restore')
 @patch('preferences.restore')
+# pylint: disable-msg=too-many-arguments
 def test_restore(system_preferences_mock, preferences_mock,
                  shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
     macprefs.restore()

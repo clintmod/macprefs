@@ -82,9 +82,8 @@ def upload_new_brew_formula(content, version, sha):
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'
     ]
     result = execute_shell(commands)
-    print result
-    if 'error' in result:
-        raise ValueError('error found in result\n', result)
+    if 'Status: 200 OK' not in result:
+        raise ValueError('Error uploading new brew formula to github - result\n', result)
     return data
 
 
