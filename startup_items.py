@@ -1,4 +1,4 @@
-from utils import copy_files, ensure_dir_owned_by_user
+from utils import copy_dir, ensure_dir_owned_by_user
 import config
 
 
@@ -23,37 +23,37 @@ def restore():
 def backup_user_launch_agents():
     source = config.get_user_launch_agents_dir()
     dest = config.get_user_launch_agents_backup_dir()
-    copy_files(source, dest)
+    copy_dir(source, dest)
 
 
 def backup_system_launch_agents():
     source = config.get_system_launch_agents_dir()
     dest = config.get_system_launch_agents_backup_dir()
-    copy_files(source, dest)
+    copy_dir(source, dest)
 
 
 def backup_system_daemons_agents():
     source = config.get_system_launch_daemons_dir()
     dest = config.get_system_launch_daemons_backup_dir()
-    copy_files(source, dest)
+    copy_dir(source, dest)
 
 
 def restore_user_launch_agents():
     source = config.get_user_launch_agents_backup_dir()
     dest = config.get_user_launch_agents_dir()
-    copy_files(source, dest, with_sudo=True)
+    copy_dir(source, dest, with_sudo=True)
     ensure_dir_owned_by_user(dest, config.get_user())
 
 
 def restore_system_launch_agents():
     source = config.get_system_launch_agents_backup_dir()
     dest = config.get_system_launch_agents_dir()
-    copy_files(source, dest, with_sudo=True)
+    copy_dir(source, dest, with_sudo=True)
     ensure_dir_owned_by_user(dest, 'root:wheel', '644')
 
 
 def restore_system_daemons_agents():
     source = config.get_system_launch_daemons_backup_dir()
     dest = config.get_system_launch_daemons_dir()
-    copy_files(source, dest, with_sudo=True)
+    copy_dir(source, dest, with_sudo=True)
     ensure_dir_owned_by_user(dest, 'root:wheel', '644')

@@ -4,30 +4,30 @@ from mock import patch
 from config import get_dotfiles_backup_dir, get_home_dir, get_user
 
 @patch('dotfiles.get_dot_files')
-@patch('dotfiles.execute_shell')
-def test_backup(execute_shell_mock, dotfiles_mock):
+@patch('dotfiles.copy_files')
+def test_backup(copy_files_mock, dotfiles_mock):
     files = ['.no_file']
     dotfiles_mock.return_value = files
     dotfiles.backup()
     dest = get_dotfiles_backup_dir()
-    execute_shell_mock.assert_called_with(
-        ['cp', '-a', '-v'] + files + [dest]
+    copy_files_mock.assert_called_with(
+        files, dest
     )
 
 
 @patch('dotfiles.ensure_files_owned_by_user')
 @patch('dotfiles.get_dot_files')
-@patch('dotfiles.execute_shell')
-def test_restore(execute_shell_mock, dotfiles_mock, ensure_mock):
+@patch('dotfiles.copy_files')
+def test_restore(copy_files_mock, dotfiles_mock, ensure_mock):
     files = ['.no_file']
+    dest = get_home_dir()
     dotfiles_mock.return_value = files
     dotfiles.restore()
+    copy_files_mock.assert_called_with(
+        files, dest
+    )
     ensure_mock.assert_called_with(
         get_user(), files
-    )
-    dest = get_home_dir()
-    execute_shell_mock.assert_called_with(
-        ['sudo', 'cp', '-a', '-v'] + files + [dest]
     )
 
 @patch('dotfiles.path.isfile')

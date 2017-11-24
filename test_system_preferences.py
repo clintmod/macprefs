@@ -4,22 +4,22 @@ from config import get_sys_preferences_backup_dir
 from mock import patch
 
 
-@patch('system_preferences.copy_files')
-def test_backup(copy_files_mock):
+@patch('system_preferences.copy_dir')
+def test_backup(copy_dir_mock):
     source = system_preferences.get_pm_path()
     dest = system_preferences.get_pm_backup_path()
     system_preferences.backup()
-    copy_files_mock.assert_called_with(
+    copy_dir_mock.assert_called_with(
         source, dest
     )
 
 @patch('system_preferences.ensure_files_owned_by_user')
-@patch('system_preferences.copy_files')
-def test_restore(copy_files_mock, ensure_mock):
+@patch('system_preferences.copy_dir')
+def test_restore(copy_dir_mock, ensure_mock):
     source = system_preferences.get_pm_backup_path()
     dest = system_preferences.get_pm_path()
     system_preferences.restore()
-    copy_files_mock.assert_called_with(
+    copy_dir_mock.assert_called_with(
         source, dest, with_sudo=True
     )
     ensure_mock.assert_called_with(

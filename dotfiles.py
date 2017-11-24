@@ -1,6 +1,6 @@
 from os import path, listdir
 from config import get_dotfiles_backup_dir, get_dotfile_excludes, get_home_dir, get_user
-from utils import execute_shell, ensure_files_owned_by_user
+from utils import copy_files, ensure_files_owned_by_user
 
 
 def backup():
@@ -12,10 +12,7 @@ def backup():
     excludes = get_dotfile_excludes()
     files = get_dot_files(home_dir, excludes)
     dest = get_dotfiles_backup_dir()
-    command = ['cp', '-a', '-v'] + files + [dest]
-    output = execute_shell(command)
-    if output is not None:
-        print output
+    copy_files(files, dest)
 
 
 def restore():
@@ -25,10 +22,7 @@ def restore():
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
     files = get_dot_files(source)
-    command = ['sudo', 'cp', '-a', '-v'] + files + [dest]
-    output = execute_shell(command)
-    if output is not None:
-        print output
+    copy_files(files, dest)
     files = get_dot_files(dest)
     ensure_files_owned_by_user(get_user(), files)
 

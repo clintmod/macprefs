@@ -38,27 +38,38 @@ def test_execute_shell_handles_verbose(check_output_mock):
 
 
 @patch('utils.execute_shell')
-def test_copy_files_works_with_extra_args(execute_shell_mock):
-    utils.copy_files('src', 'dest', as_archive=True, extra_args=['wtf'])
+def test_copy_dir_works_with_extra_args(execute_shell_mock):
+    utils.copy_dir('src', 'dest', as_archive=True, extra_args=['wtf'])
     execute_shell_mock.assert_called_with(
         ['cp', '-a', '-v', 'wtf', 'src', 'dest']
     )
 
 
 @patch('utils.execute_shell')
-def test_copy_files(execute_shell_mock):
-    utils.copy_files('src', 'dest')
+def test_copy_dir(execute_shell_mock):
+    utils.copy_dir('src', 'dest')
     execute_shell_mock.assert_called_with(
         ['cp', '-a', '-v', 'src', 'dest']
     )
 
 
 @patch('utils.execute_shell')
-def test_copy_files_works_with_sudo(execute_shell_mock):
-    utils.copy_files('src', 'dest', as_archive=True, with_sudo=True)
+def test_copy_dir_works_with_sudo(execute_shell_mock):
+    utils.copy_dir('src', 'dest', as_archive=True, with_sudo=True)
     execute_shell_mock.assert_called_with(
         ['sudo', 'cp', '-a', '-v', 'src', 'dest']
     )
+
+@patch('utils.execute_shell')
+def test_copy_files(execute_shell_mock):
+    files = ['asdf']
+    dest = "asdf2"
+    utils.copy_files(files, dest)
+    execute_shell_mock.assert_called_with(
+        ['cp', '-a', '-v'] + files + [dest]
+    )
+
+
 
 @patch('utils.execute_shell')
 def test_change_owner(execute_shell_mock):
@@ -97,6 +108,7 @@ def test_ensure_dir_owned_by_user(chmod_mock, chown_mock, listable_mock):
     chown_mock.assert_called_with(dest, 'clint')
     listable_mock.assert_called_with(dest)
 
+
 @patch('utils.change_owner_for_files')
 @patch('utils.change_mode_for_files')
 def test_ensure_files_owned_by_user(mode_mock, owner_mock):
@@ -107,6 +119,7 @@ def test_ensure_files_owned_by_user(mode_mock, owner_mock):
     mode_mock.assert_called_with(files, mode)
     owner_mock.assert_called_with(files, user)
 
+
 @patch('utils.execute_shell')
 def test_change_owner_for_files(shell_mock):
     files = ['.no_file']
@@ -115,6 +128,7 @@ def test_change_owner_for_files(shell_mock):
     shell_mock.assert_called_with(
         ['sudo', 'chown', user] + files
     )
+
 
 @patch('utils.execute_shell')
 def test_change_mode_for_files(shell_mock):

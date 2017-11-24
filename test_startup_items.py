@@ -23,7 +23,7 @@ def test_restore(user_agents_mock, system_agents_mock, system_daemons_mock):
     system_daemons_mock.assert_called_once()
 
 
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_backup_user_launch_agents(copy_mock):
     source = config.get_user_launch_agents_dir()
     dest = config.get_user_launch_agents_backup_dir()
@@ -31,7 +31,7 @@ def test_backup_user_launch_agents(copy_mock):
     copy_mock.assert_called_with(source, dest)
 
 
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_backup_system_launch_agents(copy_mock):
     source = config.get_system_launch_agents_dir()
     dest = config.get_system_launch_agents_backup_dir()
@@ -39,7 +39,7 @@ def test_backup_system_launch_agents(copy_mock):
     copy_mock.assert_called_with(source, dest)
 
 
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_backup_system_daemons_agents(copy_mock):
     source = config.get_system_launch_daemons_dir()
     dest = config.get_system_launch_daemons_backup_dir()
@@ -47,7 +47,7 @@ def test_backup_system_daemons_agents(copy_mock):
     copy_mock.assert_called_with(source, dest)
 
 @patch('startup_items.ensure_dir_owned_by_user')
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_restore_user_launch_agents(copy_mock, owned_mock):
     source = config.get_user_launch_agents_backup_dir()
     dest = config.get_user_launch_agents_dir()
@@ -56,7 +56,7 @@ def test_restore_user_launch_agents(copy_mock, owned_mock):
     owned_mock.assert_called_with(dest, config.get_user())
 
 @patch('startup_items.ensure_dir_owned_by_user')
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_restore_system_launch_agents(copy_mock, owned_mock):
     source = config.get_system_launch_agents_backup_dir()
     dest = config.get_system_launch_agents_dir()
@@ -65,7 +65,7 @@ def test_restore_system_launch_agents(copy_mock, owned_mock):
     owned_mock.assert_called_with(dest, 'root:wheel', '644')
 
 @patch('startup_items.ensure_dir_owned_by_user')
-@patch('startup_items.copy_files')
+@patch('startup_items.copy_dir')
 def test_restore_system_daemons_agents(copy_mock, owned_mock):
     source = config.get_system_launch_daemons_backup_dir()
     dest = config.get_system_launch_daemons_dir()

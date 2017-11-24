@@ -1,4 +1,4 @@
-from utils import copy_files, ensure_dir_owned_by_user
+from utils import copy_dir, ensure_dir_owned_by_user
 import config
 
 
@@ -8,7 +8,7 @@ def backup():
     print ''
     source = config.get_shared_file_lists_dir()
     dest = config.get_shared_file_lists_backup_dir()
-    copy_files(source, dest)
+    copy_dir(source, dest)
 
 
 def restore():
@@ -17,5 +17,5 @@ def restore():
     print ''
     dest = config.get_shared_file_lists_dir()
     source = config.get_shared_file_lists_backup_dir()
-    copy_files(source, dest, with_sudo=True)
+    copy_dir(source, dest, with_sudo=True)
     ensure_dir_owned_by_user(dest, config.get_user())

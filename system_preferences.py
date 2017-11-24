@@ -1,5 +1,5 @@
 from os import path
-from utils import copy_files, ensure_files_owned_by_user
+from utils import copy_dir, ensure_files_owned_by_user
 from config import get_sys_preferences_backup_dir
 
 
@@ -9,7 +9,7 @@ def backup():
     print ''
     source = get_pm_path()
     dest = get_pm_backup_path()
-    copy_files(source, dest)
+    copy_dir(source, dest)
 
 
 def restore():
@@ -18,7 +18,7 @@ def restore():
     print ''
     print 'Restoring system preferences...'
     print ''
-    copy_files(source, dest, with_sudo=True)
+    copy_dir(source, dest, with_sudo=True)
     ensure_files_owned_by_user('root:wheel', [dest], '644')
     
 

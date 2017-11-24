@@ -23,7 +23,7 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False, verbo
 
 
 # pylint: disable-msg=too-many-arguments
-def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None):
+def copy_dir(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_args=None):
     main_args = []
     if extra_args is None:
         extra_args = []
@@ -37,6 +37,13 @@ def copy_files(src, dest, with_sudo=False, as_archive=True, verbose=True, extra_
     result = execute_shell(command)
     if result is not None:
         print result
+
+
+def copy_files(files, dest):
+    command = ['cp', '-a', '-v'] + files + [dest]
+    output = execute_shell(command)
+    if output is not None:
+        print output
 
 
 def ensure_dir_owned_by_user(path, user, mode='600'):
