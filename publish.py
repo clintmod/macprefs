@@ -7,32 +7,29 @@ import urllib
 from utils import execute_shell, is_none_or_empty_string
 from version import __version__
 
+
 def check_for_uncommitted_files():
-    
     print 'Checking for uncommitted files...'
     result = execute_shell(['git', 'status'])
     if not 'nothing to commit' in result:
-        raise ValueError('There are uncommitted files in the workspace. Commit or stash them before trying to publish.')
+        raise ValueError(
+            'There are uncommitted files in the workspace. Commit or stash them before trying to publish.')
+
 
 def create_version_tag_and_push(tag):
-    
     print 'Tagging git repository with version ' + tag
     execute_shell(['git', 'tag', tag])
-    
     print 'Pushing the new tag to github...'
-    
     execute_shell(['git', 'push', 'origin', 'HEAD', '--tags'])
 
 
 def download_tar(filename):
-    
     print 'Downloading the new version...'
     urllib.urlretrieve(
         'https://github.com/clintmod/macprefs/archive/' + filename, filename)
 
 
 def calc_sha256(filename):
-    
     print 'Calculating the sha256 of the tarball...'
     result = execute_shell(['shasum', '-a', '256', filename])
     print result
@@ -42,7 +39,6 @@ def calc_sha256(filename):
 
 
 def create_brew_formula_file_content(version, sha256):
-    
     print 'Generating base64 encoded brew formula...'
     # Read in the file
     with open('macprefs.template.rb', 'r') as f:
@@ -55,7 +51,6 @@ def create_brew_formula_file_content(version, sha256):
 
 
 def get_sha_of_old_macprefs_formula():
-    
     print 'Getting sha of old macprefs formula from github...'
     result = json.load(urllib2.urlopen(
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'))
@@ -64,16 +59,13 @@ def get_sha_of_old_macprefs_formula():
 
 
 def upload_new_brew_formula(content, version, sha):
-    
     print 'Uploading the new macprefs formula to https://github.com/clintmod/homebrew-formulas'
     token = os.environ['MACPREFS_TOKEN']
     auth_header = 'Authorization: token ' + token
     json_header = 'Content-Type: application/json'
-    data = '{\'path\': \'Formula/macprefs.rb\', \'message\': \'Updating to version '
-    data += version + \
-        '\', \'committer\': {\'name\': \'Clint M\', \'email\': \'cmodien@gmail.com\'}, '
-    data += '\'content\': \'' + content + \
-        '\', \'branch\': \'master\', \'sha\':\'' + sha + '\'}'
+    data = '{"path": "Formula/macprefs.rb", "message": "Updating to version ' + version + '", '
+    data += '"committer": {"name": "Clint M", "email": "cmodien@gmail.com"}, '
+    data += '"content": "' + content + '", "branch": "master", "sha":"' + sha + '"}'
     with open('github_request.json', 'w') as f:
         f.write(data)
     commands = [
@@ -89,31 +81,33 @@ def upload_new_brew_formula(content, version, sha):
         '@github_request.json',
         'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb'
     ]
-    execute_shell(commands)
-    # print result
+    result = execute_shell(commands)
+    print result
+    if 'error' in result:
+        raise ValueError('error found in result\n', result)
+    return data
 
 
 def cleanup():
-    
     print 'Cleaning up...'
-    
     for f in glob.glob('*.tar.gz'):
         os.remove(f)
     os.remove('github_request.json')
 
+
 def download_macprefs():
-    
     print 'Running brew update macprefs to verify version...'
-    
     result = execute_shell(['brew', 'upgrade', 'macprefs'], False, '.', True)
     if not is_none_or_empty_string(result):
         print result
+
 
 def verify_macprefs():
     result = execute_shell(['macprefs', '--version'])
     message = '\nworkspace:\t' + __version__ + '\ninstalled:\t' + result
     assert __version__ in result, message
     print 'version check verified' + message
+
 
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == '-test':
@@ -130,9 +124,9 @@ def main():
     cleanup()
     download_macprefs()
     verify_macprefs()
-    
+
     print 'Success'
-    
+
     return True
 
 
