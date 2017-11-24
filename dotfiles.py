@@ -39,6 +39,6 @@ def get_dot_files(home_dir, excludes=None):
     files = []
     for f in listdir(home_dir):
         full_file_path = path.join(home_dir, f)
-        if path.isfile(full_file_path) and f[0] == '.' and f not in excludes:
+        if f[0] == '.' and path.isfile(full_file_path) and f not in excludes:
             files.append(full_file_path)
     return files
