@@ -23,6 +23,7 @@
     "recurse",
     "rsync",
     "sharedfilelist",
+    "shasum",
     "subdirs",
     "symlinks"
 ],
