@@ -39,3 +39,7 @@ def test_get_ssh_backup_dir():
 def test_get_ssh_user_dir():
     assert config.get_ssh_user_dir() == path.join(
         config.get_home_dir(), '.ssh/')
+
+
+def test_get_shared_file_lists_dir():
+    path.join(config.get_home_dir(), 'Library/Application Support/com.apple.sharedfilelist/')

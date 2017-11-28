@@ -36,7 +36,7 @@ def get_shared_file_lists_backup_dir():
 
 
 def get_shared_file_lists_dir():
-    return path.join(get_home_dir(), '/Library/Application Support/com.apple.sharedfilelist/')
+    return path.join(get_home_dir(), 'Library/Application Support/com.apple.sharedfilelist/')
 
 
 def get_dotfiles_backup_dir():
