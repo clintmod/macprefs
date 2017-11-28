@@ -25,6 +25,7 @@
     "sharedfilelist",
     "shasum",
     "subdirs",
+    "subfolders",
     "symlinks"
 ],
   "python.unitTest.pyTestArgs": [
