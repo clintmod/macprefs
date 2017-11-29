@@ -43,3 +43,7 @@ def test_get_ssh_user_dir():
 
 def test_get_shared_file_lists_dir():
     path.join(config.get_home_dir(), 'Library/Application Support/com.apple.sharedfilelist/')
+
+def test_get_app_store_preferences_dir():
+    assert config.get_app_store_preferences_dir() == path.join(
+        config.get_home_dir(), 'Library/Containers/')

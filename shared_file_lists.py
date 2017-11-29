@@ -1,6 +1,6 @@
+from os.path import exists
 from utils import copy_dir, ensure_dir_owned_by_user
 import config
-from os.path import exists
 
 
 def backup():

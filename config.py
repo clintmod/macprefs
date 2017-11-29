@@ -104,3 +104,14 @@ def get_system_launch_daemons_backup_dir():
         get_macprefs_dir(), 'StartupItems/LaunchDaemons/AllUsers/')
     ensure_exists(return_val)
     return return_val
+
+
+def get_app_store_preferences_dir():
+    return_val = path.join(get_home_dir(), 'Library/Containers/')
+    return return_val
+
+
+def get_app_store_preferences_backup_dir():
+    return_val = path.join(get_macprefs_dir(), 'app_store_preferences/')
+    ensure_exists(return_val)
+    return return_val

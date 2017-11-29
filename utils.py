@@ -37,6 +37,11 @@ def copy_files(files, dest):
     if not is_none_or_empty_string(result):
         print result
 
+def copy_file(fle, dest):
+    command = ['rsync', '-a', fle, dest]
+    result = execute_shell(command)
+    if not is_none_or_empty_string(result):
+        print result
 
 def ensure_dir_owned_by_user(path, user, mode='600'):
     change_mode(path, mode)

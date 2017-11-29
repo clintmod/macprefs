@@ -143,3 +143,12 @@ def test_is_none_or_empty_string():
     assert utils.is_none_or_empty_string('')
     assert utils.is_none_or_empty_string(None)
     assert not utils.is_none_or_empty_string('asdf')
+
+@patch("utils.execute_shell")
+def test_copy_file(shell_mock):
+    fle = "asdf"
+    dest = "wtf"
+    utils.copy_file(fle, dest)
+    shell_mock.assert_called_with(
+        ['rsync', '-a', fle, dest]
+    )

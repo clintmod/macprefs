@@ -54,6 +54,7 @@ def test_invoke_no_args(mock_stdout):
         assert_correct_std_out(e, mock_stdout)
 
 
+@patch('app_store_preferences.backup')
 @patch('startup_items.backup')
 @patch('ssh_files.backup')
 @patch('dotfiles.backup')
@@ -62,7 +63,8 @@ def test_invoke_no_args(mock_stdout):
 @patch('preferences.backup')
 # pylint: disable-msg=too-many-arguments
 def test_backup(system_preferences_mock, preferences_mock,
-                shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
+                shared_files_mock, dotfiles_mock,
+                ssh_mock, startup_mock, app_store_mock):
     macprefs.backup()
     system_preferences_mock.assert_called_once()
     preferences_mock.assert_called_once()
@@ -70,8 +72,10 @@ def test_backup(system_preferences_mock, preferences_mock,
     dotfiles_mock.assert_called_once()
     ssh_mock.assert_called_once()
     startup_mock.assert_called_once()
+    app_store_mock.assert_called_once()
 
 
+@patch('app_store_preferences.restore')
 @patch('startup_items.restore')
 @patch('ssh_files.restore')
 @patch('dotfiles.restore')
@@ -80,7 +84,8 @@ def test_backup(system_preferences_mock, preferences_mock,
 @patch('preferences.restore')
 # pylint: disable-msg=too-many-arguments
 def test_restore(system_preferences_mock, preferences_mock,
-                 shared_files_mock, dotfiles_mock, ssh_mock, startup_mock):
+                 shared_files_mock, dotfiles_mock,
+                 ssh_mock, startup_mock, app_store_mock):
     macprefs.restore()
     system_preferences_mock.assert_called_once()
     preferences_mock.assert_called_once()
@@ -88,6 +93,7 @@ def test_restore(system_preferences_mock, preferences_mock,
     dotfiles_mock.assert_called_once()
     ssh_mock.assert_called_once()
     startup_mock.assert_called_once()
+    app_store_mock.assert_called_once()
 
 
 def assert_correct_std_out(e, mock_stdout):

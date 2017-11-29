@@ -10,6 +10,7 @@ import shared_file_lists
 import system_preferences
 import ssh_files
 import startup_items
+import app_store_preferences
 
 def backup():
     system_preferences.backup()
@@ -18,6 +19,7 @@ def backup():
     shared_file_lists.backup()
     ssh_files.backup()
     preferences.backup()
+    app_store_preferences.backup()
     print 'Backup Complete.'
 
 
@@ -28,6 +30,7 @@ def restore():
     shared_file_lists.restore()
     ssh_files.restore()
     preferences.restore()
+    app_store_preferences.restore()
     print 'Restore Complete.'
 
 
