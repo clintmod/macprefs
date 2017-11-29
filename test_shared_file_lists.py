@@ -12,6 +12,15 @@ def test_backup_works(copy_dir_mock):
     )
 
 
+@patch('shared_file_lists.exists')
+@patch('shared_file_lists.copy_dir')
+def test_backup_warns_if_not_exists(copy_dir_mock, exists_mock):
+    exists_mock.return_value = False
+    shared_file_lists.backup()
+    copy_dir_mock.assert_not_called()
+
+
+
 @patch('shared_file_lists.ensure_dir_owned_by_user')
 @patch('shared_file_lists.copy_dir')
 def test_restore_works(copy_dir_mock, owned_mock):
