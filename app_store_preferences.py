@@ -1,17 +1,18 @@
 from os import listdir, path
+import logging as log
 from config import get_app_store_preferences_backup_dir, get_app_store_preferences_dir, ensure_exists
 from utils import copy_file, copy_files, execute_shell
 
 
 def backup():
-    print 'Backing up app store preferences (.plist)...'
+    log.info('Backing up app store preferences (.plist)...')
     files = build_file_list()
     dest = get_app_store_preferences_backup_dir()
     copy_files(files, dest)
 
 
 def restore():
-    print 'Restoring app store preferences (.plist)...'
+    log.info('Restoring app store preferences (.plist)...')
     source = get_app_store_preferences_backup_dir()
     dest = get_app_store_preferences_dir()
     for f in listdir(source):

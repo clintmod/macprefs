@@ -1,47 +1,51 @@
 from subprocess import CalledProcessError, check_output, STDOUT
+import logging as log
 
 
-def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False, verbose=False):
+def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
     output = ''
-    if verbose:
-        print '\n--- executing shell command ----\n'
-        print 'setting working dir to: ' + cwd
-        print 'command: ' + str(command)
+    log.debug('\n--- executing shell command ----\n')
+    log.debug('setting working dir to: ' + cwd)
+    log.debug('command: ' + str(command))
     try:
         output = check_output(command, shell=is_shell,
                               cwd=cwd, stderr=STDOUT).strip()
-        if verbose:
-            print 'output = ' + output
+        log.debug('output = ' + output)
     except CalledProcessError as err:
-        print 'Error Info:\nerror code = {0}\ncmd {1}\nerror message: {2}'.format(err.returncode, err.cmd, err.output)
+        log.error('Error Info:\nerror code = %s\ncmd %s\nerror message:%s',
+                  err.returncode, err.cmd, err.output)
         if not suppress_errors:
             raise
     finally:
-        if verbose:
-            print '---- shell execution finished ---\n'
+        log.debug('\n---- shell execution finished ---\n')
     return output
 
 
 def copy_dir(src, dest, with_sudo=False):
-    command = ['rsync', '-a'] + [src, dest]
+    extra_args = []
+    if log.root.getEffectiveLevel() == log.DEBUG:
+        extra_args = ['-vv']
+    command = ['rsync', '-a'] + extra_args + [src, dest]
     if with_sudo:
         command = ['sudo'] + command
-    result = execute_shell(command)
-    if not is_none_or_empty_string(result):
-        print result
+    execute_shell(command)
 
 
 def copy_files(files, dest):
-    command = ['rsync', '-a'] + files + [dest]
-    result = execute_shell(command)
-    if not is_none_or_empty_string(result):
-        print result
+    extra_args = []
+    if log.root.getEffectiveLevel() == log.DEBUG:
+        extra_args = ['-vv']
+    command = ['rsync', '-a'] + extra_args + files + [dest]
+    execute_shell(command)
+
 
 def copy_file(fle, dest):
-    command = ['rsync', '-a', fle, dest]
-    result = execute_shell(command)
-    if not is_none_or_empty_string(result):
-        print result
+    extra_args = []
+    if log.root.getEffectiveLevel() == log.DEBUG:
+        extra_args = ['-vv']
+    command = ['rsync', '-a'] + extra_args + [fle, dest]
+    execute_shell(command)
+
 
 def ensure_dir_owned_by_user(path, user, mode='600'):
     change_mode(path, mode)
@@ -58,14 +62,14 @@ def change_owner_for_files(files, user):
     command = ['sudo', 'chown', user] + files
     result = execute_shell(command)
     if not is_none_or_empty_string(result):
-        print result
+        log.debug(result)
 
 
 def change_mode_for_files(files, mode):
     command = ['sudo', 'chmod', str(mode)] + files
     result = execute_shell(command)
     if not is_none_or_empty_string(result):
-        print 'change_mode_for_files: ' + result
+        log.debug('change_mode_for_files: ' + result)
 
 
 def change_owner(path, owner, should_recurse=True):
@@ -75,7 +79,7 @@ def change_owner(path, owner, should_recurse=True):
     command += [owner, path]
     result = execute_shell(command)
     if not is_none_or_empty_string(result):
-        print result
+        log.debug(result)
 
 
 def change_mode(path, mode, should_recurse=True):
@@ -85,14 +89,14 @@ def change_mode(path, mode, should_recurse=True):
     command += [str(mode), path]
     result = execute_shell(command)
     if not is_none_or_empty_string(result):
-        print result
+        log.debug(result)
 
 
 def ensure_subdirs_listable(path):
     command = ['sudo', 'chmod', '-R', 'a+X', path]
     result = execute_shell(command)
     if not is_none_or_empty_string(result):
-        print result
+        log.debug(result)
 
 
 def is_none_or_empty_string(val):

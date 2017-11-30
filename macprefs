@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import argparse
 import sys
+import logging as log
 import config
-
 from version import __version__
 import dotfiles
 import preferences
@@ -39,22 +39,32 @@ def invoke_func(args):
         args.func()
 
 
+def configure_logging(verbose):
+    if verbose > 0:
+        log.basicConfig(format="%(message)s", level=log.DEBUG)
+        log.debug('Verbose logging enabled')
+    else:
+        log.basicConfig(format="%(message)s", level=log.INFO)
+
+
 def main():
     backup_dir = config.get_macprefs_dir()
     parser = argparse.ArgumentParser(
-        prog='macprefs', description='Backup and restore mac system preferences.')
+        prog='macprefs', description='backup and restore mac system preferences')
     parser.add_argument('--version', action='version', version=__version__)
+    parser.add_argument('--verbose', '-v', action='count', help='log everything to the console')
     subparsers = parser.add_subparsers(title='commands', metavar='')
     backup_parser = subparsers.add_parser(
-        'backup', help='Backup mac preferences to ' + backup_dir)
+        'backup', help='backup preferences to ' + backup_dir)
     backup_parser.set_defaults(name='backup', func=backup)
     restore_parser = subparsers.add_parser(
-        'restore', help='Restore mac preferences from ' + backup_dir)
+        'restore', help='restore preferences from ' + backup_dir)
     restore_parser.set_defaults(name='restore', func=restore)
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(0)
     args = parser.parse_args()
+    configure_logging(args.verbose)
     invoke_func(args)
 
 

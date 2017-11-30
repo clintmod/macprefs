@@ -1,6 +1,7 @@
 import json
 import sys
 import imp
+import logging as log
 from mock import patch, call
 import publish
 from version import __version__
@@ -85,23 +86,12 @@ def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
 def test_upload_new_brew_formula(execute_shell_mock, open_mock):
     execute_shell_mock.return_value = 'Status: 200 OK'
     data = publish.upload_new_brew_formula('asdf', 'ver1', 'sha1')
-    try:
-        json.loads(data)
-    except ValueError as e:
-        print 'Failed to parse json', e.message, data
-        raise e
+    json.loads(data)
     open_mock.assert_called_once()
     # pylint: disable=unused-variable
     args, kwargs = execute_shell_mock.call_args
     assert 'curl' in args[0]
     assert 'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb' in args[0]
-
-
-@patch('publish.os.remove')
-def test_cleanup(remove_mock):
-    publish.cleanup()
-    assert remove_mock.call_count > 0
-
 
 @patch('publish.verify_macprefs')
 @patch('publish.download_macprefs')
@@ -163,3 +153,4 @@ def test_cleanup_removes_tar_gz_files(remove_mock, glob_mock):
     glob_mock.return_value = 'a'
     publish.cleanup()
     assert call('a') in remove_mock.mock_calls
+    assert call('github_request.json') in remove_mock.mock_calls

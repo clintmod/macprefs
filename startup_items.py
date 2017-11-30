@@ -1,16 +1,17 @@
+import logging as log
 from utils import copy_dir, ensure_dir_owned_by_user
 import config
 
 
 def backup():
-    print 'Backing up start up items...'
+    log.info('Backing up start up items...')
     backup_user_launch_agents()
     backup_system_launch_agents()
     backup_system_daemons_agents()
 
 
 def restore():
-    print 'Restoring start up items...'
+    log.info('Restoring start up items...')
     restore_user_launch_agents()
     restore_system_launch_agents()
     restore_system_daemons_agents()

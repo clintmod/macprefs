@@ -5,6 +5,7 @@ clean:
 	rm -rf .tmontmp
 	rm -rf .coverage
 	rm -rf .testmondata
+	rm -rf cov.xml
 
 setup:
 	pip install -r requirements.txt

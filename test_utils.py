@@ -1,6 +1,7 @@
 from subprocess import CalledProcessError
+import logging as log
 import utils
-from mock import patch
+from mock import patch, PropertyMock
 import config
 
 
@@ -31,25 +32,13 @@ def test_execute_shell_handles_errors(check_output_mock):
 def check_output_error_func(command, shell, cwd, stderr):
     raise CalledProcessError(0, command)
 
-
-@patch('utils.check_output')
-def test_execute_shell_handles_verbose(check_output_mock):
-    utils.execute_shell(['asdf'], False, '.', False, True)
-
-
+@patch('utils.log.root.getEffectiveLevel')
 @patch('utils.execute_shell')
-def test_copy_dir_works_with_extra_args(execute_shell_mock):
+def test_copy_dir(execute_shell_mock, level_mock):
+    level_mock.return_value = log.DEBUG
     utils.copy_dir('src', 'dest')
     execute_shell_mock.assert_called_with(
-        ['rsync', '-a', 'src', 'dest']
-    )
-
-
-@patch('utils.execute_shell')
-def test_copy_dir(execute_shell_mock):
-    utils.copy_dir('src', 'dest')
-    execute_shell_mock.assert_called_with(
-        ['rsync', '-a', 'src', 'dest']
+        ['rsync', '-a', '-vv', 'src', 'dest']
     )
 
 
@@ -60,15 +49,17 @@ def test_copy_dir_works_with_sudo(execute_shell_mock):
         ['sudo', 'rsync', '-a', 'src', 'dest']
     )
 
+@patch('utils.log.root.getEffectiveLevel')
 @patch('utils.execute_shell')
-def test_copy_files(execute_shell_mock):
+def test_copy_files(execute_shell_mock, log_mock):
+    log_mock.return_value = log.DEBUG
     files = ['asdf']
     dest = "asdf2"
     utils.copy_files(files, dest)
+    print log_mock.mock_calls
     execute_shell_mock.assert_called_with(
-        ['rsync', '-a'] + files + [dest]
+        ['rsync', '-a', '-vv'] + files + [dest]
     )
-
 
 
 @patch('utils.execute_shell')
@@ -139,16 +130,19 @@ def test_change_mode_for_files(shell_mock):
         ['sudo', 'chmod', mode] + files
     )
 
+
 def test_is_none_or_empty_string():
     assert utils.is_none_or_empty_string('')
     assert utils.is_none_or_empty_string(None)
     assert not utils.is_none_or_empty_string('asdf')
 
+@patch('utils.log.root.getEffectiveLevel')
 @patch("utils.execute_shell")
-def test_copy_file(shell_mock):
+def test_copy_file(shell_mock, level_mock):
+    level_mock.return_value = log.DEBUG
     fle = "asdf"
     dest = "wtf"
     utils.copy_file(fle, dest)
     shell_mock.assert_called_with(
-        ['rsync', '-a', fle, dest]
+        ['rsync', '-a', '-vv', fle, dest]
     )

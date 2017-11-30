@@ -1,10 +1,11 @@
 from os import path, listdir
+import logging as log
 from config import get_dotfiles_backup_dir, get_dotfile_excludes, get_home_dir, get_user
 from utils import copy_files, ensure_files_owned_by_user
 
 
 def backup():
-    print 'Backing up dotfiles...'
+    log.info('Backing up dotfiles...')
     # build file list
     home_dir = get_home_dir()
     excludes = get_dotfile_excludes()
@@ -14,7 +15,7 @@ def backup():
 
 
 def restore():
-    print 'Restoring dotfiles...'
+    log.info('Restoring dotfiles...')
     source = get_dotfiles_backup_dir()
     dest = get_home_dir()
     files = get_dot_files(source)

@@ -1,6 +1,7 @@
 from StringIO import StringIO
 import imp
 import sys
+import logging as log
 from mock import patch, MagicMock
 
 
@@ -99,9 +100,23 @@ def test_restore(system_preferences_mock, preferences_mock,
 def assert_correct_std_out(e, mock_stdout):
     assert e.code == 0
     assert 'usage: macprefs' in mock_stdout.getvalue()
-    assert 'Backup mac preferences' in mock_stdout.getvalue()
-    assert 'Restore mac preferences' in mock_stdout.getvalue()
+    assert 'backup preferences' in mock_stdout.getvalue()
+    assert 'restore preferences' in mock_stdout.getvalue()
     assert 'show this help message and exit' in mock_stdout.getvalue()
+
+@patch('macprefs.log.basicConfig')
+def test_configure_logging(config_mock):
+    macprefs.configure_logging(0)
+    config_mock.assert_called_with(
+        format="%(message)s", level=log.INFO
+    )
+
+@patch('macprefs.log.basicConfig')
+def test_configure_logging_works_with_verbose(config_mock):
+    macprefs.configure_logging(1)
+    config_mock.assert_called_with(
+        format="%(message)s", level=log.DEBUG
+    )
 
 
 # pylint: disable=pointless-string-statement
