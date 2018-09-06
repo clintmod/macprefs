@@ -9,7 +9,7 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
     log.debug('command: ' + str(command))
     try:
         output = check_output(command, shell=is_shell,
-                              cwd=cwd, stderr=STDOUT).strip()
+                              cwd=cwd, stderr=STDOUT).strip().decode("utf-8")
         log.debug('output = ' + output)
     except CalledProcessError as err:
         log.error('Error Info:\nerror code = %s\ncmd %s\nerror message:%s',
