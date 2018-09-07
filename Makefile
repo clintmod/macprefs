@@ -25,4 +25,4 @@ help:
 	@echo "  setup          Setup development environment."
 	@echo "  test           Run tests."
 	@echo "  lint           Run analysis tools."
-	@echo "  publish        Tag and push to github and update the brew formula with the new url and sha256 and push to github
+	@echo "  publish        Tag and push to github and update the brew formula with the new url and sha256 and push to github"
