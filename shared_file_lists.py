@@ -8,7 +8,7 @@ def backup():
     log.info('Backing up shared file lists...')
     source = config.get_shared_file_lists_dir()
     if not exists(source):
-        log.info('Warning: ' + source + ' does not exist.')
+        log.info('Warning: %s does not exist.', source)
         log.info('Shared file backup failed.')
         return
     dest = config.get_shared_file_lists_backup_dir()

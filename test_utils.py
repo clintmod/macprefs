@@ -1,7 +1,8 @@
 from subprocess import CalledProcessError
 import logging as log
+from mock import patch
+
 import utils
-from mock import patch, PropertyMock
 import config
 
 
@@ -16,7 +17,7 @@ def check_output_func(command, shell, cwd, stderr):
     length = len(command)
     assert length > 0
     assert command[0] == 'asdf'
-    return ''
+    return b''
 
 
 @patch('utils.check_output')

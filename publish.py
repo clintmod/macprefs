@@ -2,8 +2,10 @@ import sys
 import glob
 import os
 import json
-import urllib.request, urllib.error, urllib.parse
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
+import urllib.error
+import urllib.parse
+import base64
 from utils import execute_shell, is_none_or_empty_string
 from version import __version__
 
@@ -46,7 +48,8 @@ def create_brew_formula_file_content(version, sha256):
     # Replace
     filedata = filedata.replace('###sha256###', sha256)
     filedata = filedata.replace('###version###', version)
-    filedata = filedata.encode('base64').replace('\n', '')
+    filedata_bytes = bytes(filedata, 'utf-8')
+    filedata = base64.b64encode(filedata_bytes)
     return filedata
 
 

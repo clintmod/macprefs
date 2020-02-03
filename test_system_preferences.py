@@ -1,8 +1,8 @@
 from os import path
-import system_preferences
-from config import get_sys_preferences_backup_dir
 from mock import patch
 
+import system_preferences
+from config import get_sys_preferences_backup_dir
 
 @patch('system_preferences.copy_dir')
 def test_backup(copy_dir_mock):

@@ -1,8 +1,8 @@
 import os
 from os import path
-import config
 from mock import patch
 
+import config
 
 def test_get_macprefs_dir():
     backup_dir = config.get_macprefs_dir()

@@ -1,5 +1,5 @@
-from config import get_preferences_dir, get_preferences_backup_dir, get_user
 from mock import patch
+from config import get_preferences_dir, get_preferences_backup_dir, get_user
 import preferences
 
 

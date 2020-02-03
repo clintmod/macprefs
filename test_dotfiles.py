@@ -1,6 +1,7 @@
 from os import path
-import dotfiles
 from mock import patch
+
+import dotfiles
 from config import get_dotfiles_backup_dir, get_home_dir, get_user
 
 @patch('dotfiles.get_dot_files')

@@ -64,7 +64,7 @@ def main():
         parser.print_help()
         sys.exit(0)
     args = parser.parse_args()
-    verbosity = 0 if args.verbose == "None" else args.verbose
+    verbosity = 0 if args.verbose is None else args.verbose
     configure_logging(verbosity)
     invoke_func(args)
 
