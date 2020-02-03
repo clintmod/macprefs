@@ -20,7 +20,7 @@ def backup():
     ssh_files.backup()
     preferences.backup()
     app_store_preferences.backup()
-    print 'Backup Complete.'
+    print('Backup Complete.')
 
 
 def restore():
@@ -31,7 +31,7 @@ def restore():
     ssh_files.restore()
     preferences.restore()
     app_store_preferences.restore()
-    print 'Restore Complete.'
+    print('Restore Complete.')
 
 
 def invoke_func(args):

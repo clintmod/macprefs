@@ -1,4 +1,4 @@
-from StringIO import StringIO
+from io import StringIO
 import imp
 import sys
 import logging as log

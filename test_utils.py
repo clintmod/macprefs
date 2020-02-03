@@ -56,7 +56,7 @@ def test_copy_files(execute_shell_mock, log_mock):
     files = ['asdf']
     dest = "asdf2"
     utils.copy_files(files, dest)
-    print log_mock.mock_calls
+    print(log_mock.mock_calls)
     execute_shell_mock.assert_called_with(
         ['rsync', '-a', '-vv'] + files + [dest]
     )
