@@ -15,7 +15,7 @@ Running `defaults write` with the wrong case for the keys or domains also causes
 ## Requirements
 
 - Mac OS X greater than 10.9 (maybe older… didn't test)
-- Python 2.7 (Installed by default on Mac OS X > 10.6)
+- Python 3.6
 
 ## Installation
 
