@@ -1,7 +1,7 @@
-import startup_items
 from mock import patch
-import config
 
+import startup_items
+import config
 
 @patch('startup_items.backup_system_daemons_agents')
 @patch('startup_items.backup_system_launch_agents')

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import argparse
 import sys
 import logging as log
@@ -20,7 +20,7 @@ def backup():
     ssh_files.backup()
     preferences.backup()
     app_store_preferences.backup()
-    print 'Backup Complete.'
+    print('Backup Complete.')
 
 
 def restore():
@@ -31,7 +31,7 @@ def restore():
     ssh_files.restore()
     preferences.restore()
     app_store_preferences.restore()
-    print 'Restore Complete.'
+    print('Restore Complete.')
 
 
 def invoke_func(args):
@@ -64,7 +64,7 @@ def main():
         parser.print_help()
         sys.exit(0)
     args = parser.parse_args()
-    verbosity = 0 if args.verbose == "None" else args.verbose
+    verbosity = 0 if args.verbose is None else args.verbose
     configure_logging(verbosity)
     invoke_func(args)
 

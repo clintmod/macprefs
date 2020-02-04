@@ -1,7 +1,8 @@
 from subprocess import CalledProcessError
 import logging as log
+from mock import patch
+
 import utils
-from mock import patch, PropertyMock
 import config
 
 
@@ -16,7 +17,7 @@ def check_output_func(command, shell, cwd, stderr):
     length = len(command)
     assert length > 0
     assert command[0] == 'asdf'
-    return ''
+    return b''
 
 
 @patch('utils.check_output')
@@ -56,7 +57,7 @@ def test_copy_files(execute_shell_mock, log_mock):
     files = ['asdf']
     dest = "asdf2"
     utils.copy_files(files, dest)
-    print log_mock.mock_calls
+    print(log_mock.mock_calls)
     execute_shell_mock.assert_called_with(
         ['rsync', '-a', '-vv'] + files + [dest]
     )

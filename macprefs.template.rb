@@ -6,7 +6,7 @@ class Macprefs < Formula
     url "https://github.com/clintmod/macprefs/archive/###version###.tar.gz"
     sha256 "###sha256###"
   
-    depends_on :python if MacOS.version <= :snow_leopard
+    depends_on :python3
   
     def install
       bin.install Dir["*"]

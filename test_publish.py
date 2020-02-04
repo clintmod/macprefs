@@ -1,9 +1,9 @@
 import json
 import sys
-import imp
-import logging as log
+import base64
 from mock import patch, call
 import publish
+import utils
 from version import __version__
 
 
@@ -11,7 +11,7 @@ def test_invoke_help():
     old_argv = sys.argv
     sys.argv = ['publish', '-test']
     # invoke as script
-    imp.load_source('__main__', 'publish.py')
+    utils.execute_module('__main__', 'publish.py')
     sys.argv = old_argv
 
 
@@ -28,7 +28,7 @@ def test_check_for_uncommitted_files_raises_error(execute_shell_mock):
         publish.check_for_uncommitted_files()
         assert False, 'expecting ValueError'
     except ValueError as e:
-        assert 'uncommitted' in e.message
+        assert 'uncommitted' in '\n'.join(e.args)
 
 
 @patch('publish.execute_shell')
@@ -41,7 +41,7 @@ def test_create_version_tag_and_push(execute_shell_mock):
     execute_shell_mock.assert_has_calls(calls)
 
 
-@patch('urllib.urlretrieve')
+@patch('urllib.request.urlretrieve')
 def test_download_tar(urllib_urlretrieve_mock):
     filename = 'asdf'
     publish.download_tar(filename)
@@ -65,12 +65,12 @@ def test_calc_sha256(execute_shell_mock):
 
 def test_create_brew_formula_file_content():
     filedata = publish.create_brew_formula_file_content('ver1', 'asdf1234')
-    filedata = filedata.decode('base64')
+    filedata = base64.b64decode(filedata).decode('utf-8')
     assert 'ver1.tar.gz' in filedata
     assert 'sha256 "asdf1234"' in filedata
 
 
-@patch('publish.urllib2.urlopen')
+@patch('publish.urllib.request.urlopen')
 @patch('publish.json.load')
 def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
     json_load_mock.return_value = {'sha': 'asdf'}
@@ -144,7 +144,7 @@ def test_verify_macprefs_throws_assertion_error(execute_shell_mock):
         assert False, 'expected AssertionError'
     except AssertionError as e:
         execute_shell_mock.assert_called_with(['macprefs', '--version'])
-        assert __version__ in e.message
+        assert __version__ in '\n'.join(e.args)
 
 
 @patch('publish.glob.glob')
