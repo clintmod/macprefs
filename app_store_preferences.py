@@ -25,7 +25,7 @@ def restore():
 
 def build_file_list():
     source = get_app_store_preferences_dir()
-    command = 'find ' + source + '*/Data/Library/Preferences -type f -name *.plist'
+    command = 'find ' + source + '*/Data/Library/Preferences -type f -name "*.plisit"'
     result = execute_shell(command, is_shell=True)
     files = result.split('\n')
     return files
