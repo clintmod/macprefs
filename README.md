@@ -84,6 +84,7 @@ chmod -R o=-x ~/Dropbox
 ## What it Does
 
 - Backs up all the preferences in `~/Library/Preferences` and `/Library/Preferences`
+- Backs up all 'Internet Accounts' databases in `~/Library/Accounts`
 - Backs up PowerManagement preferences
 - Backs up shared file lists (Finder Favorites in Sidebar) `~/Library/Application Support/com.apple.sharedfilelist`
 - Backups up dotfiles ($HOME/.* (e.g. .bash_profile))

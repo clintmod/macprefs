@@ -11,6 +11,7 @@ import system_preferences
 import ssh_files
 import startup_items
 import app_store_preferences
+import internet_accounts
 
 def backup():
     system_preferences.backup()
@@ -20,6 +21,7 @@ def backup():
     ssh_files.backup()
     preferences.backup()
     app_store_preferences.backup()
+    internet_accounts.backup()
     print('Backup Complete.')
 
 
@@ -31,6 +33,7 @@ def restore():
     ssh_files.restore()
     preferences.restore()
     app_store_preferences.restore()
+    internet_accounts.restore()
     print('Restore Complete.')
 
 
