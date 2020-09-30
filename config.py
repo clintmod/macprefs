@@ -73,6 +73,17 @@ def get_user():
     return getpass.getuser()
 
 
+def get_internet_accounts_dir():
+    return path.join(get_home_dir(), 'Library/Accounts/')
+
+
+def get_internet_accounts_backup_dir():
+    return_val = path.join(
+        get_macprefs_dir(), 'Accounts/')
+    ensure_exists(return_val)
+    return return_val
+
+
 def get_user_launch_agents_dir():
     return path.join(get_home_dir(), 'Library/LaunchAgents/')
 
