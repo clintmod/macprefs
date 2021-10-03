@@ -16,9 +16,6 @@ import internet_accounts
 def backup():
     system_preferences.backup()
     startup_items.backup()
-    dotfiles.backup()
-    shared_file_lists.backup()
-    ssh_files.backup()
     preferences.backup()
     app_store_preferences.backup()
     internet_accounts.backup()
@@ -28,9 +25,6 @@ def backup():
 def restore():
     system_preferences.restore()
     startup_items.restore()
-    dotfiles.restore()
-    shared_file_lists.restore()
-    ssh_files.restore()
     preferences.restore()
     app_store_preferences.restore()
     internet_accounts.restore()
