@@ -57,11 +57,17 @@ Following backups are currently possible:
 
 
 **`system_preferences`** : Backs up `/Library/Preferences/com.apple.PowerManagement.plist` or `/Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist`, depending on the availability.
+
 **`startup_items`** : Backs up `user launch agents`, `system launch agents` and `system daemon agents`
+
 **`dotfiles`** : Backs up all your `dotfiles` from your home directory.
+
 **`shared_file_lists`** : Backs up `~/Library/Application Support/com.apple.sharedfilelist/`
+
 **`preferences`** : Backs up `~/Library/Preferences/`
+
 **`app_store_preferences`** : Backs up your App Store preferences
+
 **`internet_accounts`** : Backs up your `~/Library/Accounts`
 
 #### Note:
