@@ -99,7 +99,7 @@ def main():
     restore_parser = subparsers.add_parser(
         'restore', help='restore preferences from ' + backup_dir)
     restore_parser.set_defaults(name='restore', func=restore)
-    restore_parser.add_argument('-t', nargs='*', metavar='type', help='preferences you want to backup', choices=preference_choices, action="extend")
+    restore_parser.add_argument('-t', nargs='*', metavar='type', help='preferences you want to restore', choices=preference_choices, action="extend")
 
     if len(sys.argv) == 1:
         parser.print_help()

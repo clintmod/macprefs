@@ -17,6 +17,7 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
         log.error('Error Info:\nerror code = %s\ncmd %s\nerror message:%s',
                   err.returncode, err.cmd, err.output)
         output = err.output
+        # when the check_output raises an error, it also stores the result as bytes.
         if isinstance(output, bytes):
             output = output.decode('ascii')
         if not suppress_errors:
