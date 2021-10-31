@@ -16,6 +16,9 @@ def execute_shell(command, is_shell=False, cwd='.', suppress_errors=False):
     except CalledProcessError as err:
         log.error('Error Info:\nerror code = %s\ncmd %s\nerror message:%s',
                   err.returncode, err.cmd, err.output)
+        output = err.output
+        if isinstance(output, bytes):
+            output = output.decode('ascii')
         if not suppress_errors:
             raise
     finally:
