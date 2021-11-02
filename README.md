@@ -47,12 +47,50 @@ You can backup your preferences by running:
 macprefs backup
 ```
 
+You can also choose to backup selected preferences by running:
+
+```bash
+macprefs backup -t system_preferences startup_items preferences app_store_preferences internet_accounts
+```
+
+Following backups are currently possible:
+
+
+**`system_preferences`** : Backs up `/Library/Preferences/com.apple.PowerManagement.plist` or `/Library/Preferences/SystemConfiguration/com.apple.PowerManagement.plist`, depending on the availability.
+
+**`startup_items`** : Backs up `user launch agents`, `system launch agents` and `system daemon agents`
+
+**`dotfiles`** : Backs up all your `dotfiles` from your home directory.
+
+**`shared_file_lists`** : Backs up `~/Library/Application Support/com.apple.sharedfilelist/`
+
+**`preferences`** : Backs up `~/Library/Preferences/`
+
+**`app_store_preferences`** : Backs up your App Store preferences
+
+**`internet_accounts`** : Backs up your `~/Library/Accounts`
+
+#### Note:
+
+Make sure you have given full disk access to your terminal app for this script to work properly.
+You can run this command to open system preference window
+
+```bash
+open "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+```
+
 ## Restoring
 
 You can restore your preferences by running:
 
 ``` bash
 macprefs restore
+```
+
+Similar to **Backing**, you can choose to restore selected preferences by running 
+
+```bash
+macprefs restore -t system_preferences startup_items preferences app_store_preferences internet_accounts
 ```
 
 - **You might have to log out and then log back in for the settings to take effect.**
