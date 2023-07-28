@@ -46,7 +46,7 @@ def test_download_tar(urllib_urlretrieve_mock):
     filename = 'asdf'
     publish.download_tar(filename)
     calls = [
-        call('https://github.com/clintmod/macprefs/archive/' + filename, filename),
+        call('https://github.com/sijanc147/macprefs/archive/' + filename, filename),
     ]
     urllib_urlretrieve_mock.assert_has_calls(calls)
 
@@ -76,7 +76,7 @@ def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
     json_load_mock.return_value = {'sha': 'asdf'}
     sha = publish.get_sha_of_old_macprefs_formula()
     urlopen_mock.assert_called_with(
-        'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb')
+        'https://api.github.com/repos/sijanc147/homebrew-formulas/contents/Formula/macprefs.rb')
     assert sha == 'asdf'
 
 
@@ -91,7 +91,7 @@ def test_upload_new_brew_formula(execute_shell_mock, open_mock):
     # pylint: disable=unused-variable
     args, kwargs = execute_shell_mock.call_args
     assert 'curl' in args[0]
-    assert 'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb' in args[0]
+    assert 'https://api.github.com/repos/sijanc147/homebrew-formulas/contents/Formula/macprefs.rb' in args[0]
 
 @patch('publish.verify_macprefs')
 @patch('publish.download_macprefs')

@@ -26,7 +26,7 @@ Install [Homebrew](https://brew.sh/)
 ```
 
 ``` bash
-brew install clintmod/formulas/macprefs
+brew install sijanc147/formulas/macprefs
 ```
 
 ## Config
@@ -87,7 +87,7 @@ You can restore your preferences by running:
 macprefs restore
 ```
 
-Similar to **Backing**, you can choose to restore selected preferences by running 
+Similar to **Backing**, you can choose to restore selected preferences by running
 
 ```bash
 macprefs restore -t system_preferences startup_items preferences app_store_preferences internet_accounts
