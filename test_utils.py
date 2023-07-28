@@ -1,6 +1,6 @@
 from subprocess import CalledProcessError
 import logging as log
-from mock import patch
+from unittest.mock import patch
 
 import utils
 import config

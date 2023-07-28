@@ -1,6 +1,6 @@
 import os
 from os import path
-from mock import patch
+from unittest.mock import patch
 
 import config
 

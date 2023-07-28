@@ -1,5 +1,5 @@
 from os import path
-from mock import patch
+from unittest.mock import patch
 
 import system_preferences
 from config import get_sys_preferences_backup_dir

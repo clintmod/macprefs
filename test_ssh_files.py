@@ -1,4 +1,4 @@
-from mock import patch
+from unittest.mock import patch
 
 from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
 import ssh_files

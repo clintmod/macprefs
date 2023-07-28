@@ -1,5 +1,5 @@
 from os import path
-from mock import patch
+from unittest.mock import patch
 
 import dotfiles
 from config import get_dotfiles_backup_dir, get_home_dir, get_user
