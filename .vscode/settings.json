@@ -31,5 +31,9 @@
   "python.unitTest.pyTestArgs": [
     "."
   ],
-  "python.unitTest.pyTestEnabled": false
+  "python.unitTest.pyTestEnabled": false,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "python.formatting.provider": "none"
 }
