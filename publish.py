@@ -67,7 +67,7 @@ def upload_new_brew_formula(content, version, sha):
     auth_header = 'Authorization: token ' + token
     json_header = 'Content-Type: application/json'
     data = '{"path": "Formula/macprefs.rb", "message": "Updating to version ' + version + '", '
-    data += '"committer": {"name": "Clint M", "email": "cmodien@gmail.com"}, '
+    data += '"committer": {"name": "Sean B", "email": "seanbugeja23@gmail.com"}, '
     data += '"content": "' + content + '", "branch": "master", "sha":"' + sha + '"}'
     with open('github_request.json', 'w') as f:
         f.write(data)

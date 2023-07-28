@@ -7,3 +7,4 @@ cov.xml
 macprefsc
 .coverage
 .pytest_cache
+.envrc
