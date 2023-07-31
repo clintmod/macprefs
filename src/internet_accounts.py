@@ -4,12 +4,12 @@ import config
 
 
 def backup():
-    log.info('Backing up internet accounts db files...')
+    log.info("Backing up internet accounts db files...")
     backup_internet_accounts()
 
 
 def restore():
-    log.info('Restoring internet accounts db files...')
+    log.info("Restoring internet accounts db files...")
     restore_internet_accounts()
 
 

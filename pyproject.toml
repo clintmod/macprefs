@@ -1,0 +1,51 @@
+[project]
+name = "macprefs"
+version = "2.0.2"
+description = "Backup and Restore your Mac System and App Preferences"
+authors = [{ name = "Sean Bugeja", email = "seanbugeja23@gmail.com" }]
+dependencies = [
+    "mock",
+    "pylint",
+    "pytest",
+    "pytest-cov",
+    "pytest-testmon",
+    "pytest-watcher>=0.3.4",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = { text = "MIT" }
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pytest.ini_options]
+addopts = "--maxfail=2 -s --tb=native -v -m='not integration'"
+markers = "integration: integration tests"
+
+[tool.pytest-watcher]
+now = false
+delay = 0.2
+runner = "pytest"
+runner_args = []
+patterns = ["*.py"]
+ignore_patterns = []
+
+[tool.pylint."messages control"]
+disable = [
+    "raw-checker-failed",
+    "bad-inline-option",
+    "locally-disabled",
+    "file-ignored",
+    "suppressed-message",
+    "useless-suppression",
+    "deprecated-pragma",
+    "use-symbolic-message-instead",
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "missing-final-newline",
+    "invalid-name",
+    "line-too-long",
+]

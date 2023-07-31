@@ -4,7 +4,7 @@ import json
 import sys
 import base64
 import urllib.request
-import publish
+import src.publish as publish
 import utils
 from version import __version__
 

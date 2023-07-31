@@ -1,8 +1,0 @@
-# Needed to run the tests
-# Run "pip install -r requirements.txt" then pytest
-mock
-pylint
-pytest
-pytest-cov
-pytest-testmon
-pytest-watch

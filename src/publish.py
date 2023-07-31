@@ -43,7 +43,7 @@ def calc_sha256(filename):
 
 def create_brew_formula_file_content(version, sha256):
     print("Generating base64 encoded brew formula...")
-    with open("macprefs.template.rb", "r") as f:
+    with open("macprefs.template.rb", "r", encoding="utf-8") as f:
         filedata = f.read()
     filedata = filedata.replace("###sha256###", sha256)
     filedata = filedata.replace("###version###", version)
