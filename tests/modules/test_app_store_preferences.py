@@ -1,5 +1,5 @@
 from unittest.mock import patch
-import app_store_preferences
+from modules import app_store_preferences
 
 
 @patch("app_store_preferences.copy_files")

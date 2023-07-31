@@ -1,7 +1,7 @@
 from os import path
 import logging as log
-from utils import copy_dir, ensure_files_owned_by_user
-from config import get_sys_preferences_backup_dir
+from macprefs.utils import copy_dir, ensure_files_owned_by_user
+from macprefs.config import get_sys_preferences_backup_dir
 
 
 def backup():

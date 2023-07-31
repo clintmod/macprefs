@@ -1,6 +1,10 @@
 import logging as log
-from config import get_preferences_backup_dir, get_preferences_dir, get_user
-from utils import copy_dir, ensure_dir_owned_by_user
+from macprefs.config import (
+    get_preferences_backup_dir,
+    get_preferences_dir,
+    get_user,
+)
+from macprefs.utils import copy_dir, ensure_dir_owned_by_user
 
 
 def backup():

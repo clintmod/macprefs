@@ -10,6 +10,7 @@ dependencies = [
     "pytest-cov",
     "pytest-testmon",
     "pytest-watcher>=0.3.4",
+    "toml>=0.10.2",
 ]
 requires-python = ">=3.8"
 readme = "README.md"

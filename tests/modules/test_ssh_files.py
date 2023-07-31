@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from config import get_ssh_backup_dir, get_ssh_user_dir, get_user
-import ssh_files
+from modules import ssh_files
 
 @patch('ssh_files.copy_dir')
 def test_backup(copy_dir_mock):

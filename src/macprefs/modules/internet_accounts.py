@@ -1,6 +1,6 @@
 import logging as log
-from utils import copy_dir, ensure_dir_owned_by_user
-import config
+from macprefs.utils import copy_dir, ensure_dir_owned_by_user
+from macprefs import config
 
 
 def backup():

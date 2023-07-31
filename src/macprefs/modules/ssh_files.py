@@ -1,12 +1,12 @@
 from os.path import exists
 import logging as log
-from config import (
+from macprefs.config import (
     get_ssh_backup_dir,
     get_ssh_user_dir,
     get_user,
     ensure_exists,
 )
-from utils import copy_dir, ensure_dir_owned_by_user
+from macprefs.utils import copy_dir, ensure_dir_owned_by_user
 
 
 def backup():

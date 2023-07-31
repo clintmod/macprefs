@@ -1,17 +1,18 @@
-#!/usr/bin/env python3
 import argparse
 import sys
 import logging as log
-import config
-from version import __version__
-import dotfiles
-import preferences
-import shared_file_lists
-import system_preferences
-import ssh_files
-import startup_items
-import app_store_preferences
-import internet_accounts
+from macprefs import config
+from macprefs.modules import (
+    dotfiles,
+    preferences,
+    shared_file_lists,
+    system_preferences,
+    ssh_files,
+    startup_items,
+    app_store_preferences,
+    internet_accounts,
+)
+from macprefs import __version__
 
 preference_choices = [
     "system_preferences",
@@ -43,7 +44,6 @@ def backup(choices=None):
         app_store_preferences.backup()
     if not choices or "internet_accounts" in choices:
         internet_accounts.backup()
-
     print("Backup Complete.")
 
 
@@ -65,7 +65,6 @@ def restore(choices=None):
         app_store_preferences.restore()
     if not choices or "internet_accounts" in choices:
         internet_accounts.restore()
-
     print("Restore Complete.")
 
 

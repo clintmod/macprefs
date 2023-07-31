@@ -1,5 +1,5 @@
 from unittest.mock import patch
-import shared_file_lists
+from modules import shared_file_lists
 import config
 
 

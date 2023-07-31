@@ -1,6 +1,6 @@
 from unittest.mock import patch
 from config import get_preferences_dir, get_preferences_backup_dir, get_user
-import src.preferences as preferences
+from modules import preferences
 
 
 @patch('preferences.copy_dir')

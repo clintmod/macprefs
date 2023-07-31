@@ -1,12 +1,12 @@
 from os import path, listdir
 import logging as log
-from config import (
+from macprefs.config import (
     get_dotfiles_backup_dir,
     get_dotfile_excludes,
     get_home_dir,
     get_user,
 )
-from utils import copy_files, ensure_files_owned_by_user
+from macprefs.utils import copy_files, ensure_files_owned_by_user
 
 
 def backup():
