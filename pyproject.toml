@@ -1,6 +1,6 @@
 [project]
 name = "macprefs"
-version = "2.0.2"
+version = "2.0.3"
 description = "Backup and Restore your Mac System and App Preferences"
 authors = [{ name = "Sean Bugeja", email = "seanbugeja23@gmail.com" }]
 dependencies = [
@@ -10,16 +10,17 @@ dependencies = [
     "pytest-cov",
     "pytest-testmon",
     "pytest-watcher>=0.3.4",
-    "toml>=0.10.2",
 ]
 requires-python = ">=3.8"
 readme = "README.md"
 license = { text = "MIT" }
 
+[project.scripts]
+macprefs = "macprefs.__main__:main"
 
 [build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 addopts = "--maxfail=2 -s --tb=native -v -m='not integration'"

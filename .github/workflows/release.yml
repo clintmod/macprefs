@@ -1,0 +1,33 @@
+name: Build and Upload Python Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install PDM
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        pip install pdm
+
+    - name: Build Python package
+      run: |
+        pdm build
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: python-package
+        path: dist/*.tar.gz

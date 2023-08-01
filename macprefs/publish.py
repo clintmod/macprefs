@@ -6,8 +6,9 @@ import urllib.request
 import urllib.error
 import urllib.parse
 import base64
+
 from macprefs.utils import execute_shell, is_none_or_empty_string
-from macprefs import __version__
+from macprefs.__init__ import __version__
 
 FORMULA_URL = "https://api.github.com/repos/sijanc147/homebrew-formulas/contents/Formula/macprefs.rb"
 TAR_URL = "https://github.com/sijanc147/macprefs/archive/{}"

@@ -17,7 +17,8 @@ lint:
 	pylint *.py
 
 publish: test
-	python publish.py 
+	pdm build
+	python publish.py
 
 help:
 	@echo "COMMANDS:"

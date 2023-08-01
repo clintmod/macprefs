@@ -1,7 +1,8 @@
 import argparse
 import sys
 import logging as log
-from macprefs import config
+
+from macprefs.config import get_macprefs_dir
 from macprefs.modules import (
     dotfiles,
     preferences,
@@ -12,7 +13,7 @@ from macprefs.modules import (
     app_store_preferences,
     internet_accounts,
 )
-from macprefs import __version__
+from macprefs.__init__ import __version__
 
 preference_choices = [
     "system_preferences",
@@ -85,7 +86,7 @@ def configure_logging(verbose):
 
 
 def main():
-    backup_dir = config.get_macprefs_dir()
+    backup_dir = get_macprefs_dir()
     parser = argparse.ArgumentParser(
         prog="macprefs",
         description="backup and restore mac system preferences",
