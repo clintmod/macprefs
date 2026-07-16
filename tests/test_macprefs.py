@@ -65,8 +65,8 @@ def test_invoke_no_args(mock_stdout):
 @patch("preferences.backup")
 # pylint: disable-msg=too-many-arguments
 def test_backup(
-    system_preferences_mock,
     preferences_mock,
+    system_preferences_mock,
     shared_files_mock,
     dotfiles_mock,
     ssh_mock,
@@ -95,8 +95,8 @@ def test_backup(
 @patch("preferences.restore")
 # pylint: disable-msg=too-many-arguments
 def test_restore(
-    system_preferences_mock,
     preferences_mock,
+    system_preferences_mock,
     shared_files_mock,
     dotfiles_mock,
     ssh_mock,
@@ -113,6 +113,66 @@ def test_restore(
     startup_mock.assert_called_once()
     app_store_mock.assert_called_once()
     internet_accounts_mock.assert_called_once()
+
+
+@patch("internet_accounts.backup")
+@patch("app_store_preferences.backup")
+@patch("startup_items.backup")
+@patch("ssh_files.backup")
+@patch("dotfiles.backup")
+@patch("shared_file_lists.backup")
+@patch("system_preferences.backup")
+@patch("preferences.backup")
+# pylint: disable-msg=too-many-arguments
+def test_backup_selective(
+    preferences_mock,
+    system_preferences_mock,
+    shared_files_mock,
+    dotfiles_mock,
+    ssh_mock,
+    startup_mock,
+    app_store_mock,
+    internet_accounts_mock,
+):
+    macprefs.backup(["dotfiles"])
+    dotfiles_mock.assert_called_once()
+    system_preferences_mock.assert_not_called()
+    preferences_mock.assert_not_called()
+    shared_files_mock.assert_not_called()
+    ssh_mock.assert_not_called()
+    startup_mock.assert_not_called()
+    app_store_mock.assert_not_called()
+    internet_accounts_mock.assert_not_called()
+
+
+@patch("internet_accounts.restore")
+@patch("app_store_preferences.restore")
+@patch("startup_items.restore")
+@patch("ssh_files.restore")
+@patch("dotfiles.restore")
+@patch("shared_file_lists.restore")
+@patch("system_preferences.restore")
+@patch("preferences.restore")
+# pylint: disable-msg=too-many-arguments
+def test_restore_selective(
+    preferences_mock,
+    system_preferences_mock,
+    shared_files_mock,
+    dotfiles_mock,
+    ssh_mock,
+    startup_mock,
+    app_store_mock,
+    internet_accounts_mock,
+):
+    macprefs.restore(["ssh_files", "preferences"])
+    ssh_mock.assert_called_once()
+    preferences_mock.assert_called_once()
+    system_preferences_mock.assert_not_called()
+    shared_files_mock.assert_not_called()
+    dotfiles_mock.assert_not_called()
+    startup_mock.assert_not_called()
+    app_store_mock.assert_not_called()
+    internet_accounts_mock.assert_not_called()
 
 
 def assert_correct_std_out(e, mock_stdout):
