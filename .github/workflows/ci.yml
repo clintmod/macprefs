@@ -9,7 +9,7 @@ jobs:
   test:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Installs the pinned toolchain (python, uv, rite) from mise.toml,
       # so CI runs the exact same tasks as a dev machine.
@@ -28,7 +28,7 @@ jobs:
     name: lint:${{ matrix.check }}
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: jdx/mise-action@v4
 
@@ -38,7 +38,7 @@ jobs:
   audit:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: jdx/mise-action@v4
 
@@ -51,7 +51,7 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: jdx/mise-action@v4
 
@@ -73,7 +73,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Bootstrap per README and run tests
         run: |
