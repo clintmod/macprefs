@@ -1,0 +1,70 @@
+# macprefs is distributed as plain scripts via Homebrew, not as a Python
+# package -- this file exists for dev tooling (uv, pytest, pylint) only.
+# version.py stays canonical for the CLI and the publish flow; the version
+# below is inert metadata.
+
+[project]
+name = "macprefs"
+version = "1.0.27"
+description = "Backup and restore Mac system and app preferences"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+
+[dependency-groups]
+dev = [
+    "pylint==4.0.6",
+    "pytest==9.1.1",
+    "pytest-cov==7.1.0",
+    "pytest-testmon==2.2.0",
+    "pytest-watch==4.2.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+addopts = "--maxfail=2 -s --tb=native -v -m 'not integration'"
+markers = ["integration: integration tests"]
+
+[tool.pylint.main]
+jobs = 1
+persistent = true
+
+[tool.pylint."messages control"]
+# Disable style, docstring, naming, and design conventions only.
+# Correctness checks (unused-import, undefined-variable, no-member, etc.)
+# are intentionally left enabled.
+disable = [
+    "missing-module-docstring",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "invalid-name",
+    "consider-using-f-string",
+    "consider-using-with",
+    "unspecified-encoding",
+    "dangerous-default-value",
+    "too-many-arguments",
+    "too-many-positional-arguments",
+    "too-many-locals",
+    "too-many-branches",
+    "too-many-statements",
+    "too-many-instance-attributes",
+    "too-many-public-methods",
+    "too-few-public-methods",
+    "too-many-return-statements",
+    "too-many-nested-blocks",
+    "line-too-long",
+    "trailing-whitespace",
+    "missing-final-newline",
+    "duplicate-code",
+    "fixme",
+    "broad-exception-caught",
+    "broad-exception-raised",
+]
+
+[tool.pylint.reports]
+reports = false
+score = false
+
+[tool.pylint.format]
+max-line-length = 130

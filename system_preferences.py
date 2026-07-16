@@ -1,6 +1,6 @@
 from os import path
 import logging as log
-from utils import copy_dir, ensure_files_owned_by_user
+from utils import copy_dir, ensure_files_owned_by_user, restart_cfprefsd
 from config import get_sys_preferences_backup_dir
 
 
@@ -17,6 +17,7 @@ def restore():
     log.info('Restoring system preferences...')
     copy_dir(source, dest, with_sudo=True)
     ensure_files_owned_by_user('root:wheel', [dest], '644')
+    restart_cfprefsd()
 
 
 pm_file_name = 'com.apple.PowerManagement.plist'

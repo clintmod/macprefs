@@ -159,11 +159,15 @@ chmod -R o=-x ~/Dropbox
 ### Getting started
 
 - Fork and clone then cd to this git repository
-- Run `pip install -r requirements.txt`
+- Install [mise](https://mise.jdx.dev/) if you don't have it: `curl https://mise.run | sh`
+- Run `mise install` — installs the pinned toolchain (python, [uv](https://docs.astral.sh/uv/), and the [rite](https://github.com/clintmod/rite) task runner)
+- Run `rite setup` — creates `.venv` and installs the dev dependencies from `uv.lock`
+
+Run `rite` (no arguments) to list all available tasks.
 
 ### Running the tests
 
-- Run `make test lint` (make sure you've done the [Getting Started](#getting-started))
+- Run `rite test lint` (make sure you've done the [Getting Started](#getting-started))
 
 ### Getting your changes merged
 

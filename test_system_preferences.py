@@ -1,5 +1,5 @@
 from os import path
-from mock import patch
+from unittest.mock import patch
 
 import system_preferences
 from config import get_sys_preferences_backup_dir
@@ -13,9 +13,10 @@ def test_backup(copy_dir_mock):
         source, dest
     )
 
+@patch('system_preferences.restart_cfprefsd')
 @patch('system_preferences.ensure_files_owned_by_user')
 @patch('system_preferences.copy_dir')
-def test_restore(copy_dir_mock, ensure_mock):
+def test_restore(copy_dir_mock, ensure_mock, restart_mock):
     source = system_preferences.get_pm_backup_path()
     dest = system_preferences.get_pm_path()
     system_preferences.restore()
@@ -25,6 +26,7 @@ def test_restore(copy_dir_mock, ensure_mock):
     ensure_mock.assert_called_with(
         'root:wheel', [dest], '644'
     )
+    restart_mock.assert_called_once()
 
 def test_get_pm_backup_path():
     result = system_preferences.get_pm_backup_path()

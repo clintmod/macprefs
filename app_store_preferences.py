@@ -1,7 +1,7 @@
 from os import listdir, path
 import logging as log
 from config import get_app_store_preferences_backup_dir, get_app_store_preferences_dir, ensure_exists
-from utils import copy_file, copy_files, execute_shell
+from utils import copy_file, copy_files, execute_shell, restart_cfprefsd
 
 
 def backup():
@@ -21,6 +21,7 @@ def restore():
         ensure_exists(dest_path)
         source_file = path.join(source, f)
         copy_file(source_file, dest_path)
+    restart_cfprefsd()
 
 
 def build_file_list():

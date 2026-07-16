@@ -49,7 +49,7 @@ def create_brew_formula_file_content(version, sha256):
     filedata = filedata.replace('###sha256###', sha256)
     filedata = filedata.replace('###version###', version)
     filedata_bytes = bytes(filedata, 'utf-8')
-    filedata = base64.b64encode(filedata_bytes)
+    filedata = base64.b64encode(filedata_bytes).decode('utf-8')
     return filedata
 
 
@@ -66,9 +66,14 @@ def upload_new_brew_formula(content, version, sha):
     token = os.environ['MACPREFS_TOKEN']
     auth_header = 'Authorization: token ' + token
     json_header = 'Content-Type: application/json'
-    data = '{"path": "Formula/macprefs.rb", "message": "Updating to version ' + version + '", '
-    data += '"committer": {"name": "Clint M", "email": "cmodien@gmail.com"}, '
-    data += '"content": "' + content + '", "branch": "master", "sha":"' + sha + '"}'
+    data = json.dumps({
+        'path': 'Formula/macprefs.rb',
+        'message': 'Updating to version ' + version,
+        'committer': {'name': 'Clint M', 'email': 'cmodien@gmail.com'},
+        'content': content,
+        'branch': 'master',
+        'sha': sha,
+    })
     with open('github_request.json', 'w') as f:
         f.write(data)
     commands = [
