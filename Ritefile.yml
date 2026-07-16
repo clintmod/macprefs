@@ -42,16 +42,33 @@ tasks:
       - uv run ptw --nobeep
 
   lint:
-    desc: Run all linters (pylint, ruff, shellcheck, actionlint)
+    desc: Run all linters in parallel (pylint, ruff, shellcheck, actionlint)
     aliases: [l]
+    deps: [lint:pylint, lint:ruff, lint:shell, lint:actions]
+
+  lint:pylint:
+    desc: Run pylint
     deps: [setup]
     cmds:
       # src/macprefs is listed explicitly: it has no .py extension, so the
       # glob misses it, but pylint lints any file passed by name.
       - uv run pylint src/*.py src/macprefs tests/*.py
+
+  lint:ruff:
+    desc: Run ruff check + format check
+    deps: [setup]
+    cmds:
       - uv run ruff check src tests
       - uv run ruff format --check src tests
+
+  lint:shell:
+    desc: Shellcheck the ci scripts
+    cmds:
       - shellcheck ci/scripts/*.sh
+
+  lint:actions:
+    desc: Lint the GitHub Actions workflows
+    cmds:
       - actionlint
 
   format:
