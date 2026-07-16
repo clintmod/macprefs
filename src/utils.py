@@ -1,4 +1,5 @@
-import importlib
+import importlib.machinery
+import importlib.util
 import logging as log
 import sys
 from subprocess import STDOUT, CalledProcessError, check_output
@@ -10,7 +11,9 @@ def execute_shell(command, is_shell=False, cwd=".", suppress_errors=False):
     log.debug("setting working dir to: %s", cwd)
     log.debug("command: %s", str(command))
     try:
-        output = check_output(command, shell=is_shell, cwd=cwd, stderr=STDOUT).strip().decode("utf-8")
+        # is_shell=True is only ever used with fixed command strings built
+        # from config, never user input.
+        output = check_output(command, shell=is_shell, cwd=cwd, stderr=STDOUT).strip().decode("utf-8")  # nosec B602
         log.debug("output = %s", output)
     except CalledProcessError as err:
         log.error("Error Info:\nerror code = %s\ncmd %s\nerror message:%s", err.returncode, err.cmd, err.output)
@@ -131,8 +134,11 @@ def is_none_or_empty_string(val):
 
 
 def execute_module(name, path):
-    spec = importlib.util.spec_from_loader(name, importlib.machinery.SourceFileLoader(name, path))
+    loader = importlib.machinery.SourceFileLoader(name, path)
+    spec = importlib.util.spec_from_loader(name, loader)
+    if spec is None:
+        raise ImportError("cannot build a module spec for " + path)
     mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
+    loader.exec_module(mod)
     sys.modules[name] = mod
     return mod

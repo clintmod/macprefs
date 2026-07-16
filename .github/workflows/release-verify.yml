@@ -1,0 +1,40 @@
+name: release-verify
+
+# Verifies the path real users take: install from the live tap
+# (clintmod/homebrew-formulas) against the released GitHub tarball.
+# Runs automatically when a release is published, with retries because
+# the formula push and tarball can lag the release by a few minutes
+# (this transient bit the v1.0.27 rollout). Also manually dispatchable.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  install-from-tap:
+    runs-on: macos-latest
+    steps:
+      - name: Install from the live tap (retrying while the release propagates)
+        run: |
+          attempts=5
+          for i in $(seq 1 "$attempts"); do
+            if brew install clintmod/formulas/macprefs; then
+              exit 0
+            fi
+            echo "attempt $i/$attempts failed - waiting for tap/tarball propagation"
+            sleep 60
+          done
+          echo "install still failing after $attempts attempts" >&2
+          exit 1
+
+      - name: Verify the installed version matches the release tag
+        if: github.event_name == 'release'
+        run: |
+          installed="$(macprefs --version)"
+          echo "installed: $installed / released: ${{ github.event.release.tag_name }}"
+          test "$installed" = "${{ github.event.release.tag_name }}"
+
+      - name: Run a real backup with the installed package
+        run: |
+          MACPREFS_BACKUP_DIR="$RUNNER_TEMP/backup" macprefs backup
+          test -d "$RUNNER_TEMP/backup/preferences"

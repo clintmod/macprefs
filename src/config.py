@@ -1,5 +1,5 @@
 import getpass
-from os import environ, getenv, makedirs, path
+from os import environ, makedirs, path
 
 
 def get_macprefs_dir():
@@ -50,7 +50,9 @@ def get_dotfile_excludes():
 
 
 def get_home_dir():
-    return getenv("HOME") + "/"
+    # environ (not getenv): a missing HOME should raise a clear KeyError
+    # instead of a TypeError from None + str.
+    return environ["HOME"] + "/"
 
 
 def ensure_exists(input_dir):
