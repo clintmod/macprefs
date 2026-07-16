@@ -11,15 +11,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-
-      - name: Install dependencies
-        run: python3 -m pip install -r requirements.txt
+      # Installs the pinned toolchain (python, uv, rite) from mise.toml,
+      # so CI runs the exact same tasks as a dev machine.
+      - uses: jdx/mise-action@v2
 
       - name: Test
-        run: make test
+        run: rite test
 
       - name: Lint
-        run: make lint
+        run: rite lint
+
+  # Verifies the documented contributor workflow from a bare machine,
+  # exactly as the README's "Getting started" section describes it:
+  # curl-install mise -> mise install -> rite setup -> rite test lint.
+  # The `test` job above uses mise-action, which is faster but not the
+  # path a fresh contributor actually follows.
+  contrib-workflow:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bootstrap per README and run tests
+        run: |
+          curl https://mise.run | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          mise trust
+          mise install -y
+          mise exec -- rite setup
+          mise exec -- rite test
+          mise exec -- rite lint
