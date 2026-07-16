@@ -13,7 +13,7 @@ jobs:
 
       # Installs the pinned toolchain (python, uv, rite) from mise.toml,
       # so CI runs the exact same tasks as a dev machine.
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
 
       - name: Test
         run: rite test
@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
 
       - name: Lint (${{ matrix.check }})
         run: rite lint:${{ matrix.check }}
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
 
       - name: Audit dependencies for known vulnerabilities
         run: rite audit
@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: jdx/mise-action@v2
+      - uses: jdx/mise-action@v4
 
       - name: Build, install, and smoke test the brew package
         run: rite build
