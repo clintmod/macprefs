@@ -46,7 +46,9 @@ tasks:
     aliases: [l]
     deps: [setup]
     cmds:
-      - uv run pylint src/*.py tests/*.py
+      # src/macprefs is listed explicitly: it has no .py extension, so the
+      # glob misses it, but pylint lints any file passed by name.
+      - uv run pylint src/*.py src/macprefs tests/*.py
 
   build:
     desc: Build the brew package from committed HEAD, install, verify, uninstall

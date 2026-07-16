@@ -68,7 +68,7 @@ def restore(choices=[]):
 
 def invoke_func(args):
     if args.func is not None:
-        if args.name == 'backup' or args.name == 'restore':
+        if args.name in ('backup', 'restore'):
             args.func(args.t)
         else:
             args.func()
