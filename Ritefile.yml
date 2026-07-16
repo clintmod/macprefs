@@ -32,7 +32,7 @@ tasks:
     aliases: [t]
     deps: [setup]
     cmds:
-      - uv run pytest --cov=src --cov-fail-under=95 --cov-report xml:cov.xml --cov-report term-missing
+      - uv run pytest --cov=src --cov-branch --cov-fail-under=95 --cov-report xml:cov.xml --cov-report term-missing
 
   test:watch:
     desc: Re-run tests on file changes
@@ -93,7 +93,7 @@ tasks:
 
   check:
     desc: Run every check (what CI runs)
-    deps: [test, lint, format:check, typecheck, bandit, deptry, gitleaks, audit]
+    deps: [test, lint, format:check, lock:check, typecheck, bandit, deptry, gitleaks, audit]
 
   lint:shell:
     desc: Shellcheck the ci scripts
@@ -101,9 +101,17 @@ tasks:
       - shellcheck ci/scripts/*.sh
 
   lint:actions:
-    desc: Lint the GitHub Actions workflows
+    desc: Lint and security-audit the GitHub Actions workflows
+    deps: [setup]
     cmds:
       - actionlint
+      - uv run zizmor .github/workflows
+
+  lock:check:
+    desc: Verify uv.lock is in sync with pyproject.toml
+    aliases: [lc]
+    cmds:
+      - uv lock --check
 
   format:
     desc: Format the codebase with ruff (also sorts imports)

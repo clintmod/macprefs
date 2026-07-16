@@ -10,10 +10,29 @@ on:
     types: [published]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   install-from-tap:
     runs-on: macos-latest
+    env:
+      # Indirection instead of inlining the template into run: blocks —
+      # release names are attacker-influencable in forks and zizmor
+      # rightly flags template injection.
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
     steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      - name: Verify version.py matches the release tag
+        if: github.event_name == 'release'
+        run: |
+          workspace_version="$(PYTHONPATH=src python3 -c 'import version; print(version.__version__)')"
+          echo "version.py: $workspace_version / release tag: $RELEASE_TAG"
+          test "$workspace_version" = "$RELEASE_TAG"
+
       - name: Install from the live tap (retrying while the release propagates)
         run: |
           attempts=5
@@ -31,8 +50,8 @@ jobs:
         if: github.event_name == 'release'
         run: |
           installed="$(macprefs --version)"
-          echo "installed: $installed / released: ${{ github.event.release.tag_name }}"
-          test "$installed" = "${{ github.event.release.tag_name }}"
+          echo "installed: $installed / released: $RELEASE_TAG"
+          test "$installed" = "$RELEASE_TAG"
 
       - name: Run a real backup with the installed package
         run: |
