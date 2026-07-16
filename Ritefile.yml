@@ -1,0 +1,68 @@
+version: '3'
+
+tasks:
+  default:
+    silent: true
+    cmds:
+      - rite -l
+
+  install-mise:
+    desc: Install mise (runtime/tool version manager)
+    aliases: [im]
+    cmds:
+      - curl https://mise.run | sh
+    status:
+      - command -v mise
+
+  mise:
+    desc: Install pinned tools (python, uv, rite) from mise.toml
+    aliases: [m]
+    deps: [install-mise]
+    cmds:
+      - mise install -y
+
+  setup:
+    desc: Install dev dependencies into .venv (idempotent)
+    aliases: [s]
+    cmds:
+      - uv sync
+
+  test:
+    desc: Run tests with coverage
+    aliases: [t]
+    deps: [setup]
+    cmds:
+      - uv run pytest --cov=. --cov-report xml:cov.xml --cov-report term-missing
+
+  test:watch:
+    desc: Re-run tests on file changes
+    aliases: [tw]
+    deps: [setup]
+    cmds:
+      - uv run ptw --nobeep
+
+  lint:
+    desc: Run pylint
+    aliases: [l]
+    deps: [setup]
+    cmds:
+      - uv run pylint *.py
+
+  clean:
+    desc: Remove generated files
+    aliases: [c]
+    cmds:
+      - find . -name '*.pyc' -delete
+      - rm -rf __pycache__ .pytest_cache .cache .tmontmp .coverage .testmondata cov.xml
+
+  publish:
+    desc: Tag, push to github, and update the brew formula with the new url and sha256
+    aliases: [p]
+    deps: [test]
+    cmds:
+      - uv run python publish.py
+
+  teardown:
+    desc: Remove the local dev environment (counterpart to setup)
+    cmds:
+      - rm -rf .venv
