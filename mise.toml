@@ -2,3 +2,5 @@
 python = "3.13"
 uv = "latest"
 "github:clintmod/rite" = "latest"
+shellcheck = "latest"
+actionlint = "latest"
