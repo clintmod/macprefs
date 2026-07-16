@@ -8,7 +8,7 @@ clean:
 	rm -rf cov.xml
 
 setup:
-	pip install -r requirements.txt
+	python3 -m pip install -r requirements.txt
 
 test:
 	pytest --cov=. --cov-report xml:cov.xml  --cov-report term-missing
@@ -17,7 +17,7 @@ lint:
 	pylint *.py
 
 publish: test
-	python publish.py 
+	python3 publish.py
 
 help:
 	@echo "COMMANDS:"

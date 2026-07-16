@@ -1,8 +1,7 @@
 # Needed to run the tests
 # Run "pip install -r requirements.txt" then pytest
-mock
-pylint
-pytest
-pytest-cov
-pytest-testmon
-pytest-watch
+pylint==4.0.6
+pytest==9.1.1
+pytest-cov==7.1.0
+pytest-testmon==2.2.0
+pytest-watch==4.2.0

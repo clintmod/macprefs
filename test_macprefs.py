@@ -1,7 +1,7 @@
 from io import StringIO
 import sys
 import logging as log
-from mock import patch, MagicMock
+from unittest.mock import patch, MagicMock
 
 import utils
 
