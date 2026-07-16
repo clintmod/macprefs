@@ -28,6 +28,16 @@ jobs:
       - name: Lint
         run: rite lint
 
+  audit:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      - name: Audit dependencies for known vulnerabilities
+        run: rite audit
+
   # "Does it build": render the formula against a tarball of HEAD, brew
   # install it, run the formula test block, then a real `macprefs backup`
   # end-to-end on the runner.

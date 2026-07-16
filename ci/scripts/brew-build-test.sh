@@ -32,6 +32,15 @@ brew tap-new --no-git "$TAP" >/dev/null
 trap 'brew uninstall --force macprefs >/dev/null 2>&1 || true; brew untap -f "$TAP" >/dev/null 2>&1 || true; rm -rf "$TMP"' EXIT
 cp "$TMP/macprefs.rb" "$(brew --repository "$TAP")/Formula/macprefs.rb"
 
+# Style/audit the rendered formula before installing — catches formula-API
+# deprecations (like the old `depends_on :python3`) before Homebrew breaks
+# the tap. --except checks that can't pass for a local file:// url render.
+brew style "$TAP/macprefs"
+brew audit --strict --except=url,stable_version,github_repository "$TAP/macprefs" || {
+    echo "brew audit failed" >&2
+    exit 1
+}
+
 brew install "$TAP/macprefs"
 
 # Formula's own test block (runs `macprefs --help`).
