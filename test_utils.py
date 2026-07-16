@@ -1,6 +1,6 @@
 from subprocess import CalledProcessError
 import logging as log
-from mock import patch
+from unittest.mock import patch
 
 import utils
 import config
@@ -68,7 +68,7 @@ def test_change_owner(execute_shell_mock):
     ssh_dir = config.get_ssh_user_dir()
     utils.change_owner(ssh_dir, 'clint', True)
     execute_shell_mock.assert_called_with(
-        ['sudo', 'chown', '-R', 'clint', ssh_dir]
+        ['sudo', 'chown', '-R', 'clint', ssh_dir], suppress_errors=True
     )
 
 
@@ -77,7 +77,7 @@ def test_change_mode(execute_shell_mock):
     ssh_dir = config.get_ssh_user_dir()
     utils.change_mode(ssh_dir, 600, True)
     execute_shell_mock.assert_called_with(
-        ['sudo', 'chmod', '-R', '600', ssh_dir]
+        ['sudo', 'chmod', '-R', '600', ssh_dir], suppress_errors=True
     )
 
 
@@ -86,7 +86,7 @@ def test_ensure_subdirs_listable(execute_shell_mock):
     ssh_dir = config.get_ssh_user_dir()
     utils.ensure_subdirs_listable(config.get_ssh_user_dir())
     execute_shell_mock.assert_called_with(
-        ['sudo', 'chmod', '-R', 'a+X', ssh_dir]
+        ['sudo', 'chmod', '-R', 'a+X', ssh_dir], suppress_errors=True
     )
 
 
@@ -118,7 +118,7 @@ def test_change_owner_for_files(shell_mock):
     user = config.get_user()
     utils.change_owner_for_files(files, user)
     shell_mock.assert_called_with(
-        ['sudo', 'chown', user] + files
+        ['sudo', 'chown', user] + files, suppress_errors=True
     )
 
 
@@ -128,7 +128,55 @@ def test_change_mode_for_files(shell_mock):
     mode = '622'
     utils.change_mode_for_files(files, mode)
     shell_mock.assert_called_with(
-        ['sudo', 'chmod', mode] + files
+        ['sudo', 'chmod', mode] + files, suppress_errors=True
+    )
+
+
+@patch('utils.log.warning')
+@patch('utils.execute_shell')
+def test_run_rsync_tolerates_partial_transfer(shell_mock, warning_mock):
+    # exit 23 (partial transfer) and 24 (files vanished) must not crash a backup
+    for code in (23, 24):
+        shell_mock.side_effect = CalledProcessError(code, ['rsync'], output='partial')
+        utils.run_rsync(['rsync', '-a', 'src', 'dest'])
+    assert warning_mock.call_count == 2
+
+
+@patch('utils.execute_shell')
+def test_run_rsync_reraises_other_errors(shell_mock):
+    shell_mock.side_effect = CalledProcessError(1, ['rsync'])
+    try:
+        utils.run_rsync(['rsync', '-a', 'src', 'dest'])
+        assert False, 'expected CalledProcessError'
+    except CalledProcessError:
+        pass
+
+
+@patch('utils.log.warning')
+@patch('utils.execute_shell')
+def test_run_permission_change_tolerates_failure(shell_mock, warning_mock):
+    # chown/chmod on a security-tool-protected file must warn, not abort restore
+    shell_mock.return_value = 'chown: /protected: Operation not permitted'
+    utils.run_permission_change(['sudo', 'chown', 'clint', '/protected'])
+    shell_mock.assert_called_with(
+        ['sudo', 'chown', 'clint', '/protected'], suppress_errors=True
+    )
+    warning_mock.assert_called()
+
+
+@patch('utils.log.warning')
+@patch('utils.execute_shell')
+def test_run_permission_change_quiet_on_success(shell_mock, warning_mock):
+    shell_mock.return_value = ''
+    utils.run_permission_change(['sudo', 'chown', 'clint', '/ok'])
+    warning_mock.assert_not_called()
+
+
+@patch('utils.execute_shell')
+def test_restart_cfprefsd(execute_shell_mock):
+    utils.restart_cfprefsd()
+    execute_shell_mock.assert_called_with(
+        ['sudo', 'killall', 'cfprefsd'], suppress_errors=True
     )
 
 
