@@ -25,6 +25,8 @@ package = false
 [tool.pytest.ini_options]
 addopts = "--maxfail=2 -s --tb=native -v -m 'not integration'"
 markers = ["integration: integration tests"]
+pythonpath = ["src"]
+testpaths = ["tests"]
 
 [tool.pylint.main]
 jobs = 1

@@ -32,7 +32,7 @@ tasks:
     aliases: [t]
     deps: [setup]
     cmds:
-      - uv run pytest --cov=. --cov-report xml:cov.xml --cov-report term-missing
+      - uv run pytest --cov=src --cov-report xml:cov.xml --cov-report term-missing
 
   test:watch:
     desc: Re-run tests on file changes
@@ -46,7 +46,7 @@ tasks:
     aliases: [l]
     deps: [setup]
     cmds:
-      - uv run pylint *.py
+      - uv run pylint src/*.py tests/*.py
 
   build:
     desc: Build the brew package from committed HEAD, install, verify, uninstall
@@ -66,7 +66,7 @@ tasks:
     aliases: [p]
     deps: [test]
     cmds:
-      - uv run python publish.py
+      - uv run python src/publish.py
 
   teardown:
     desc: Remove the local dev environment (counterpart to setup)

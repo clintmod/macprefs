@@ -7,7 +7,7 @@ class Macprefs < Formula
   depends_on "python@3.13"
 
   def install
-    libexec.install Dir["*"]
+    libexec.install Dir["src/*"]
     bin.write_exec_script libexec/"macprefs"
   end
 

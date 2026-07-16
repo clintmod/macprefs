@@ -12,7 +12,7 @@ def test_invoke_help():
     old_argv = sys.argv
     sys.argv = ['publish', '-test']
     # invoke as script
-    utils.execute_module('__main__', 'publish.py')
+    utils.execute_module('__main__', 'src/publish.py')
     sys.argv = old_argv
 
 
