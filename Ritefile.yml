@@ -28,11 +28,11 @@ tasks:
       - uv sync
 
   test:
-    desc: Run tests with coverage
+    desc: Run tests with coverage (fails under 95%)
     aliases: [t]
     deps: [setup]
     cmds:
-      - uv run pytest --cov=src --cov-report xml:cov.xml --cov-report term-missing
+      - uv run pytest --cov=src --cov-fail-under=95 --cov-report xml:cov.xml --cov-report term-missing
 
   test:watch:
     desc: Re-run tests on file changes
@@ -42,13 +42,49 @@ tasks:
       - uv run ptw --nobeep
 
   lint:
-    desc: Run pylint
+    desc: Run all linters in parallel (pylint, ruff, shellcheck, actionlint)
     aliases: [l]
+    deps: [lint:pylint, lint:ruff, lint:shell, lint:actions]
+
+  lint:pylint:
+    desc: Run pylint
     deps: [setup]
     cmds:
       # src/macprefs is listed explicitly: it has no .py extension, so the
       # glob misses it, but pylint lints any file passed by name.
       - uv run pylint src/*.py src/macprefs tests/*.py
+
+  lint:ruff:
+    desc: Run ruff check + format check
+    deps: [setup]
+    cmds:
+      - uv run ruff check src tests
+      - uv run ruff format --check src tests
+
+  lint:shell:
+    desc: Shellcheck the ci scripts
+    cmds:
+      - shellcheck ci/scripts/*.sh
+
+  lint:actions:
+    desc: Lint the GitHub Actions workflows
+    cmds:
+      - actionlint
+
+  format:
+    desc: Format the codebase with ruff (also sorts imports)
+    aliases: [f]
+    deps: [setup]
+    cmds:
+      - uv run ruff check --fix src tests
+      - uv run ruff format src tests
+
+  audit:
+    desc: Scan locked dependencies for known vulnerabilities
+    aliases: [a]
+    deps: [setup]
+    cmds:
+      - uv run pip-audit --skip-editable
 
   build:
     desc: Build the brew package from committed HEAD, install, verify, uninstall

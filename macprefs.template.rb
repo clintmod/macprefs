@@ -12,6 +12,6 @@ class Macprefs < Formula
   end
 
   test do
-    system "#{bin}/macprefs", "--help"
+    system bin/"macprefs", "--help"
   end
 end

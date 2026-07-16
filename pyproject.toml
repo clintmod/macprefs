@@ -12,11 +12,13 @@ license = { file = "LICENSE" }
 
 [dependency-groups]
 dev = [
+    "pip-audit==2.10.1",
     "pylint==4.0.6",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "pytest-testmon==2.2.0",
     "pytest-watch==4.2.0",
+    "ruff==0.15.22",
 ]
 
 [tool.uv]
@@ -70,3 +72,13 @@ score = false
 
 [tool.pylint.format]
 max-line-length = 130
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+# The extensionless entrypoint needs to be named to be included.
+include = ["src/**/*.py", "tests/**/*.py", "src/macprefs"]
+
+[tool.ruff.lint]
+# Default rules (pyflakes + core pycodestyle) plus import sorting.
+extend-select = ["I"]

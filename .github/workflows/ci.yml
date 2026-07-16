@@ -18,15 +18,32 @@ jobs:
       - name: Test
         run: rite test
 
+  # One job per linter so the PR checks list shows each check's status
+  # at a glance instead of bundling them behind a single "lint" line.
   lint:
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [pylint, ruff, shell, actions]
+    name: lint:${{ matrix.check }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: jdx/mise-action@v2
 
-      - name: Lint
-        run: rite lint
+      - name: Lint (${{ matrix.check }})
+        run: rite lint:${{ matrix.check }}
+
+  audit:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      - name: Audit dependencies for known vulnerabilities
+        run: rite audit
 
   # "Does it build": render the formula against a tarball of HEAD, brew
   # install it, run the formula test block, then a real `macprefs backup`
