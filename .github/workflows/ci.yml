@@ -48,6 +48,13 @@ jobs:
   # fresh contributor actually follows.
   contrib-workflow:
     runs-on: macos-latest
+    # mise resolves github:clintmod/rite via the GitHub API; unauthenticated
+    # requests share the runner IP's 60/hr quota and 403 constantly. The
+    # other jobs get a token injected by mise-action; this one bootstraps
+    # bare, so pass the workflow token explicitly. (Locally, mise picks up
+    # your gh CLI auth instead.)
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
 
