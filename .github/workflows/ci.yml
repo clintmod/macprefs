@@ -20,3 +20,23 @@ jobs:
 
       - name: Lint
         run: rite lint
+
+  # Verifies the documented contributor workflow from a bare machine,
+  # exactly as the README's "Getting started" section describes it:
+  # curl-install mise -> mise install -> rite setup -> rite test lint.
+  # The `test` job above uses mise-action, which is faster but not the
+  # path a fresh contributor actually follows.
+  contrib-workflow:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bootstrap per README and run tests
+        run: |
+          curl https://mise.run | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          mise trust
+          mise install -y
+          mise exec -- rite setup
+          mise exec -- rite test
+          mise exec -- rite lint
