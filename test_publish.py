@@ -1,7 +1,8 @@
 import json
+import os
 import sys
 import base64
-from mock import patch, call
+from unittest.mock import patch, call
 import publish
 import utils
 from version import __version__
@@ -65,6 +66,7 @@ def test_calc_sha256(execute_shell_mock):
 
 def test_create_brew_formula_file_content():
     filedata = publish.create_brew_formula_file_content('ver1', 'asdf1234')
+    assert isinstance(filedata, str)
     filedata = base64.b64decode(filedata).decode('utf-8')
     assert 'ver1.tar.gz' in filedata
     assert 'sha256 "asdf1234"' in filedata
@@ -80,6 +82,7 @@ def test_get_sha_of_old_macprefs_formula(json_load_mock, urlopen_mock):
     assert sha == 'asdf'
 
 
+@patch.dict(os.environ, {'MACPREFS_TOKEN': 'fake-token'})
 @patch('publish.open')
 @patch('publish.execute_shell')
 # pylint: disable=unused-argument
@@ -92,6 +95,18 @@ def test_upload_new_brew_formula(execute_shell_mock, open_mock):
     args, kwargs = execute_shell_mock.call_args
     assert 'curl' in args[0]
     assert 'https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb' in args[0]
+
+
+@patch.dict(os.environ, {'MACPREFS_TOKEN': 'fake-token'})
+def test_upload_new_brew_formula_accepts_real_formula_content():
+    # Regression: create_brew_formula_file_content() used to return bytes,
+    # which raised a TypeError when concatenated into the request body here.
+    content = publish.create_brew_formula_file_content('ver1', 'asdf1234')
+    with patch('publish.open'), patch('publish.execute_shell') as execute_shell_mock:
+        execute_shell_mock.return_value = 'Status: 200 OK'
+        data = publish.upload_new_brew_formula(content, 'ver1', 'sha1')
+    parsed = json.loads(data)
+    assert parsed['content'] == content
 
 @patch('publish.verify_macprefs')
 @patch('publish.download_macprefs')
