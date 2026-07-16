@@ -7,7 +7,7 @@
 # the real install) unless FORCE=1 is set.
 set -euo pipefail
 
-VERSION=$(python3 -c "import version; print(version.__version__.lstrip('v'))")
+VERSION=$(PYTHONPATH=src python3 -c "import version; print(version.__version__.lstrip('v'))")
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 

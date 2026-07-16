@@ -6,14 +6,14 @@ from unittest.mock import patch, MagicMock
 import utils
 
 # load as module
-macprefs = utils.execute_module('macprefs', 'macprefs')
+macprefs = utils.execute_module('macprefs', 'src/macprefs')
 
 @patch('sys.stdout', new_callable=StringIO)
 def test_invoke_help(mock_stdout):
     try:
         sys.argv = ['macprefs', '-h']
         # invoke as script
-        utils.execute_module('__main__', 'macprefs')
+        utils.execute_module('__main__', 'src/macprefs')
         assert False, 'expected SystemExit'
     except SystemExit as e:
         assert_correct_std_out(e, mock_stdout)
@@ -48,7 +48,7 @@ def test_invoke_no_args(mock_stdout):
     try:
         sys.argv = ['macprefs']
         # invoke as script
-        utils.execute_module('__main__', 'macprefs')
+        utils.execute_module('__main__', 'src/macprefs')
         assert False, 'expected SystemExit'
     except SystemExit as e:
         assert_correct_std_out(e, mock_stdout)
@@ -126,7 +126,7 @@ def test_intergration():
     try:
         sys.argv = ['macprefs', 'backup']
         # invoke as script
-        utils.execute_module('__main__', 'macprefs')
+        utils.execute_module('__main__', 'src/macprefs')
         assert False, 'expected SystemExit'
     except SystemExit as e:
         assert e.code == 0
@@ -137,7 +137,7 @@ def test_restore_intergration():
     try:
         sys.argv = ['macprefs', 'restore']
         # invoke as script
-        utils.execute_module('__main__', 'macprefs')
+        utils.execute_module('__main__', 'src/macprefs')
         assert False, 'expected SystemExit'
     except SystemExit as e:
         assert e.code == 0 '''

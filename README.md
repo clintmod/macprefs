@@ -161,6 +161,7 @@ chmod -R o=-x ~/Dropbox
 - Fork and clone then cd to this git repository
 - Install [mise](https://mise.jdx.dev/) if you don't have it: `curl https://mise.run | sh`
 - Run `mise install` — installs the pinned toolchain (python, [uv](https://docs.astral.sh/uv/), and the [rite](https://github.com/clintmod/rite) task runner)
+- If mise isn't [activated in your shell](https://mise.jdx.dev/getting-started.html#activate-mise), prefix the commands below with `mise exec --` (e.g. `mise exec -- rite setup`)
 - Run `rite setup` — creates `.venv` and installs the dev dependencies from `uv.lock`
 
 Run `rite` (no arguments) to list all available tasks.
