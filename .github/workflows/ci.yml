@@ -35,15 +35,34 @@ jobs:
       - name: Lint (${{ matrix.check }})
         run: rite lint:${{ matrix.check }}
 
-  audit:
+  # Single-task jobs, one row per check on the PR.
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        check: ["format:check", typecheck, bandit, deptry, audit]
+    name: ${{ matrix.check }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
 
       - uses: jdx/mise-action@v4
 
-      - name: Audit dependencies for known vulnerabilities
-        run: rite audit
+      - name: Run ${{ matrix.check }}
+        run: "rite ${{ matrix.check }}"
+
+  gitleaks:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # gitleaks scans the full commit history
+          fetch-depth: 0
+
+      - uses: jdx/mise-action@v4
+
+      - name: Scan git history for secrets
+        run: rite gitleaks
 
   # "Does it build": render the formula against a tarball of HEAD, brew
   # install it, run the formula test block, then a real `macprefs backup`

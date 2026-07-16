@@ -55,11 +55,45 @@ tasks:
       - uv run pylint src/*.py src/macprefs tests/*.py
 
   lint:ruff:
-    desc: Run ruff check + format check
+    desc: Run ruff check
     deps: [setup]
     cmds:
       - uv run ruff check src tests
+
+  format:check:
+    desc: Check formatting without changing files
+    aliases: [fc]
+    deps: [setup]
+    cmds:
       - uv run ruff format --check src tests
+
+  typecheck:
+    desc: Type-check with pyright (basic mode; untyped codebase)
+    aliases: [tc]
+    deps: [setup]
+    cmds:
+      - uv run pyright src tests
+
+  bandit:
+    desc: Security-lint the source with bandit
+    deps: [setup]
+    cmds:
+      - uv run bandit -c pyproject.toml -q -r src
+
+  deptry:
+    desc: Check for missing/unused dependencies
+    deps: [setup]
+    cmds:
+      - uv run deptry .
+
+  gitleaks:
+    desc: Scan the full git history for leaked secrets
+    cmds:
+      - gitleaks git --no-banner
+
+  check:
+    desc: Run every check (what CI runs)
+    deps: [test, lint, format:check, typecheck, bandit, deptry, gitleaks, audit]
 
   lint:shell:
     desc: Shellcheck the ci scripts

@@ -12,8 +12,11 @@ license = { file = "LICENSE" }
 
 [dependency-groups]
 dev = [
+    "bandit>=1.9.4",
+    "deptry>=0.25.1",
     "pip-audit==2.10.1",
     "pylint==4.0.6",
+    "pyright>=1.1.411",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "pytest-testmon==2.2.0",
@@ -82,3 +85,29 @@ include = ["src/**/*.py", "tests/**/*.py", "src/macprefs"]
 [tool.ruff.lint]
 # Default rules (pyflakes + core pycodestyle) plus import sorting.
 extend-select = ["I"]
+
+[tool.pyright]
+include = ["src", "tests"]
+extraPaths = ["src"]
+# Untyped codebase: basic mode checks inference-visible errors only.
+typeCheckingMode = "basic"
+
+[tool.bandit]
+# This tool's entire job is shelling out (rsync, chown, killall, curl) --
+# subprocess usage is by design, and commands are built from config, not
+# user input. Suppress the blanket subprocess advisories; keep the rest
+# (e.g. B602 shell=True stays active).
+skips = ["B404", "B603", "B607"]
+exclude_dirs = ["tests", ".venv"]
+
+[tool.deptry]
+# Flat modules in src/ import each other as top-level names.
+known_first_party = [
+    "app_store_preferences", "config", "dotfiles", "internet_accounts",
+    "macprefs", "preferences", "publish", "shared_file_lists", "ssh_files",
+    "startup_items", "system_preferences", "utils", "version",
+]
+
+# Pytest plugins and CLI tools are invoked, never imported.
+[tool.deptry.per_rule_ignores]
+DEP002 = ["pylint", "pytest-cov", "pytest-testmon", "pytest-watch", "ruff", "pip-audit", "pyright", "deptry", "bandit"]

@@ -27,7 +27,7 @@ def create_version_tag_and_push(tag):
 
 def download_tar(filename):
     print("Downloading the new version...")
-    urllib.request.urlretrieve("https://github.com/clintmod/macprefs/archive/" + filename, filename)
+    urllib.request.urlretrieve("https://github.com/clintmod/macprefs/archive/" + filename, filename)  # nosec B310 - fixed https url
 
 
 def calc_sha256(filename):
@@ -55,7 +55,9 @@ def create_brew_formula_file_content(version, sha256):
 def get_sha_of_old_macprefs_formula():
     print("Getting sha of old macprefs formula from github...")
     result = json.load(
-        urllib.request.urlopen("https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb")
+        urllib.request.urlopen(  # nosec B310 - fixed https url
+            "https://api.github.com/repos/clintmod/homebrew-formulas/contents/Formula/macprefs.rb"
+        )
     )
     # print 'sha = ' + result['sha']
     return result["sha"]
@@ -114,7 +116,8 @@ def download_macprefs():
 def verify_macprefs():
     result = execute_shell(["macprefs", "--version"])
     message = "\nworkspace:\t" + __version__ + "\ninstalled:\t" + result
-    assert __version__ in result, message
+    if __version__ not in result:
+        raise AssertionError(message)
     print("version check verified" + message)
 
 
