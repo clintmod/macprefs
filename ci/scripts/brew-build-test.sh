@@ -25,11 +25,17 @@ sed -e "s|url \".*\"|url \"file://$TARBALL\"|" \
     -e "s|###sha256###|$SHA|" \
     macprefs.template.rb > "$TMP/macprefs.rb"
 
-brew install --formula "$TMP/macprefs.rb"
-trap 'brew uninstall --force macprefs >/dev/null 2>&1 || true; rm -rf "$TMP"' EXIT
+# Homebrew requires formulae to live in a tap; use a throwaway local one.
+TAP="macprefs-ci/local"
+brew untap -f "$TAP" >/dev/null 2>&1 || true
+brew tap-new --no-git "$TAP" >/dev/null
+trap 'brew uninstall --force macprefs >/dev/null 2>&1 || true; brew untap -f "$TAP" >/dev/null 2>&1 || true; rm -rf "$TMP"' EXIT
+cp "$TMP/macprefs.rb" "$(brew --repository "$TAP")/Formula/macprefs.rb"
+
+brew install "$TAP/macprefs"
 
 # Formula's own test block (runs `macprefs --help`).
-brew test "$TMP/macprefs.rb"
+brew test "$TAP/macprefs"
 
 INSTALLED_VERSION=$(macprefs --version)
 echo "installed: $INSTALLED_VERSION"
