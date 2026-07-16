@@ -48,6 +48,12 @@ tasks:
     cmds:
       - uv run pylint *.py
 
+  build:
+    desc: Build the brew package from committed HEAD, install, verify, uninstall
+    aliases: [b]
+    cmds:
+      - ./ci/scripts/brew-build-test.sh
+
   clean:
     desc: Remove generated files
     aliases: [c]

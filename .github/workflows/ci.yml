@@ -18,16 +18,43 @@ jobs:
       - name: Test
         run: rite test
 
+  lint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
       - name: Lint
         run: rite lint
+
+  # "Does it build": render the formula against a tarball of HEAD, brew
+  # install it, run the formula test block, then a real `macprefs backup`
+  # end-to-end on the runner.
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      - name: Build, install, and smoke test the brew package
+        run: rite build
 
   # Verifies the documented contributor workflow from a bare machine,
   # exactly as the README's "Getting started" section describes it:
   # curl-install mise -> mise install -> rite setup -> rite test lint.
-  # The `test` job above uses mise-action, which is faster but not the
-  # path a fresh contributor actually follows.
+  # The jobs above use mise-action, which is faster but not the path a
+  # fresh contributor actually follows.
   contrib-workflow:
     runs-on: macos-latest
+    # mise resolves github:clintmod/rite via the GitHub API; unauthenticated
+    # requests share the runner IP's 60/hr quota and 403 constantly. The
+    # other jobs get a token injected by mise-action; this one bootstraps
+    # bare, so pass the workflow token explicitly. (Locally, mise picks up
+    # your gh CLI auth instead.)
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
 
