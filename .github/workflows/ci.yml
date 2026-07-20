@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: ["format:check", "lock:check", typecheck, bandit, deptry, audit]
+        check: ["format:check", "lock:check", "config:check", typecheck, bandit, deptry, audit]
     name: ${{ matrix.check }}
     runs-on: macos-latest
     steps:

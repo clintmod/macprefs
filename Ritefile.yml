@@ -52,27 +52,27 @@ tasks:
     cmds:
       # src/macprefs is listed explicitly: it has no .py extension, so the
       # glob misses it, but pylint lints any file passed by name.
-      - uv run pylint src/*.py src/macprefs tests/*.py
+      - uv run pylint src/*.py src/macprefs tests/*.py ci/scripts/*.py
 
   lint:ruff:
     desc: Run ruff check
     deps: [setup]
     cmds:
-      - uv run ruff check src tests
+      - uv run ruff check src tests ci
 
   format:check:
     desc: Check formatting without changing files
     aliases: [fc]
     deps: [setup]
     cmds:
-      - uv run ruff format --check src tests
+      - uv run ruff format --check src tests ci
 
   typecheck:
     desc: Type-check with pyright (basic mode; untyped codebase)
     aliases: [tc]
     deps: [setup]
     cmds:
-      - uv run pyright src tests
+      - uv run pyright src tests ci
 
   bandit:
     desc: Security-lint the source with bandit
@@ -93,7 +93,7 @@ tasks:
 
   check:
     desc: Run every check (what CI runs)
-    deps: [test, lint, format:check, lock:check, typecheck, bandit, deptry, gitleaks, audit]
+    deps: [test, lint, format:check, lock:check, config:check, typecheck, bandit, deptry, gitleaks, audit]
 
   lint:shell:
     desc: Shellcheck the ci scripts
@@ -107,6 +107,13 @@ tasks:
       - actionlint
       - uv run zizmor .github/workflows
 
+  config:check:
+    desc: Fail if a config file shadows pyproject.toml tool sections
+    aliases: [cc]
+    deps: [setup]
+    cmds:
+      - uv run python ci/scripts/check-config-shadowing.py
+
   lock:check:
     desc: Verify uv.lock is in sync with pyproject.toml
     aliases: [lc]
@@ -118,8 +125,8 @@ tasks:
     aliases: [f]
     deps: [setup]
     cmds:
-      - uv run ruff check --fix src tests
-      - uv run ruff format src tests
+      - uv run ruff check --fix src tests ci
+      - uv run ruff format src tests ci
 
   audit:
     desc: Scan locked dependencies for known vulnerabilities
