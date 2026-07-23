@@ -18,7 +18,7 @@ jobs:
 
       # Installs the pinned toolchain (python, uv, rite) from mise.toml,
       # so CI runs the exact same tasks as a dev machine.
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
       - name: Test
         run: rite test
@@ -37,7 +37,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
       - name: Lint (${{ matrix.check }})
         run: "rite lint:${{ matrix.check }}"
@@ -55,7 +55,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
       - name: Run ${{ matrix.check }}
         run: "rite ${{ matrix.check }}"
@@ -69,7 +69,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
       - name: Scan git history for secrets
         run: rite gitleaks
@@ -84,7 +84,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+      - uses: jdx/mise-action@dad1bfd3df957f44999b559dd69dc1671cb4e9ea # v4.2.1
 
       - name: Build, install, and smoke test the brew package
         run: rite build
